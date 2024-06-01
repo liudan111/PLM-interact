@@ -8,5 +8,7 @@ ESM-interact: extending protein language models to prediction of protein-protein
 ## Acknowledgements
 
 Thanks to the following open-source projects:
-- [transformers](https://github.com/huggingface/transformers)
+- [sentence_transformers](https://github.com/UKPLab/sentence-transformers)
 - [esm](https://github.com/facebookresearch/esm)
+- [transformers](https://github.com/huggingface/transformers)
+
