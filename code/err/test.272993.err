@@ -1,0 +1,41 @@
+2024-11-06 22:41:40.891288: E external/local_xla/xla/stream_executor/cuda/cuda_dnn.cc:9261] Unable to register cuDNN factory: Attempting to register factory for plugin cuDNN when one has already been registered
+2024-11-06 22:41:40.891353: E external/local_xla/xla/stream_executor/cuda/cuda_fft.cc:607] Unable to register cuFFT factory: Attempting to register factory for plugin cuFFT when one has already been registered
+2024-11-06 22:41:40.891899: E external/local_xla/xla/stream_executor/cuda/cuda_dnn.cc:9261] Unable to register cuDNN factory: Attempting to register factory for plugin cuDNN when one has already been registered
+2024-11-06 22:41:40.891963: E external/local_xla/xla/stream_executor/cuda/cuda_fft.cc:607] Unable to register cuFFT factory: Attempting to register factory for plugin cuFFT when one has already been registered
+2024-11-06 22:41:40.892280: E external/local_xla/xla/stream_executor/cuda/cuda_blas.cc:1515] Unable to register cuBLAS factory: Attempting to register factory for plugin cuBLAS when one has already been registered
+2024-11-06 22:41:40.892369: E external/local_xla/xla/stream_executor/cuda/cuda_dnn.cc:9261] Unable to register cuDNN factory: Attempting to register factory for plugin cuDNN when one has already been registered
+2024-11-06 22:41:40.892434: E external/local_xla/xla/stream_executor/cuda/cuda_fft.cc:607] Unable to register cuFFT factory: Attempting to register factory for plugin cuFFT when one has already been registered
+2024-11-06 22:41:40.892599: E external/local_xla/xla/stream_executor/cuda/cuda_dnn.cc:9261] Unable to register cuDNN factory: Attempting to register factory for plugin cuDNN when one has already been registered
+2024-11-06 22:41:40.892660: E external/local_xla/xla/stream_executor/cuda/cuda_fft.cc:607] Unable to register cuFFT factory: Attempting to register factory for plugin cuFFT when one has already been registered
+2024-11-06 22:41:40.892865: E external/local_xla/xla/stream_executor/cuda/cuda_blas.cc:1515] Unable to register cuBLAS factory: Attempting to register factory for plugin cuBLAS when one has already been registered
+2024-11-06 22:41:40.893340: E external/local_xla/xla/stream_executor/cuda/cuda_blas.cc:1515] Unable to register cuBLAS factory: Attempting to register factory for plugin cuBLAS when one has already been registered
+2024-11-06 22:41:40.893573: E external/local_xla/xla/stream_executor/cuda/cuda_blas.cc:1515] Unable to register cuBLAS factory: Attempting to register factory for plugin cuBLAS when one has already been registered
+2024-11-06 22:41:42.308556: W tensorflow/compiler/tf2tensorrt/utils/py_utils.cc:38] TF-TRT Warning: Could not find TensorRT
+2024-11-06 22:41:42.308669: W tensorflow/compiler/tf2tensorrt/utils/py_utils.cc:38] TF-TRT Warning: Could not find TensorRT
+2024-11-06 22:41:42.308637: W tensorflow/compiler/tf2tensorrt/utils/py_utils.cc:38] TF-TRT Warning: Could not find TensorRT
+2024-11-06 22:41:42.308678: W tensorflow/compiler/tf2tensorrt/utils/py_utils.cc:38] TF-TRT Warning: Could not find TensorRT
+Traceback (most recent call last):
+  File "/users/2656169l/PLM-interact/code/inference_ddp.py", line 79, in <module>
+Traceback (most recent call last):
+  File "/users/2656169l/PLM-interact/code/inference_ddp.py", line 79, in <module>
+    class CrossEncoder():
+  File "/users/2656169l/PLM-interact/code/inference_ddp.py", line 157, in CrossEncoder
+Traceback (most recent call last):
+  File "/users/2656169l/PLM-interact/code/inference_ddp.py", line 79, in <module>
+Traceback (most recent call last):
+  File "/users/2656169l/PLM-interact/code/inference_ddp.py", line 79, in <module>
+    class CrossEncoder():
+  File "/users/2656169l/PLM-interact/code/inference_ddp.py", line 157, in CrossEncoder
+    dev_samples=dev_samples,    
+NameError: name 'dev_samples' is not defined
+    class CrossEncoder():
+  File "/users/2656169l/PLM-interact/code/inference_ddp.py", line 157, in CrossEncoder
+    dev_samples=dev_samples,    
+NameError: name 'dev_samples' is not defined
+    class CrossEncoder():
+  File "/users/2656169l/PLM-interact/code/inference_ddp.py", line 157, in CrossEncoder
+    dev_samples=dev_samples,    
+NameError: name 'dev_samples' is not defined
+    dev_samples=dev_samples,    
+NameError: name 'dev_samples' is not defined
+srun: error: gpu102: tasks 0-3: Exited with exit code 1

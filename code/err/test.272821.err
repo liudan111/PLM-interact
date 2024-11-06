@@ -1,0 +1,17 @@
+  File "/users/2656169l/PLM-interact/code/inference_ddp.py", line 157
+    dev_samples=dev_samples    
+                ^^^^^^^^^^^^^^^
+SyntaxError: invalid syntax. Perhaps you forgot a comma?
+  File "/users/2656169l/PLM-interact/code/inference_ddp.py", line 157
+    dev_samples=dev_samples    
+                ^^^^^^^^^^^^^^^
+SyntaxError: invalid syntax. Perhaps you forgot a comma?
+  File "/users/2656169l/PLM-interact/code/inference_ddp.py", line 157
+    dev_samples=dev_samples    
+                ^^^^^^^^^^^^^^^
+SyntaxError: invalid syntax. Perhaps you forgot a comma?
+  File "/users/2656169l/PLM-interact/code/inference_ddp.py", line 157
+    dev_samples=dev_samples    
+                ^^^^^^^^^^^^^^^
+SyntaxError: invalid syntax. Perhaps you forgot a comma?
+srun: error: gpu102: tasks 0-3: Exited with exit code 1

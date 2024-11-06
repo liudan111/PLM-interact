@@ -1,0 +1,107 @@
+2024-11-06 23:10:18.995916: E external/local_xla/xla/stream_executor/cuda/cuda_dnn.cc:9261] Unable to register cuDNN factory: Attempting to register factory for plugin cuDNN when one has already been registered
+2024-11-06 23:10:18.995994: E external/local_xla/xla/stream_executor/cuda/cuda_fft.cc:607] Unable to register cuFFT factory: Attempting to register factory for plugin cuFFT when one has already been registered
+2024-11-06 23:10:18.995917: E external/local_xla/xla/stream_executor/cuda/cuda_dnn.cc:9261] Unable to register cuDNN factory: Attempting to register factory for plugin cuDNN when one has already been registered
+2024-11-06 23:10:18.995995: E external/local_xla/xla/stream_executor/cuda/cuda_fft.cc:607] Unable to register cuFFT factory: Attempting to register factory for plugin cuFFT when one has already been registered
+2024-11-06 23:10:18.995918: E external/local_xla/xla/stream_executor/cuda/cuda_dnn.cc:9261] Unable to register cuDNN factory: Attempting to register factory for plugin cuDNN when one has already been registered
+2024-11-06 23:10:18.995995: E external/local_xla/xla/stream_executor/cuda/cuda_fft.cc:607] Unable to register cuFFT factory: Attempting to register factory for plugin cuFFT when one has already been registered
+2024-11-06 23:10:18.996645: E external/local_xla/xla/stream_executor/cuda/cuda_dnn.cc:9261] Unable to register cuDNN factory: Attempting to register factory for plugin cuDNN when one has already been registered
+2024-11-06 23:10:18.996712: E external/local_xla/xla/stream_executor/cuda/cuda_fft.cc:607] Unable to register cuFFT factory: Attempting to register factory for plugin cuFFT when one has already been registered
+2024-11-06 23:10:18.997100: E external/local_xla/xla/stream_executor/cuda/cuda_blas.cc:1515] Unable to register cuBLAS factory: Attempting to register factory for plugin cuBLAS when one has already been registered
+2024-11-06 23:10:18.997099: E external/local_xla/xla/stream_executor/cuda/cuda_blas.cc:1515] Unable to register cuBLAS factory: Attempting to register factory for plugin cuBLAS when one has already been registered
+2024-11-06 23:10:18.997100: E external/local_xla/xla/stream_executor/cuda/cuda_blas.cc:1515] Unable to register cuBLAS factory: Attempting to register factory for plugin cuBLAS when one has already been registered
+2024-11-06 23:10:18.997716: E external/local_xla/xla/stream_executor/cuda/cuda_blas.cc:1515] Unable to register cuBLAS factory: Attempting to register factory for plugin cuBLAS when one has already been registered
+2024-11-06 23:10:20.419750: W tensorflow/compiler/tf2tensorrt/utils/py_utils.cc:38] TF-TRT Warning: Could not find TensorRT
+2024-11-06 23:10:20.419802: W tensorflow/compiler/tf2tensorrt/utils/py_utils.cc:38] TF-TRT Warning: Could not find TensorRT
+2024-11-06 23:10:20.419911: W tensorflow/compiler/tf2tensorrt/utils/py_utils.cc:38] TF-TRT Warning: Could not find TensorRT
+2024-11-06 23:10:20.419917: W tensorflow/compiler/tf2tensorrt/utils/py_utils.cc:38] TF-TRT Warning: Could not find TensorRT
+/mnt/data/project0019/danliu/conda/envs/sentence_pair/lib/python3.10/site-packages/torch/_utils.py:776: UserWarning: TypedStorage is deprecated. It will be removed in the future and UntypedStorage will be the only storage class. This should only matter to you if you are using storages directly.  To access UntypedStorage directly, use tensor.untyped_storage() instead of tensor.storage()
+  return self.fget.__get__(instance, owner)()
+/mnt/data/project0019/danliu/conda/envs/sentence_pair/lib/python3.10/site-packages/torch/_utils.py:776: UserWarning: TypedStorage is deprecated. It will be removed in the future and UntypedStorage will be the only storage class. This should only matter to you if you are using storages directly.  To access UntypedStorage directly, use tensor.untyped_storage() instead of tensor.storage()
+  return self.fget.__get__(instance, owner)()
+/mnt/data/project0019/danliu/conda/envs/sentence_pair/lib/python3.10/site-packages/torch/_utils.py:776: UserWarning: TypedStorage is deprecated. It will be removed in the future and UntypedStorage will be the only storage class. This should only matter to you if you are using storages directly.  To access UntypedStorage directly, use tensor.untyped_storage() instead of tensor.storage()
+  return self.fget.__get__(instance, owner)()
+/mnt/data/project0019/danliu/conda/envs/sentence_pair/lib/python3.10/site-packages/torch/_utils.py:776: UserWarning: TypedStorage is deprecated. It will be removed in the future and UntypedStorage will be the only storage class. This should only matter to you if you are using storages directly.  To access UntypedStorage directly, use tensor.untyped_storage() instead of tensor.storage()
+  return self.fget.__get__(instance, owner)()
+Some weights of EsmForMaskedLM were not initialized from the model checkpoint at /mnt/data/project0019/danliu/PPI/offline/esm2_t12_35M_UR50D and are newly initialized: ['lm_head.bias', 'lm_head.dense.bias', 'lm_head.dense.weight', 'lm_head.layer_norm.bias', 'lm_head.layer_norm.weight']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+Some weights of EsmForMaskedLM were not initialized from the model checkpoint at /mnt/data/project0019/danliu/PPI/offline/esm2_t12_35M_UR50D and are newly initialized: ['lm_head.bias', 'lm_head.dense.bias', 'lm_head.dense.weight', 'lm_head.layer_norm.bias', 'lm_head.layer_norm.weight']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+Some weights of EsmForMaskedLM were not initialized from the model checkpoint at /mnt/data/project0019/danliu/PPI/offline/esm2_t12_35M_UR50D and are newly initialized: ['lm_head.bias', 'lm_head.dense.bias', 'lm_head.dense.weight', 'lm_head.layer_norm.bias', 'lm_head.layer_norm.weight']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+Some weights of EsmForMaskedLM were not initialized from the model checkpoint at /mnt/data/project0019/danliu/PPI/offline/esm2_t12_35M_UR50D and are newly initialized: ['lm_head.bias', 'lm_head.dense.bias', 'lm_head.dense.weight', 'lm_head.layer_norm.bias', 'lm_head.layer_norm.weight']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+Traceback (most recent call last):
+  File "/users/2656169l/PLM-interact/code/inference_ddp.py", line 334, in <module>
+    main(args,argsDict)
+  File "/users/2656169l/PLM-interact/code/inference_ddp.py", line 304, in main
+    trainer.inference(args,
+  File "/users/2656169l/PLM-interact/code/inference_ddp.py", line 178, in inference
+    self.eval(args,dev_samples=dev_samples,epoch=epoch,batch_size_val = batch_size_val, output_path= output_path,loss_fct=loss_fct)
+  File "/users/2656169l/PLM-interact/code/inference_ddp.py", line 201, in eval
+    for _, (features,labels,ids) in enumerate (dev_dataloader):
+  File "/mnt/data/project0019/danliu/conda/envs/sentence_pair/lib/python3.10/site-packages/torch/utils/data/dataloader.py", line 633, in __next__
+    data = self._next_data()
+  File "/mnt/data/project0019/danliu/conda/envs/sentence_pair/lib/python3.10/site-packages/torch/utils/data/dataloader.py", line 677, in _next_data
+    data = self._dataset_fetcher.fetch(index)  # may raise StopIteration
+  File "/mnt/data/project0019/danliu/conda/envs/sentence_pair/lib/python3.10/site-packages/torch/utils/data/_utils/fetch.py", line 54, in fetch
+    return self.collate_fn(data)
+  File "/users/2656169l/PLM-interact/code/utils/data_load.py", line 32, in smart_batching_collate
+    ids.append(example.id)
+AttributeError: 'InputExample' object has no attribute 'id'
+Traceback (most recent call last):
+  File "/users/2656169l/PLM-interact/code/inference_ddp.py", line 334, in <module>
+    main(args,argsDict)
+  File "/users/2656169l/PLM-interact/code/inference_ddp.py", line 304, in main
+    trainer.inference(args,
+  File "/users/2656169l/PLM-interact/code/inference_ddp.py", line 178, in inference
+    self.eval(args,dev_samples=dev_samples,epoch=epoch,batch_size_val = batch_size_val, output_path= output_path,loss_fct=loss_fct)
+  File "/users/2656169l/PLM-interact/code/inference_ddp.py", line 201, in eval
+    for _, (features,labels,ids) in enumerate (dev_dataloader):
+  File "/mnt/data/project0019/danliu/conda/envs/sentence_pair/lib/python3.10/site-packages/torch/utils/data/dataloader.py", line 633, in __next__
+    data = self._next_data()
+  File "/mnt/data/project0019/danliu/conda/envs/sentence_pair/lib/python3.10/site-packages/torch/utils/data/dataloader.py", line 677, in _next_data
+    data = self._dataset_fetcher.fetch(index)  # may raise StopIteration
+  File "/mnt/data/project0019/danliu/conda/envs/sentence_pair/lib/python3.10/site-packages/torch/utils/data/_utils/fetch.py", line 54, in fetch
+    return self.collate_fn(data)
+  File "/users/2656169l/PLM-interact/code/utils/data_load.py", line 32, in smart_batching_collate
+    ids.append(example.id)
+AttributeError: 'InputExample' object has no attribute 'id'
+Traceback (most recent call last):
+  File "/users/2656169l/PLM-interact/code/inference_ddp.py", line 334, in <module>
+    main(args,argsDict)
+  File "/users/2656169l/PLM-interact/code/inference_ddp.py", line 304, in main
+    trainer.inference(args,
+  File "/users/2656169l/PLM-interact/code/inference_ddp.py", line 178, in inference
+    self.eval(args,dev_samples=dev_samples,epoch=epoch,batch_size_val = batch_size_val, output_path= output_path,loss_fct=loss_fct)
+  File "/users/2656169l/PLM-interact/code/inference_ddp.py", line 201, in eval
+    for _, (features,labels,ids) in enumerate (dev_dataloader):
+  File "/mnt/data/project0019/danliu/conda/envs/sentence_pair/lib/python3.10/site-packages/torch/utils/data/dataloader.py", line 633, in __next__
+    data = self._next_data()
+  File "/mnt/data/project0019/danliu/conda/envs/sentence_pair/lib/python3.10/site-packages/torch/utils/data/dataloader.py", line 677, in _next_data
+    data = self._dataset_fetcher.fetch(index)  # may raise StopIteration
+  File "/mnt/data/project0019/danliu/conda/envs/sentence_pair/lib/python3.10/site-packages/torch/utils/data/_utils/fetch.py", line 54, in fetch
+    return self.collate_fn(data)
+  File "/users/2656169l/PLM-interact/code/utils/data_load.py", line 32, in smart_batching_collate
+    ids.append(example.id)
+AttributeError: 'InputExample' object has no attribute 'id'
+Traceback (most recent call last):
+  File "/users/2656169l/PLM-interact/code/inference_ddp.py", line 334, in <module>
+    main(args,argsDict)
+  File "/users/2656169l/PLM-interact/code/inference_ddp.py", line 304, in main
+    trainer.inference(args,
+  File "/users/2656169l/PLM-interact/code/inference_ddp.py", line 178, in inference
+    self.eval(args,dev_samples=dev_samples,epoch=epoch,batch_size_val = batch_size_val, output_path= output_path,loss_fct=loss_fct)
+  File "/users/2656169l/PLM-interact/code/inference_ddp.py", line 201, in eval
+    for _, (features,labels,ids) in enumerate (dev_dataloader):
+  File "/mnt/data/project0019/danliu/conda/envs/sentence_pair/lib/python3.10/site-packages/torch/utils/data/dataloader.py", line 633, in __next__
+    data = self._next_data()
+  File "/mnt/data/project0019/danliu/conda/envs/sentence_pair/lib/python3.10/site-packages/torch/utils/data/dataloader.py", line 677, in _next_data
+    data = self._dataset_fetcher.fetch(index)  # may raise StopIteration
+  File "/mnt/data/project0019/danliu/conda/envs/sentence_pair/lib/python3.10/site-packages/torch/utils/data/_utils/fetch.py", line 54, in fetch
+    return self.collate_fn(data)
+  File "/users/2656169l/PLM-interact/code/utils/data_load.py", line 32, in smart_batching_collate
+    ids.append(example.id)
+AttributeError: 'InputExample' object has no attribute 'id'
+srun: error: gpu102: tasks 0-1: Exited with exit code 1
+srun: error: gpu102: task 2: Exited with exit code 1
+srun: error: gpu102: task 3: Exited with exit code 1

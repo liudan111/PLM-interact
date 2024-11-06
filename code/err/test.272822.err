@@ -1,0 +1,41 @@
+2024-11-06 22:32:22.186915: E external/local_xla/xla/stream_executor/cuda/cuda_dnn.cc:9261] Unable to register cuDNN factory: Attempting to register factory for plugin cuDNN when one has already been registered
+2024-11-06 22:32:22.186979: E external/local_xla/xla/stream_executor/cuda/cuda_fft.cc:607] Unable to register cuFFT factory: Attempting to register factory for plugin cuFFT when one has already been registered
+2024-11-06 22:32:22.187235: E external/local_xla/xla/stream_executor/cuda/cuda_dnn.cc:9261] Unable to register cuDNN factory: Attempting to register factory for plugin cuDNN when one has already been registered
+2024-11-06 22:32:22.187314: E external/local_xla/xla/stream_executor/cuda/cuda_fft.cc:607] Unable to register cuFFT factory: Attempting to register factory for plugin cuFFT when one has already been registered
+2024-11-06 22:32:22.187265: E external/local_xla/xla/stream_executor/cuda/cuda_dnn.cc:9261] Unable to register cuDNN factory: Attempting to register factory for plugin cuDNN when one has already been registered
+2024-11-06 22:32:22.187329: E external/local_xla/xla/stream_executor/cuda/cuda_fft.cc:607] Unable to register cuFFT factory: Attempting to register factory for plugin cuFFT when one has already been registered
+2024-11-06 22:32:22.187321: E external/local_xla/xla/stream_executor/cuda/cuda_dnn.cc:9261] Unable to register cuDNN factory: Attempting to register factory for plugin cuDNN when one has already been registered
+2024-11-06 22:32:22.187390: E external/local_xla/xla/stream_executor/cuda/cuda_fft.cc:607] Unable to register cuFFT factory: Attempting to register factory for plugin cuFFT when one has already been registered
+2024-11-06 22:32:22.187984: E external/local_xla/xla/stream_executor/cuda/cuda_blas.cc:1515] Unable to register cuBLAS factory: Attempting to register factory for plugin cuBLAS when one has already been registered
+2024-11-06 22:32:22.188296: E external/local_xla/xla/stream_executor/cuda/cuda_blas.cc:1515] Unable to register cuBLAS factory: Attempting to register factory for plugin cuBLAS when one has already been registered
+2024-11-06 22:32:22.188325: E external/local_xla/xla/stream_executor/cuda/cuda_blas.cc:1515] Unable to register cuBLAS factory: Attempting to register factory for plugin cuBLAS when one has already been registered
+2024-11-06 22:32:22.188370: E external/local_xla/xla/stream_executor/cuda/cuda_blas.cc:1515] Unable to register cuBLAS factory: Attempting to register factory for plugin cuBLAS when one has already been registered
+2024-11-06 22:32:23.460193: W tensorflow/compiler/tf2tensorrt/utils/py_utils.cc:38] TF-TRT Warning: Could not find TensorRT
+2024-11-06 22:32:23.460286: W tensorflow/compiler/tf2tensorrt/utils/py_utils.cc:38] TF-TRT Warning: Could not find TensorRT
+2024-11-06 22:32:23.460248: W tensorflow/compiler/tf2tensorrt/utils/py_utils.cc:38] TF-TRT Warning: Could not find TensorRT
+2024-11-06 22:32:23.460323: W tensorflow/compiler/tf2tensorrt/utils/py_utils.cc:38] TF-TRT Warning: Could not find TensorRT
+Traceback (most recent call last):
+  File "/users/2656169l/PLM-interact/code/inference_ddp.py", line 79, in <module>
+Traceback (most recent call last):
+  File "/users/2656169l/PLM-interact/code/inference_ddp.py", line 79, in <module>
+Traceback (most recent call last):
+  File "/users/2656169l/PLM-interact/code/inference_ddp.py", line 79, in <module>
+Traceback (most recent call last):
+  File "/users/2656169l/PLM-interact/code/inference_ddp.py", line 79, in <module>
+    class CrossEncoder():
+  File "/users/2656169l/PLM-interact/code/inference_ddp.py", line 157, in CrossEncoder
+    class CrossEncoder():
+  File "/users/2656169l/PLM-interact/code/inference_ddp.py", line 157, in CrossEncoder
+    class CrossEncoder():
+  File "/users/2656169l/PLM-interact/code/inference_ddp.py", line 157, in CrossEncoder
+    dev_samples=dev_samples,    
+    class CrossEncoder():
+  File "/users/2656169l/PLM-interact/code/inference_ddp.py", line 157, in CrossEncoder
+NameError: name 'dev_samples' is not defined
+    dev_samples=dev_samples,    
+NameError: name 'dev_samples' is not defined
+    dev_samples=dev_samples,    
+NameError: name 'dev_samples' is not defined
+    dev_samples=dev_samples,    
+NameError: name 'dev_samples' is not defined
+srun: error: gpu102: tasks 0-3: Exited with exit code 1

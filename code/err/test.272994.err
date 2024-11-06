@@ -1,0 +1,75 @@
+2024-11-06 22:43:49.279834: E external/local_xla/xla/stream_executor/cuda/cuda_dnn.cc:9261] Unable to register cuDNN factory: Attempting to register factory for plugin cuDNN when one has already been registered
+2024-11-06 22:43:49.279902: E external/local_xla/xla/stream_executor/cuda/cuda_fft.cc:607] Unable to register cuFFT factory: Attempting to register factory for plugin cuFFT when one has already been registered
+2024-11-06 22:43:49.279891: E external/local_xla/xla/stream_executor/cuda/cuda_dnn.cc:9261] Unable to register cuDNN factory: Attempting to register factory for plugin cuDNN when one has already been registered
+2024-11-06 22:43:49.279956: E external/local_xla/xla/stream_executor/cuda/cuda_fft.cc:607] Unable to register cuFFT factory: Attempting to register factory for plugin cuFFT when one has already been registered
+2024-11-06 22:43:49.279892: E external/local_xla/xla/stream_executor/cuda/cuda_dnn.cc:9261] Unable to register cuDNN factory: Attempting to register factory for plugin cuDNN when one has already been registered
+2024-11-06 22:43:49.279956: E external/local_xla/xla/stream_executor/cuda/cuda_fft.cc:607] Unable to register cuFFT factory: Attempting to register factory for plugin cuFFT when one has already been registered
+2024-11-06 22:43:49.280412: E external/local_xla/xla/stream_executor/cuda/cuda_dnn.cc:9261] Unable to register cuDNN factory: Attempting to register factory for plugin cuDNN when one has already been registered
+2024-11-06 22:43:49.280475: E external/local_xla/xla/stream_executor/cuda/cuda_fft.cc:607] Unable to register cuFFT factory: Attempting to register factory for plugin cuFFT when one has already been registered
+2024-11-06 22:43:49.280927: E external/local_xla/xla/stream_executor/cuda/cuda_blas.cc:1515] Unable to register cuBLAS factory: Attempting to register factory for plugin cuBLAS when one has already been registered
+2024-11-06 22:43:49.281027: E external/local_xla/xla/stream_executor/cuda/cuda_blas.cc:1515] Unable to register cuBLAS factory: Attempting to register factory for plugin cuBLAS when one has already been registered
+2024-11-06 22:43:49.281028: E external/local_xla/xla/stream_executor/cuda/cuda_blas.cc:1515] Unable to register cuBLAS factory: Attempting to register factory for plugin cuBLAS when one has already been registered
+2024-11-06 22:43:49.281486: E external/local_xla/xla/stream_executor/cuda/cuda_blas.cc:1515] Unable to register cuBLAS factory: Attempting to register factory for plugin cuBLAS when one has already been registered
+2024-11-06 22:43:50.581845: W tensorflow/compiler/tf2tensorrt/utils/py_utils.cc:38] TF-TRT Warning: Could not find TensorRT
+2024-11-06 22:43:50.581895: W tensorflow/compiler/tf2tensorrt/utils/py_utils.cc:38] TF-TRT Warning: Could not find TensorRT
+2024-11-06 22:43:50.581957: W tensorflow/compiler/tf2tensorrt/utils/py_utils.cc:38] TF-TRT Warning: Could not find TensorRT
+2024-11-06 22:43:50.581982: W tensorflow/compiler/tf2tensorrt/utils/py_utils.cc:38] TF-TRT Warning: Could not find TensorRT
+/mnt/data/project0019/danliu/conda/envs/sentence_pair/lib/python3.10/site-packages/torch/_utils.py:776: UserWarning: TypedStorage is deprecated. It will be removed in the future and UntypedStorage will be the only storage class. This should only matter to you if you are using storages directly.  To access UntypedStorage directly, use tensor.untyped_storage() instead of tensor.storage()
+  return self.fget.__get__(instance, owner)()
+/mnt/data/project0019/danliu/conda/envs/sentence_pair/lib/python3.10/site-packages/torch/_utils.py:776: UserWarning: TypedStorage is deprecated. It will be removed in the future and UntypedStorage will be the only storage class. This should only matter to you if you are using storages directly.  To access UntypedStorage directly, use tensor.untyped_storage() instead of tensor.storage()
+  return self.fget.__get__(instance, owner)()
+/mnt/data/project0019/danliu/conda/envs/sentence_pair/lib/python3.10/site-packages/torch/_utils.py:776: UserWarning: TypedStorage is deprecated. It will be removed in the future and UntypedStorage will be the only storage class. This should only matter to you if you are using storages directly.  To access UntypedStorage directly, use tensor.untyped_storage() instead of tensor.storage()
+  return self.fget.__get__(instance, owner)()
+/mnt/data/project0019/danliu/conda/envs/sentence_pair/lib/python3.10/site-packages/torch/_utils.py:776: UserWarning: TypedStorage is deprecated. It will be removed in the future and UntypedStorage will be the only storage class. This should only matter to you if you are using storages directly.  To access UntypedStorage directly, use tensor.untyped_storage() instead of tensor.storage()
+  return self.fget.__get__(instance, owner)()
+Some weights of EsmForMaskedLM were not initialized from the model checkpoint at /mnt/data/project0019/danliu/PPI/offline/esm2_t12_35M_UR50D and are newly initialized: ['lm_head.bias', 'lm_head.dense.bias', 'lm_head.dense.weight', 'lm_head.layer_norm.bias', 'lm_head.layer_norm.weight']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+Some weights of EsmForMaskedLM were not initialized from the model checkpoint at /mnt/data/project0019/danliu/PPI/offline/esm2_t12_35M_UR50D and are newly initialized: ['lm_head.bias', 'lm_head.dense.bias', 'lm_head.dense.weight', 'lm_head.layer_norm.bias', 'lm_head.layer_norm.weight']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+Some weights of EsmForMaskedLM were not initialized from the model checkpoint at /mnt/data/project0019/danliu/PPI/offline/esm2_t12_35M_UR50D and are newly initialized: ['lm_head.bias', 'lm_head.dense.bias', 'lm_head.dense.weight', 'lm_head.layer_norm.bias', 'lm_head.layer_norm.weight']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+Some weights of EsmForMaskedLM were not initialized from the model checkpoint at /mnt/data/project0019/danliu/PPI/offline/esm2_t12_35M_UR50D and are newly initialized: ['lm_head.bias', 'lm_head.dense.bias', 'lm_head.dense.weight', 'lm_head.layer_norm.bias', 'lm_head.layer_norm.weight']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+Traceback (most recent call last):
+  File "/users/2656169l/PLM-interact/code/inference_ddp.py", line 333, in <module>
+    main(args,argsDict)
+  File "/users/2656169l/PLM-interact/code/inference_ddp.py", line 303, in main
+    trainer.inference(args,
+  File "/users/2656169l/PLM-interact/code/inference_ddp.py", line 178, in inference
+    self.eval(args,dev_samples=dev_samples,epoch=epoch,batch_size_val = batch_size_val, output_path= output_path,loss_fct=loss_fct)
+  File "/users/2656169l/PLM-interact/code/inference_ddp.py", line 194, in eval
+    dev_dataloader = DataLoader(dev_samples, batch_size=batch_size_val,sampler =  dev_sampler,collate_fn = self.smart_batching_collate,shuffle=False)
+AttributeError: 'CrossEncoder' object has no attribute 'smart_batching_collate'
+Traceback (most recent call last):
+  File "/users/2656169l/PLM-interact/code/inference_ddp.py", line 333, in <module>
+    main(args,argsDict)
+  File "/users/2656169l/PLM-interact/code/inference_ddp.py", line 303, in main
+    trainer.inference(args,
+  File "/users/2656169l/PLM-interact/code/inference_ddp.py", line 178, in inference
+    self.eval(args,dev_samples=dev_samples,epoch=epoch,batch_size_val = batch_size_val, output_path= output_path,loss_fct=loss_fct)
+  File "/users/2656169l/PLM-interact/code/inference_ddp.py", line 194, in eval
+    dev_dataloader = DataLoader(dev_samples, batch_size=batch_size_val,sampler =  dev_sampler,collate_fn = self.smart_batching_collate,shuffle=False)
+AttributeError: 'CrossEncoder' object has no attribute 'smart_batching_collate'
+Traceback (most recent call last):
+  File "/users/2656169l/PLM-interact/code/inference_ddp.py", line 333, in <module>
+    main(args,argsDict)
+  File "/users/2656169l/PLM-interact/code/inference_ddp.py", line 303, in main
+    trainer.inference(args,
+  File "/users/2656169l/PLM-interact/code/inference_ddp.py", line 178, in inference
+    self.eval(args,dev_samples=dev_samples,epoch=epoch,batch_size_val = batch_size_val, output_path= output_path,loss_fct=loss_fct)
+  File "/users/2656169l/PLM-interact/code/inference_ddp.py", line 194, in eval
+    dev_dataloader = DataLoader(dev_samples, batch_size=batch_size_val,sampler =  dev_sampler,collate_fn = self.smart_batching_collate,shuffle=False)
+AttributeError: 'CrossEncoder' object has no attribute 'smart_batching_collate'
+Traceback (most recent call last):
+  File "/users/2656169l/PLM-interact/code/inference_ddp.py", line 333, in <module>
+    main(args,argsDict)
+  File "/users/2656169l/PLM-interact/code/inference_ddp.py", line 303, in main
+    trainer.inference(args,
+  File "/users/2656169l/PLM-interact/code/inference_ddp.py", line 178, in inference
+    self.eval(args,dev_samples=dev_samples,epoch=epoch,batch_size_val = batch_size_val, output_path= output_path,loss_fct=loss_fct)
+  File "/users/2656169l/PLM-interact/code/inference_ddp.py", line 194, in eval
+    dev_dataloader = DataLoader(dev_samples, batch_size=batch_size_val,sampler =  dev_sampler,collate_fn = self.smart_batching_collate,shuffle=False)
+AttributeError: 'CrossEncoder' object has no attribute 'smart_batching_collate'
+srun: error: gpu102: tasks 0,3: Exited with exit code 1
+srun: error: gpu102: task 2: Exited with exit code 1
+srun: error: gpu102: task 1: Exited with exit code 1

@@ -1,0 +1,63 @@
+2024-11-06 22:18:51.372504: E external/local_xla/xla/stream_executor/cuda/cuda_dnn.cc:9261] Unable to register cuDNN factory: Attempting to register factory for plugin cuDNN when one has already been registered
+2024-11-06 22:18:51.372568: E external/local_xla/xla/stream_executor/cuda/cuda_fft.cc:607] Unable to register cuFFT factory: Attempting to register factory for plugin cuFFT when one has already been registered
+2024-11-06 22:18:51.372530: E external/local_xla/xla/stream_executor/cuda/cuda_dnn.cc:9261] Unable to register cuDNN factory: Attempting to register factory for plugin cuDNN when one has already been registered
+2024-11-06 22:18:51.372597: E external/local_xla/xla/stream_executor/cuda/cuda_fft.cc:607] Unable to register cuFFT factory: Attempting to register factory for plugin cuFFT when one has already been registered
+2024-11-06 22:18:51.373409: E external/local_xla/xla/stream_executor/cuda/cuda_dnn.cc:9261] Unable to register cuDNN factory: Attempting to register factory for plugin cuDNN when one has already been registered
+2024-11-06 22:18:51.373468: E external/local_xla/xla/stream_executor/cuda/cuda_fft.cc:607] Unable to register cuFFT factory: Attempting to register factory for plugin cuFFT when one has already been registered
+2024-11-06 22:18:51.373523: E external/local_xla/xla/stream_executor/cuda/cuda_blas.cc:1515] Unable to register cuBLAS factory: Attempting to register factory for plugin cuBLAS when one has already been registered
+2024-11-06 22:18:51.373527: E external/local_xla/xla/stream_executor/cuda/cuda_blas.cc:1515] Unable to register cuBLAS factory: Attempting to register factory for plugin cuBLAS when one has already been registered
+2024-11-06 22:18:51.373840: E external/local_xla/xla/stream_executor/cuda/cuda_dnn.cc:9261] Unable to register cuDNN factory: Attempting to register factory for plugin cuDNN when one has already been registered
+2024-11-06 22:18:51.373902: E external/local_xla/xla/stream_executor/cuda/cuda_fft.cc:607] Unable to register cuFFT factory: Attempting to register factory for plugin cuFFT when one has already been registered
+2024-11-06 22:18:51.374383: E external/local_xla/xla/stream_executor/cuda/cuda_blas.cc:1515] Unable to register cuBLAS factory: Attempting to register factory for plugin cuBLAS when one has already been registered
+2024-11-06 22:18:51.374835: E external/local_xla/xla/stream_executor/cuda/cuda_blas.cc:1515] Unable to register cuBLAS factory: Attempting to register factory for plugin cuBLAS when one has already been registered
+2024-11-06 22:18:52.837414: W tensorflow/compiler/tf2tensorrt/utils/py_utils.cc:38] TF-TRT Warning: Could not find TensorRT
+2024-11-06 22:18:52.837458: W tensorflow/compiler/tf2tensorrt/utils/py_utils.cc:38] TF-TRT Warning: Could not find TensorRT
+2024-11-06 22:18:52.837488: W tensorflow/compiler/tf2tensorrt/utils/py_utils.cc:38] TF-TRT Warning: Could not find TensorRT
+2024-11-06 22:18:52.837528: W tensorflow/compiler/tf2tensorrt/utils/py_utils.cc:38] TF-TRT Warning: Could not find TensorRT
+/mnt/data/project0019/danliu/conda/envs/sentence_pair/lib/python3.10/site-packages/torch/_utils.py:776: UserWarning: TypedStorage is deprecated. It will be removed in the future and UntypedStorage will be the only storage class. This should only matter to you if you are using storages directly.  To access UntypedStorage directly, use tensor.untyped_storage() instead of tensor.storage()
+  return self.fget.__get__(instance, owner)()
+/mnt/data/project0019/danliu/conda/envs/sentence_pair/lib/python3.10/site-packages/torch/_utils.py:776: UserWarning: TypedStorage is deprecated. It will be removed in the future and UntypedStorage will be the only storage class. This should only matter to you if you are using storages directly.  To access UntypedStorage directly, use tensor.untyped_storage() instead of tensor.storage()
+  return self.fget.__get__(instance, owner)()
+/mnt/data/project0019/danliu/conda/envs/sentence_pair/lib/python3.10/site-packages/torch/_utils.py:776: UserWarning: TypedStorage is deprecated. It will be removed in the future and UntypedStorage will be the only storage class. This should only matter to you if you are using storages directly.  To access UntypedStorage directly, use tensor.untyped_storage() instead of tensor.storage()
+  return self.fget.__get__(instance, owner)()
+/mnt/data/project0019/danliu/conda/envs/sentence_pair/lib/python3.10/site-packages/torch/_utils.py:776: UserWarning: TypedStorage is deprecated. It will be removed in the future and UntypedStorage will be the only storage class. This should only matter to you if you are using storages directly.  To access UntypedStorage directly, use tensor.untyped_storage() instead of tensor.storage()
+  return self.fget.__get__(instance, owner)()
+Some weights of EsmForMaskedLM were not initialized from the model checkpoint at /mnt/data/project0019/danliu/PPI/offline/esm2_t12_35M_UR50D and are newly initialized: ['lm_head.bias', 'lm_head.dense.bias', 'lm_head.dense.weight', 'lm_head.layer_norm.bias', 'lm_head.layer_norm.weight']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+Some weights of EsmForMaskedLM were not initialized from the model checkpoint at /mnt/data/project0019/danliu/PPI/offline/esm2_t12_35M_UR50D and are newly initialized: ['lm_head.bias', 'lm_head.dense.bias', 'lm_head.dense.weight', 'lm_head.layer_norm.bias', 'lm_head.layer_norm.weight']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+Some weights of EsmForMaskedLM were not initialized from the model checkpoint at /mnt/data/project0019/danliu/PPI/offline/esm2_t12_35M_UR50D and are newly initialized: ['lm_head.bias', 'lm_head.dense.bias', 'lm_head.dense.weight', 'lm_head.layer_norm.bias', 'lm_head.layer_norm.weight']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+Some weights of EsmForMaskedLM were not initialized from the model checkpoint at /mnt/data/project0019/danliu/PPI/offline/esm2_t12_35M_UR50D and are newly initialized: ['lm_head.bias', 'lm_head.dense.bias', 'lm_head.dense.weight', 'lm_head.layer_norm.bias', 'lm_head.layer_norm.weight']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+Traceback (most recent call last):
+  File "/users/2656169l/PLM-interact/code/inference_ddp.py", line 331, in <module>
+Traceback (most recent call last):
+  File "/users/2656169l/PLM-interact/code/inference_ddp.py", line 331, in <module>
+Traceback (most recent call last):
+  File "/users/2656169l/PLM-interact/code/inference_ddp.py", line 331, in <module>
+Traceback (most recent call last):
+  File "/users/2656169l/PLM-interact/code/inference_ddp.py", line 331, in <module>
+  File "/users/2656169l/PLM-interact/code/inference_ddp.py", line 299, in main
+  File "/users/2656169l/PLM-interact/code/inference_ddp.py", line 299, in main
+  File "/users/2656169l/PLM-interact/code/inference_ddp.py", line 299, in main
+  File "/users/2656169l/PLM-interact/code/inference_ddp.py", line 299, in main
+    trainer.inference(args,
+  File "/users/2656169l/PLM-interact/code/inference_ddp.py", line 172, in inference
+    trainer.inference(args,
+  File "/users/2656169l/PLM-interact/code/inference_ddp.py", line 172, in inference
+    trainer.inference(args,
+  File "/users/2656169l/PLM-interact/code/inference_ddp.py", line 172, in inference
+    trainer.inference(args,
+  File "/users/2656169l/PLM-interact/code/inference_ddp.py", line 172, in inference
+    for epoch in range(args.epochs):
+TypeError: 'NoneType' object cannot be interpreted as an integer
+    for epoch in range(args.epochs):
+TypeError: 'NoneType' object cannot be interpreted as an integer
+    for epoch in range(args.epochs):
+    for epoch in range(args.epochs):
+TypeError: 'NoneType' object cannot be interpreted as an integer
+TypeError: 'NoneType' object cannot be interpreted as an integer
+srun: error: gpu102: task 0: Exited with exit code 1
+srun: error: gpu102: tasks 2-3: Exited with exit code 1
+srun: error: gpu102: task 1: Exited with exit code 1
