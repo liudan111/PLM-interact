@@ -3,7 +3,7 @@ PLM-interact: extending protein language models to prediction of protein-protein
 
 
 ## Model checkpoints
-[danliu1226/PLM-interact](https://huggingface.co/danliu1226/PLM-interact/upload/main)
+[danliu1226/PLM-interact-650M-humanV11](https://huggingface.co/danliu1226/PLM-interact-650M-humanV11/upload/main)
 
 
 ## Acknowledgements
