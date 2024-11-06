@@ -1,8 +1,10 @@
 # PLM-interact
 PLM-interact: extending protein language models to predict protein-protein interactions.
 
-
 ![PLM-interact](https://github.com/liudan111/PLM-interact/blob/main/assets/PLM-interact.png)
+
+## preprint
+
 
 ## PPI Prediction
 
@@ -29,4 +31,9 @@ Thanks to the following open-source projects:
 - [esm](https://github.com/facebookresearch/esm)
 - [transformers](https://github.com/huggingface/transformers)
 
-The authors acknowledge funding from the European Union’s Horizon 2020 research and innovation 562 program, under the Marie Sklodowska-Curie Actions Innovative Training Networks 563 grant agreement no. 955974 (VIROINF) for DL, a UK Medical Research Council (MRC) Doctoral Training Programme in Precision Medicine studentship (MR/N013166/1) for KDL and MRC grants: MC_UU_00034/5, MC_UU_00034/6 and MR/V01157X/1. This work used the DiRAC Extreme Scaling service (Tursa) at the University of Edinburgh, managed by the Edinburgh Parallel Computing Centre on behalf of the STFC DiRAC HPC Facility (www.dirac.ac.uk). The DiRAC service at Edinburgh was funded by BEIS, UKRI and STFC capital funding and STFC operations grants. DiRAC is part of the UKRI Digital Research Infrastructure. 
+![CVR](https://github.com/liudan111/PLM-interact/blob/main/assets/logo/CVR.png)
+![CS](https://github.com/liudan111/PLM-interact/blob/main/assets/logo/CS.png)
+![DIRAC-HPC](https://github.com/liudan111/PLM-interact/blob/main/assets/logo/DIRAC-HPC.png)
+![VIROINF](https://github.com/liudan111/PLM-interact/blob/main/assets/logo/VIROINF.png)
+![MSCA](https://github.com/liudan111/PLM-interact/blob/main/assets/logo/MSCA.png)
+
