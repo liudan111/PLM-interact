@@ -2,8 +2,7 @@
 PLM-interact: extending protein language models to predict protein-protein interactions.
 
 
-
-![Image Alt Text](https://github.com/liudan111/PLM-interact/blob/main/assets/PLM-interact.png)
+![PLM-interact](https://github.com/liudan111/PLM-interact/blob/main/assets/PLM-interact.png)
 
 ## PPI Prediction
 
