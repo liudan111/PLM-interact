@@ -2,7 +2,8 @@
 PLM-interact: extending protein language models to prediction of protein-protein interactions.
 
 
-## Installation
+## Model checkpoints
+[danliu1226/PLM-interact](https://huggingface.co/danliu1226/PLM-interact/upload/main)
 
 
 ## Acknowledgements
