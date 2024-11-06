@@ -31,9 +31,5 @@ Thanks to the following open-source projects:
 - [esm](https://github.com/facebookresearch/esm)
 - [transformers](https://github.com/huggingface/transformers)
 
-![CVR](https://github.com/liudan111/PLM-interact/blob/main/assets/logo/CVR.png)
-![CS](https://github.com/liudan111/PLM-interact/blob/main/assets/logo/CS.png)
-![DIRAC-HPC](https://github.com/liudan111/PLM-interact/blob/main/assets/logo/DIRAC-HPC.png)
-![VIROINF](https://github.com/liudan111/PLM-interact/blob/main/assets/logo/VIROINF.png)
-![MSCA](https://github.com/liudan111/PLM-interact/blob/main/assets/logo/MSCA.png)
+![Logo](https://github.com/liudan111/PLM-interact/blob/main/assets/logo/Logo.pdf)
 
