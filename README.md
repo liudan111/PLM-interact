@@ -1,5 +1,5 @@
 # PLM-interact
-PLM-interact: extending protein language models to prediction of protein-protein interactions.
+PLM-interact: extending protein language models to predict protein-protein interactions.
 
 
 ## Model checkpoints
