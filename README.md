@@ -21,12 +21,12 @@ pip install -e .
 ```
 
 ## Model checkpoints are available on Hugging Face
-### Trained on human PPIs from [text](https://d-script.readthedocs.io/en/stable/data.html)
+### Trained on human PPIs from (https://d-script.readthedocs.io/en/stable/data.html)
 [danliu1226/PLM-interact-650M-humanV11](https://huggingface.co/danliu1226/PLM-interact-650M-humanV11/tree/main)
 
 [danliu1226/PLM-interact-35M-humanV11](https://huggingface.co/danliu1226/PLM-interact-35M-humanV11/tree/main)
 
-### Trained on virus-human PPIs from [text](http://kurata35.bio.kyutech.ac.jp/LSTM-PHV/download_page)
+### Trained on virus-human PPIs from (http://kurata35.bio.kyutech.ac.jp/LSTM-PHV/download_page)
 [danliu1226/PLM-interact-650M-VH](https://huggingface.co/danliu1226/PLM-interact-650M-VH/tree/main)
 
 ### Trained on Human PPIs from STRING V12
