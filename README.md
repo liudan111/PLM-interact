@@ -7,6 +7,8 @@ Computational prediction of protein structure from amino acid sequences alone ha
 
 ## Preprint
 
+[Preprint](https://www.biorxiv.org/content/10.1101/2024.11.05.622169v1)
+
 ## Conda env install
 ```
 pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
