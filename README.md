@@ -54,4 +54,4 @@ Thanks to the following open-source projects:
 
 
 
-<img src="https://github.com/liudan111/PLM-interact/blob/main/assets/logo/Logo.png" width="350" />
+<img src="https://github.com/liudan111/PLM-interact/blob/main/assets/logo/Logo.png" width="500" />
