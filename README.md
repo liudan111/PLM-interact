@@ -7,15 +7,7 @@ Computational prediction of protein structure from amino acid sequences alone ha
 
 ## Preprint
 
-[PLM-interact: extending protein language models to predict protein-protein interactions](https://www.biorxiv.org/content/10.1101/2024.11.05.622169v1
-        
-        
-        
-        
-        
-        
-        
-        )
+[PLM-interact: extending protein language models to predict protein-protein interactions](https://www.biorxiv.org/content/10.1101/2024.11.05.622169v1)
 
 ## Conda env install
 ```
