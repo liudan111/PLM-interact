@@ -1,8 +1,6 @@
 # PLM-interact
 
-<a href="https://www.biorxiv.org/content/10.1101/2024.11.05.622169v1
-        
-        "><img src="https://img.shields.io/badge/Paper-bioRxiv-red" style="max-width: 100%;"></a>
+<a href="https://www.biorxiv.org/content/10.1101/2024.11.05.622169v1"><img src="https://img.shields.io/badge/Paper-bioRxiv-red" style="max-width: 100%;"></a>
 <a href="https://huggingface.co/danliu1226/PLM-interact-650M-humanV11/tree/main"><img src="hhttps://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-black?" style="max-width: 100%;"></a>
 
 Computational prediction of protein structure from amino acid sequences alone has been achieved with unprecedented accuracy, yet the prediction of protein-protein interactions (PPIs) remains an outstanding challenge. Here we assess the ability of protein language models (PLMs), routinely applied to protein folding, to be retrained for PPI prediction. Existing PPI prediction models that exploit PLMs use a pre-trained PLM feature set, ignoring that the proteins are physically interacting. Our novel method, PLM-interact, goes beyond a single protein, jointly encoding protein pairs to learn their relationships, analogous to the next-sentence prediction task from natural language processing.
