@@ -54,4 +54,4 @@ Thanks to the following open-source projects:
 - [esm](https://github.com/facebookresearch/esm)
 - [transformers](https://github.com/huggingface/transformers)
 
-<img src="https://github.com/liudan111/PLM-interact/blob/main/assets/logo/Logo.png" width="450" />
+<img src="https://github.com/liudan111/PLM-interact/blob/main/assets/Logo.png" width="450" />
