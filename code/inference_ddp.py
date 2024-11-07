@@ -202,7 +202,7 @@ class CrossEncoder():
                         loss, logits = self.model.module.forward_test(labels,features)
                         loss_value.append(loss)
                     labels_val.extend(labels) 
-                    pred_scores.extend(torch.Sigmoid(logits))
+                    pred_scores.extend(logits)
                     
             pred_scores = distributed_concat(torch.stack(pred_scores),   len(dev_sampler.dataset))
             labels_val = distributed_concat(torch.stack(labels_val),  len(dev_sampler.dataset))
@@ -251,7 +251,7 @@ class CrossEncoder():
                 with torch.no_grad():
                     loss, logits = self.model.module.forward_test(labels,features)
                     loss_value.append(loss)
-                pred_scores.extend(torch.Sigmoid(logits))
+                pred_scores.extend(logits)
                 labels_val.extend(labels) 
 
 
@@ -331,5 +331,3 @@ if __name__ == "__main__":
     args = parser.parse_args()
     argsDict= args.__dict__
     main(args,argsDict)
-
-
