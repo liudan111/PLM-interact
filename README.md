@@ -22,7 +22,7 @@ pip install -e .
 
 ## Model checkpoints are available on Hugging Face
 ### Trained on human PPIs from (https://d-script.readthedocs.io/en/stable/data.html)
-[danliu1226/PLM-interact-650M-humanV11](https://huggingface.co/danliu1226/PLM-interact-650M-humanV11/upload/main)
+[danliu1226/PLM-interact-650M-humanV11](https://huggingface.co/danliu1226/PLM-interact-650M-humanV11/tree/main)
 
 [danliu1226/PLM-interact-35M-humanV11](https://huggingface.co/danliu1226/PLM-interact-35M-humanV11/tree/main)
 
