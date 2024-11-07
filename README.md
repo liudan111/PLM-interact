@@ -7,7 +7,17 @@ Computational prediction of protein structure from amino acid sequences alone ha
 
 ## Preprint
 
-[PLM-interact: extending protein language models to predict protein-protein interactions](https://www.biorxiv.org/content/10.1101/2024.11.05.622169v1)
+[PLM-interact: extending protein language models to predict protein-protein interactions](https://www.biorxiv.org/content/10.1101/2024.11.05.622169v1
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        )
 
 ## Conda env install
 ```
@@ -23,15 +33,15 @@ pip install -e .
 ```
 
 ## Model checkpoints are available on Hugging Face
-### Trained on human PPIs from (https://d-script.readthedocs.io/en/stable/data.html)
+#### Trained on human PPIs from (https://d-script.readthedocs.io/en/stable/data.html)
 [danliu1226/PLM-interact-650M-humanV11](https://huggingface.co/danliu1226/PLM-interact-650M-humanV11/tree/main)
 
 [danliu1226/PLM-interact-35M-humanV11](https://huggingface.co/danliu1226/PLM-interact-35M-humanV11/tree/main)
 
-### Trained on virus-human PPIs from (http://kurata35.bio.kyutech.ac.jp/LSTM-PHV/download_page)
+#### Trained on virus-human PPIs from (http://kurata35.bio.kyutech.ac.jp/LSTM-PHV/download_page)
 [danliu1226/PLM-interact-650M-VH](https://huggingface.co/danliu1226/PLM-interact-650M-VH/tree/main)
 
-### Trained on Human PPIs from STRING V12
+#### Trained on Human PPIs from STRING V12
 [danliu1226/PLM-interact-650M-humanV12](https://huggingface.co/danliu1226/PLM-interact-650M-humanV12/tree/main)
 
 
