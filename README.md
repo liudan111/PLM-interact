@@ -8,7 +8,6 @@ Computational prediction of protein structure from amino acid sequences alone ha
 ## Preprint
 
 ## Conda env install
-````
 ```
 pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
 
@@ -19,7 +18,6 @@ pip install -e .
 git clone https://github.com/UKPLab/sentence-transformers.git
 cd sentence-transformers
 pip install -e .
-````
 ```
 
 ## Model checkpoints are available on Hugging Face
