@@ -21,7 +21,7 @@ cd sentence-transformers
 pip install -e .
 ```
 
-## Model checkpoints are available on Hugging Face
+## Model checkpoints are available on 🤗 Hugging Face
 #### Trained on human PPIs from (https://d-script.readthedocs.io/en/stable/data.html)
 [danliu1226/PLM-interact-650M-humanV11](https://huggingface.co/danliu1226/PLM-interact-650M-humanV11/tree/main)
 
