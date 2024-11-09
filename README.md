@@ -43,7 +43,7 @@ pip install -e .
 srun -u python inference_ddp.py --seed 2 --data 'test' --task_name 'inference' --epochs 10 --batch_size_val 16 --dev_filepath ${train_filepath} --test_filepath ${test_filepath} --model_name 'esm2_t33_650M_UR50D' --embedding_size 1280 --output_filepath $output_filepath --resume_from_checkpoint $resume_from_checkpoint --max_length 1000 --offline_model_path $offline_model_path
 
 ## PLM-interact training
-The efficent batch size is 128, which is equal to  batch_size_train * gradient_accumulation_steps * the number of gpus
+The efficient batch size is 128, which is equal to  batch_size_train * gradient_accumulation_steps * the number of gpus
 
 ### (1) PLM-interact training with mask loss and binary classification loss optimize
 srun -u python train_mlm.py --epochs 20 --seed 2 --data 'human_V11' --task_name '1vs10' --batch_size_train 1 --train_filepath $train_filepath --model_name 'esm2_t33_650M_UR50D' --embedding_size 1280 --output_filepath $outputfilepath --warmup_steps 2000 --gradient_accumulation_steps 8 --max_length 2146 --weight_loss_mlm 1 --weight_loss_class 10 --offline_model_path $offline_model_path 
