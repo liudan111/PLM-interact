@@ -222,6 +222,7 @@ class CrossEncoder():
                 checkpoint_path = args.resume_from_checkpoint
                 load_checkpoint= torch.load(checkpoint_path,map_location='cpu')
                 optimizer.load_state_dict(load_checkpoint["optimizer"])
+                scheduler.load_state_dict(load_checkpoint["scheduler"])
                 starting_epoch=load_checkpoint["epoch"] + 1 
                 print('starting_epoch',starting_epoch)
 
@@ -294,34 +295,19 @@ class CrossEncoder():
                             completed_steps += 1  
             if self.master_process:
                     raw_model  = self.model.module 
-                    checkpoint = {'model':raw_model.state_dict(), 'optimizer':optimizer.state_dict(),'epoch':epoch,'loss':loss_value}
+                    checkpoint = {'model':raw_model.state_dict(), 'optimizer':optimizer.state_dict(), 'scheduler':scheduler.state_dict(), 'epoch':epoch,'loss':loss_value}
                     torch.save(checkpoint, os.path.join(output_path, 'epoch_' + str(epoch)+'.pt'))
 
         if self.master_process:
             self.tokenizer.save_pretrained(output_path)
 
-    def save(self, path,optimizer,steps,epoch,loss,score):
-        """
-        Saves all model and tokenizer to path
-        """
-        if path is None:
-            return
-        logger.info("Save model to {}".format(path))
-        raw_model  = self.model.module 
-        checkpoint = {'model':raw_model.state_dict(), 'optimizer':optimizer.state_dict(),'epoch':epoch,'loss':loss,'score':score}
-        torch.save(checkpoint, os.path.join(path, str(epoch)+ '_ckpt_best_ap_'+str(steps)+'.pt'))
-        # raw_model.save(path)
-        self.tokenizer.save_pretrained(path)
-
-
-
 
 def main(args,argsDict):
     #### Just some code to print debug information to stdout
-    device= ddp_setup()
+    seed_offset,ddp_rank,ddp_local_rank,device= ddp_setup()
     init_process_group(backend='nccl')
-
     torch.cuda.set_device(device)
+
     if args.seed is not None:
         random.seed(args.seed)
     logging.basicConfig(format='%(asctime)s - %(message)s',
@@ -333,13 +319,11 @@ def main(args,argsDict):
     model_path = offline + args.model_name
 
     output_path=args.output_filepath
-
     model_save_path = output_path +   args.task_name +  '_' + args.data + '_' + args.model_name.replace("/", "-")+'-'+ datetime.now().strftime("%Y-%m-%d_%H-%M-%S")  + '/'
 
     trainer = CrossEncoder(model_path, num_labels=1, max_length=args.max_length, embedding_size=args.embedding_size,weight_loss_class=args.weight_loss_class,weight_loss_mlm=args.weight_loss_mlm,checkpoint = args.resume_from_checkpoint)
 
     train_samples = load_train_objs(args.train_filepath)
-
     train_dataloader = DataLoader(train_samples,batch_size=args.batch_size_train,shuffle=False,sampler =  DistributedSampler(train_samples))
      
     trainer.train(args,train_dataloader=train_dataloader,
