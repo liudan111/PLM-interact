@@ -194,6 +194,7 @@ class CrossEncoder():
                 checkpoint_path = args.resume_from_checkpoint
                 checkpoint = torch.load(checkpoint_path, map_location='cpu')
                 optimizer.load_state_dict(checkpoint["optimizer"])
+                scheduler.load_state_dict(checkpoint["scheduler"])
                 starting_epoch=checkpoint['epoch']+1
 
         skip_scheduler = False
@@ -262,7 +263,7 @@ class CrossEncoder():
 
             if self.master_process:
                     raw_model  = self.model.module 
-                    checkpoint = {'model':raw_model.state_dict(), 'optimizer':optimizer.state_dict(),'epoch':epoch,'loss':loss}
+                    checkpoint = {'model':raw_model.state_dict(), 'optimizer':optimizer.state_dict(), 'scheduler': scheduler.state_dict(), 'epoch':epoch,'loss':loss}
                     torch.save(checkpoint, os.path.join(output_path, 'epoch_'+ str(epoch)+'.pt'))               
 
     def train_eval(self,args,
@@ -449,7 +450,7 @@ class CrossEncoder():
 
 def main(args,argsDict):
     #### Just some code to print debug information to stdout
-    device= ddp_setup()
+    seed_offset,ddp_rank,ddp_local_rank,device= ddp_setup()
     init_process_group(backend='nccl')
     torch.cuda.set_device(device)
 
