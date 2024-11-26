@@ -24,7 +24,9 @@ def ddp_setup():
 
     seed_offset = ddp_rank 
 
-    return device
+    return seed_offset,ddp_rank,ddp_local_rank,device
+
+
 
 class SequentialDistributedSampler(Sampler):
     """
