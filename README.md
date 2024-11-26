@@ -21,6 +21,7 @@ cd sentence-transformers
 pip install -e .
 ```
 
+## An example to predict interaction probability between proteins
 ```python
 import torch
 import torch.nn as nn
