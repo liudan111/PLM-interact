@@ -46,7 +46,7 @@ class PLMinteract(nn.Module):
     probability = torch.sigmoid(logits)
     return  probability
 
-# folder_huggingface_download :  the folder that you downlaod the model from huggingface, such as "danliu1226/PLM-interact-650M-humanV11"
+# folder_huggingface_download : the download model from huggingface, such as "danliu1226/PLM-interact-650M-humanV11"
 # model_name:  the ESM2 model that PLM-interact trained
 # embedding_size: the embedding size of ESM2  model
 
