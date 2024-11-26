@@ -72,8 +72,8 @@ PLMinter.to(DEVICE)
 with torch.no_grad():
     probability = PLMinter.forward_test(tokenized)
     print(probability.item())
-
 ```
+
 
 ## Model checkpoints are available on 🤗 Hugging Face
 #### Trained on human PPIs from (https://d-script.readthedocs.io/en/stable/data.html)
