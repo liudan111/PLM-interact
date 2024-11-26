@@ -91,9 +91,9 @@ with torch.no_grad():
 
 
 ## PPI inference with multi-GPUs
-srun -u python inference_ddp.py --seed 2 --data 'test' --task_name 'inference' --epochs 10 --batch_size_val 16 --dev_filepath ${train_filepath} --test_filepath ${test_filepath} --model_name 'esm2_t33_650M_UR50D' --embedding_size 1280 --output_filepath $output_filepath --resume_from_checkpoint $resume_from_checkpoint --max_length 1000 --offline_model_path $offline_model_path
+srun -u python inference_PPI.py --seed 2 --batch_size_val 16 --test_filepath $test_filepath --model_name 'esm2_t33_650M_UR50D' --embedding_size 1280 --output_filepath $output_filepath --resume_from_checkpoint $resume_from_checkpoint --max_length 1603 --offline_model_path $offline_model_path
 
-## PLM-interact training
+## PLM-interact training and evaluation
 The efficient batch size is 128, which is equal to  batch_size_train * gradient_accumulation_steps * the number of gpus
 
 ### (1) PLM-interact training with mask loss and binary classification loss optimize
@@ -102,6 +102,9 @@ srun -u python train_mlm.py --epochs 20 --seed 2 --data 'human_V11' --task_name 
 ### (2) PLM-interact training with binary classification loss optimize
 srun -u python train_binary.py --epochs 20 --seed 2 --data 'human_V11' --task_name 'binary' --batch_size_train 1 --batch_size_val 32 --train_filepath $train_filepath  --dev_filepath $dev_filepath  --test_filepath $test_filepath --output_filepath $outputfilepath --warmup_steps 2000 --gradient_accumulation_steps 32  --model_name 'esm2_t33_650M_UR50D' --embedding_size 1280 --max_length 1600 --evaluation_steps 5000 --sub_samples 5000 --offline_model_path $offline_model_path 
 
+
+### (3) PLM-interact validation and test
+srun -u python predict_ddp.py --seed 2 --batch_size_val 32 --dev_filepath $dev_filepath --test_filepath $test_filepath --output_filepath $output_filepath --resume_from_checkpoint $resume_from_checkpoint --model_name esm2_t33_650M_UR50D --embedding_size 1280 --max_length 1603 --offline_model_path $offline_model_path 
 
 
 ## Acknowledgements

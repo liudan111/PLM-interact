@@ -34,7 +34,7 @@ export WORLD_SIZE=${SLURM_NTASKS}
 
 # (3) load the 650M_human_V11_PPI_model pytorch.bin from huggingface.
 # Setting your own output filepath and resume_from_checkpoint (the download huggingface folder).
-srun -u python inference_PPI.py --seed 2 --batch_size_val 16 --test_filepath /mnt/data/project0019/danliu/Data/basedata/dscript/output/output/ecoli.ppi.qrels.seq.test.csv --model_name 'esm2_t33_650M_UR50D' --embedding_size 1280 --output_filepath $output_filepath --resume_from_checkpoint $resume_from_checkpoint --max_length 1603 --offline_model_path /mnt/data/project0019/danliu/PPI/offline/
+srun -u python inference_PPI.py --seed 2 --batch_size_val 16 --test_filepath $test_filepath --model_name 'esm2_t33_650M_UR50D' --embedding_size 1280 --output_filepath $output_filepath --resume_from_checkpoint $resume_from_checkpoint --max_length 1603 --offline_model_path $offline_model_path
 
 
 
