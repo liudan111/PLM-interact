@@ -22,3 +22,11 @@ def load_val_objs(dev_filepath):
             return dev_samples
 
 
+def load_test_objs(test_filepath):
+            test_samples = []
+            with open(test_filepath, 'r', encoding='utf8') as fIn:
+                reader = csv.DictReader(fIn, delimiter=',', quoting=csv.QUOTE_NONE)
+                for row in reader:
+                    test_samples.append(InputExample(texts=[row['query'], row['text']]))
+            return test_samples
+
