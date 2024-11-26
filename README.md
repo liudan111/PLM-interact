@@ -1,8 +1,4 @@
 # PLM-interact： extending protein language models to predict protein-protein interactions
-
-        
-        
-        
 <a href="https://www.biorxiv.org/content/10.1101/2024.11.05.622169v1"><img src="https://img.shields.io/badge/Paper-bioRxiv-red" style="max-width: 100%;"></a>
 <a href="https://huggingface.co/danliu1226/PLM-interact-650M-humanV11/tree/main"><img src="https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-blue?label=Model" style="max-width: 100%;"></a>
 
@@ -77,8 +73,7 @@ with torch.no_grad():
     probability = PLMinter.forward_test(tokenized)
     print(probability.item())
 
-
-
+```
 
 ## Model checkpoints are available on 🤗 Hugging Face
 #### Trained on human PPIs from (https://d-script.readthedocs.io/en/stable/data.html)
