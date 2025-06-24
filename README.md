@@ -110,7 +110,7 @@ We provide a setup script to run PLM-interact for training, validation and test.
 srun -u python inference_PPI.py --seed 2 --batch_size_val 16 --test_filepath $test_filepath --model_name 'esm2_t33_650M_UR50D' --embedding_size 1280 --output_filepath $output_filepath --resume_from_checkpoint $resume_from_checkpoint --max_length 1603 --offline_model_path $offline_model_path
 ```
 * Example : 
-srun -u python inference_PPI.py --seed 2 --batch_size_val 16 --test_filepath ../ppi_seq.csv --model_name 'esm2_t33_650M_UR50D' --embedding_size 1280 --output_filepath ../output/ --resume_from_checkpoint ../PLM-interact-650M-humanV12/pytorch_model.bin --max_length 1603 --offline_model_path ../esm2_t33_650M_UR50D
+srun -u python inference_PPI.py --seed 2 --batch_size_val 16 --test_filepath '../ppi_seq.csv' --model_name 'esm2_t33_650M_UR50D' --embedding_size 1280 --output_filepath '../output/' --resume_from_checkpoint '../PLM-interact-650M-humanV12/pytorch_model.bin' --max_length 1603 --offline_model_path '../esm2_t33_650M_UR50D'
 
 
 ## PPI inference with a single GPU
