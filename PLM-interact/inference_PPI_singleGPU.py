@@ -72,33 +72,17 @@ https://github.com/UKPLab/sentence-transformers/blob/master/sentence_transformer
 class CrossEncoder():
     def __init__(self, model_name:str, num_labels:int = None, max_length:int = None, tokenizer_args:Dict = {}, automodel_args:Dict = {}, default_activation_function = None, embedding_size:int=None,weight_loss_class:int=0,weight_loss_mlm:int=0,checkpoint :str=None):
         self.config = AutoConfig.from_pretrained(model_name)
-        if 'SLURM_PROCID' in os.environ:
-            os.environ['RANK'] = os.environ['SLURM_PROCID']
-            self.rank  = int(os.environ['RANK'])
-            gpus_per_node = int(os.environ['SLURM_GPUS_ON_NODE'])
-            local_rank= self.rank - gpus_per_node * (self.rank // gpus_per_node)
-            os.environ['LOCAL_RANK'] = str(local_rank)
-            self.local_rank = int(os.environ['LOCAL_RANK'])
-            self.device = torch.device("cuda", local_rank)
-            self.master_process = self.rank == 0  # Main process does logging & checkpoints.
-            self.num_processes = torch.distributed.get_world_size()
-            self.checkpoint=checkpoint
-        else:
-            self.local_rank =  int(os.environ['LOCAL_RANK'])
-            self.rank = int(os.environ["RANK"])
-            self.device = torch.device("cuda", self.local_rank)
-            self.master_process = self.rank == 0  # Main process does logging & checkpoints.
-            self.num_processes = torch.distributed.get_world_size()
-            self.checkpoint=checkpoint
+
+        self.device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
+
+        self.checkpoint=checkpoint
 
         self.tokenizer = AutoTokenizer.from_pretrained(model_name, **tokenizer_args)
         self.embedding_size = embedding_size
         self.max_length = max_length
         self.model = PLMinteract(model_name,self.config.num_labels, config=self.config,device=self.device,embedding_size=self.embedding_size)
-
         self.model = self.model.to(self.device)
-        self.model = DDP(self.model, device_ids=[self.local_rank],find_unused_parameters=True)
-
+    
     def smart_batching_collate(self,batch):
             texts = [[] for _ in range(len(batch[0].texts))]
             for example in batch:
@@ -121,7 +105,7 @@ class CrossEncoder():
             os.makedirs(output_path, exist_ok=True)
 
         load_model = torch.load(f"{self.checkpoint}",map_location='cpu')
-        self.model.module.load_state_dict(load_model)
+        self.model.load_state_dict(load_model)
 
         self.predict(args,batch_size_val = batch_size_val,output_path= output_path)
 
@@ -140,7 +124,7 @@ class CrossEncoder():
         pred_scores = []
         for _, (features) in enumerate (test_dataloader):
                 with torch.no_grad():
-                    probability = self.model.module.forward_test(features)
+                    probability = self.model.forward_test(features)
                 pred_scores.extend(probability)
         pred_scores = distributed_concat(torch.stack(pred_scores), len(test_sampler.dataset))
       
@@ -149,10 +133,6 @@ class CrossEncoder():
             pd.DataFrame(pred_scores).to_csv(output_path + 'pred_scores.csv', index=None,header=None)
 
 def main(args,argsDict):
-    seed_offset,ddp_rank,ddp_local_rank,device= ddp_setup()
-    init_process_group(backend='nccl')
-    torch.cuda.set_device(device)
-
     if args.seed is not None:
         random.seed(args.seed)
 

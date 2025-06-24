@@ -103,20 +103,28 @@ with torch.no_grad():
 
 
 # Inference, train and evaluation 
-For users on a SLURM cluster, we provide a setup script. It can be found at the following path: PLM-interact/PLM-interact/script/slurm.sh. Please read the [PLM-interact/PLM-interact/script/README.md](PLM-interact/script/README.md) for details on parameter descriptions for the following commands.
-
+We provide a setup script to run PLM-interact for training, validation and test. It can be found at the following path: PLM-interact/PLM-interact/script/slurm.sh. We list the commands for inference, triaing and evalaution. Please read the [PLM-interact/PLM-interact/script/README.md](PLM-interact/script/README.md) for details on parameter descriptions.
 
 ## PPI inference with multi-GPUs
 ```
 srun -u python inference_PPI.py --seed 2 --batch_size_val 16 --test_filepath $test_filepath --model_name 'esm2_t33_650M_UR50D' --embedding_size 1280 --output_filepath $output_filepath --resume_from_checkpoint $resume_from_checkpoint --max_length 1603 --offline_model_path $offline_model_path
 ```
+* Example : 
+srun -u python inference_PPI.py --seed 2 --batch_size_val 16 --test_filepath ../ppi_seq.csv --model_name 'esm2_t33_650M_UR50D' --embedding_size 1280 --output_filepath ../output/ --resume_from_checkpoint ../PLM-interact-650M-humanV12/pytorch_model.bin --max_length 1603 --offline_model_path ../esm2_t33_650M_UR50D
+
+
+## PPI inference with a single GPU
+```
+srun -u python inference_PPI_singleGPU.py --seed 2 --batch_size_val 16 --test_filepath $test_filepath --model_name 'esm2_t33_650M_UR50D' --embedding_size 1280 --output_filepath $output_filepath --resume_from_checkpoint $resume_from_checkpoint --max_length 1603 --offline_model_path $offline_model_path
+```
+
 
 ## PLM-interact training and evaluation
 The efficient batch size is 128, which is equal to  batch_size_train * gradient_accumulation_steps * the number of gpus
 
 ### (1) PLM-interact training with mask loss and binary classification loss optimize
 ```
-srun -u python train_mlm.py --epochs 20 --seed 2 --data 'human_V11' --task_name '1vs10' \ --batch_size_train 1 --train_filepath $train_filepath --model_name 'esm2_t33_650M_UR50D' \ --embedding_size 1280 --output_filepath $outputfilepath --warmup_steps 2000 \ --gradient_accumulation_steps 8 --max_length 2146 --weight_loss_mlm 1 --weight_loss_class 10 \ --offline_model_path $offline_model_path 
+srun -u python train_mlm.py --epochs 20 --seed 2 --data 'human_V11' --task_name '1vs10' --batch_size_train 1 --train_filepath $train_filepath --model_name 'esm2_t33_650M_UR50D' --embedding_size 1280 --output_filepath $outputfilepath --warmup_steps 2000 --gradient_accumulation_steps 8 --max_length 2146 --weight_loss_mlm 1 --weight_loss_class 10 --offline_model_path $offline_model_path 
 ```
 ### (2) PLM-interact training with binary classification loss optimize
 

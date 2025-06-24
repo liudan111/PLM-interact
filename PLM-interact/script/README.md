@@ -25,7 +25,7 @@ The SLURM script operates in three modes: training, evaluation, and inference. T
     * For Training/Evaluation: The CSV file must contain query, text, and label columns.
 
 --resume_from_checkpoint: Required. Path to a local directory containing a fine-tuned model checkpoint (pytorch_model.bin) downloaded from the Hugging Face Hub ([danliu1226/PLM-interact-650M-humanV11](https://huggingface.co/danliu1226/PLM-interact-650M-humanV11/tree/main), [danliu1226/PLM-interact-650M-humanV12](https://huggingface.co/danliu1226/PLM-interact-650M-humanV12/tree/main)).
-* Example a: A folder named PLM-interact-650M-humanV11 containing the model files from danliu1226/PLM-interact-650M-humanV11.
+* Example : A folder named PLM-interact-650M-humanV11 containing the model files from danliu1226/PLM-interact-650M-humanV11.
 
 --max_length: Required. The maximum total sequence length for a protein pair after tokenization. It should account for the combined length of paired protein plus three special tokens. To avoid truncation, it's best to set this based on the longest pair in your dataset.
 
@@ -56,7 +56,6 @@ model.save_pretrained("offline/esm2_t33_650M_UR50D")
 ```
 srun -u python inference_PPI.py --seed 2 --batch_size_val 16 --test_filepath $test_filepath --model_name 'esm2_t33_650M_UR50D' --embedding_size 1280 --output_filepath $output_filepath --resume_from_checkpoint $resume_from_checkpoint --max_length 1603 --offline_model_path $offline_model_path
 ```
-
 
 ## PLM-interact training and evaluation
 The efficient batch size is 128, which is equal to  batch_size_train * gradient_accumulation_steps * the number of gpus
