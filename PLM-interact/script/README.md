@@ -57,6 +57,12 @@ model.save_pretrained("offline/esm2_t33_650M_UR50D")
 srun -u python inference_PPI.py --seed 2 --batch_size_val 16 --test_filepath $test_filepath --model_name 'esm2_t33_650M_UR50D' --embedding_size 1280 --output_filepath $output_filepath --resume_from_checkpoint $resume_from_checkpoint --max_length 1603 --offline_model_path $offline_model_path
 ```
 
+## PPI inference with a single GPU
+```
+srun -u python inference_PPI_singleGPU.py --seed 2 --batch_size_val 16 --test_filepath $test_filepath --model_name 'esm2_t33_650M_UR50D' --embedding_size 1280 --output_filepath $output_filepath --resume_from_checkpoint $resume_from_checkpoint --max_length 1603 --offline_model_path $offline_model_path
+```
+
+
 ## PLM-interact training and evaluation
 The efficient batch size is 128, which is equal to  batch_size_train * gradient_accumulation_steps * the number of gpus
 
