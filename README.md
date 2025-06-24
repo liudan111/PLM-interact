@@ -27,7 +27,7 @@ pip install huggingface-hub
 
 ## An example to predict interaction probability between proteins
 ```
-The paramter description for this script.
+The parameter description for this script.
 
 (1) folder_huggingface_download : The path to a trained PLM-interact model downloaded from Hugging Face (e.g., "PLM-interact-650M-humanV11" or "PLM-interact-650M-humanV12"). Ensure the folder contains the 'pytorch_model.bin' file (2.61 GB).
 
@@ -110,7 +110,7 @@ We provide a setup script to run PLM-interact for training, validation and test.
 srun -u python inference_PPI.py --seed 2 --batch_size_val 16 --test_filepath $test_filepath --model_name 'esm2_t33_650M_UR50D' --embedding_size 1280 --output_filepath $output_filepath --resume_from_checkpoint $resume_from_checkpoint --max_length 1603 --offline_model_path $offline_model_path
 ```
 * Example : 
-srun -u python inference_PPI.py --seed 2 --batch_size_val 16 --test_filepath '../ppi_seq.csv' --model_name 'esm2_t33_650M_UR50D' --embedding_size 1280 --output_filepath '../output/' --resume_from_checkpoint '../PLM-interact-650M-humanV12/pytorch_model.bin' --max_length 1603 --offline_model_path '../esm2_t33_650M_UR50D'
+srun -u python inference_PPI.py --seed 2 --batch_size_val 16 --test_filepath '../ppi_seq.csv' --model_name 'esm2_t33_650M_UR50D' --embedding_size 1280 --output_filepath '../output/' --resume_from_checkpoint '../PLM-interact-650M-humanV12/pytorch_model.bin' --max_length 1603 --offline_model_path '../dowload_path_ESM2/'
 
 
 ## PPI inference with a single GPU

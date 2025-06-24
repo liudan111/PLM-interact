@@ -43,10 +43,6 @@ from datetime import timedelta
 from utils.data_load import load_test_objs
 from utils.ddp import ddp_setup, distributed_concat,SequentialDistributedSampler
 
-# from safetensors.torch import load_model, save_model,load_file
-# from safetensors import safe_open
-
-# Will error if the minimal version of Transformers is not installed. Remove at your own risks.
 logger = logging.getLogger(__name__)
 
 class PLMinteract(nn.Module):
@@ -101,12 +97,11 @@ class CrossEncoder():
             ):
         self.model = self.model.to(self.device)
 
-        if output_path is not None and self.master_process:
+        if output_path is not None:
             os.makedirs(output_path, exist_ok=True)
 
         load_model = torch.load(f"{self.checkpoint}",map_location='cpu')
-        self.model.load_state_dict(load_model)
-
+        self.model.load_state_dict(load_model, strict=False)
         self.predict(args,batch_size_val = batch_size_val,output_path= output_path)
 
     def predict(self, args,
@@ -116,21 +111,14 @@ class CrossEncoder():
         self.model.eval()
         self.model.to(self.device)
         test_samples = load_test_objs(args.test_filepath)
-
-        test_sampler = SequentialDistributedSampler(test_samples)
-
-        test_dataloader = DataLoader(test_samples, batch_size=batch_size_val,sampler= test_sampler,collate_fn = self.smart_batching_collate,shuffle=False)
-
+        test_dataloader = DataLoader(test_samples, batch_size=batch_size_val,collate_fn = self.smart_batching_collate,shuffle=False)
         pred_scores = []
         for _, (features) in enumerate (test_dataloader):
                 with torch.no_grad():
                     probability = self.model.forward_test(features)
                 pred_scores.extend(probability)
-        pred_scores = distributed_concat(torch.stack(pred_scores), len(test_sampler.dataset))
-      
-        if self.master_process:
-            pred_scores = np.asarray([score.cpu().detach().numpy() for score in pred_scores])
-            pd.DataFrame(pred_scores).to_csv(output_path + 'pred_scores.csv', index=None,header=None)
+        pred_scores = np.asarray([score.cpu().detach().numpy() for score in pred_scores])
+        pd.DataFrame(pred_scores).to_csv(output_path + 'pred_scores.csv', index=None,header=None)
 
 def main(args,argsDict):
     if args.seed is not None:
