@@ -76,7 +76,7 @@ DEVICE = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
 tokenizer = AutoTokenizer.from_pretrained(model_name) 
 PLMinter= PLMinteract(model_name, 1, embedding_size)
 load_model = torch.load(f"{folder_huggingface_download}pytorch_model.bin")
-PLMinter.load_state_dict(load_model)
+PLMinter.load_state_dict(load_model,strict=False)
 
 texts=[protein1, protein2]
 tokenized = tokenizer(*texts, padding=True, truncation='longest_first', return_tensors="pt", max_length=1603)       
@@ -103,7 +103,7 @@ with torch.no_grad():
 
 
 # Inference, train and evaluation 
-For users on a SLURM cluster, we provide a setup script. It can be found at the following path: PLM-interact/PLM-interact/script/slurm.sh. Please read the PLM-interact/PLM-interact/script/README.md for details on parameter descriptions for the following commands.
+For users on a SLURM cluster, we provide a setup script. It can be found at the following path: PLM-interact/PLM-interact/script/slurm.sh. Please read the [PLM-interact/PLM-interact/script/README.md](PLM-interact/script/README.md) for details on parameter descriptions for the following commands.
 
 
 ## PPI inference with multi-GPUs
@@ -116,7 +116,7 @@ The efficient batch size is 128, which is equal to  batch_size_train * gradient_
 
 ### (1) PLM-interact training with mask loss and binary classification loss optimize
 ```
-srun -u python train_mlm.py --epochs 20 --seed 2 --data 'human_V11' --task_name '1vs10' --batch_size_train 1 --train_filepath $train_filepath --model_name 'esm2_t33_650M_UR50D' --embedding_size 1280 --output_filepath $outputfilepath --warmup_steps 2000 --gradient_accumulation_steps 8 --max_length 2146 --weight_loss_mlm 1 --weight_loss_class 10 --offline_model_path $offline_model_path 
+srun -u python train_mlm.py --epochs 20 --seed 2 --data 'human_V11' --task_name '1vs10' \ --batch_size_train 1 --train_filepath $train_filepath --model_name 'esm2_t33_650M_UR50D' \ --embedding_size 1280 --output_filepath $outputfilepath --warmup_steps 2000 \ --gradient_accumulation_steps 8 --max_length 2146 --weight_loss_mlm 1 --weight_loss_class 10 \ --offline_model_path $offline_model_path 
 ```
 ### (2) PLM-interact training with binary classification loss optimize
 
