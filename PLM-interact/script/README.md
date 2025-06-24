@@ -13,7 +13,7 @@ The SLURM script operates in three modes: training, evaluation, and inference. T
     text: The sequence of the second protein.
     label: The ground truth label, where 1 indicates a positive interaction and 0 indicates a negative one.
 
-## Parameter description
+## Key Parameter description (Configuring Parameters for Your Task)
 
 ```
 --train_filepath: Required. Path to the training data, which must be a CSV file. It should contain the columns: query (protein sequence 1), text (protein sequence 2), and label (1 for a positive interaction, 0 for negative).
