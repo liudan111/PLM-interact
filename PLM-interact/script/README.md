@@ -24,7 +24,7 @@ The SLURM script operates in three modes: training, evaluation, and inference. T
     * For Inference (inference_PPI.py): The CSV file must contain query (protein sequence 1) and text (protein sequence 2) columns.
     * For Training/Evaluation: The CSV file must contain query, text, and label columns.
 
---resume_from_checkpoint: Required. Path to a local directory containing a fine-tuned model checkpoint (pytorch_model.bin) downloaded from the Hugging Face Hub ([danliu1226/PLM-interact-650M-humanV11](https://huggingface.co/danliu1226/PLM-interact-650M-humanV11/tree/main), [danliu1226/PLM-interact-650M-humanV12](https://huggingface.co/danliu1226/PLM-interact-650M-humanV12/tree/main)).
+--resume_from_checkpoint: Optional for training, Required for inference. Path to a local directory containing a fine-tuned model checkpoint (pytorch_model.bin) downloaded from the Hugging Face Hub ([danliu1226/PLM-interact-650M-humanV11](https://huggingface.co/danliu1226/PLM-interact-650M-humanV11/tree/main), [danliu1226/PLM-interact-650M-humanV12](https://huggingface.co/danliu1226/PLM-interact-650M-humanV12/tree/main)).
 * Example : A folder named PLM-interact-650M-humanV11 containing the model files from danliu1226/PLM-interact-650M-humanV11.
 
 --max_length: Required. The maximum total sequence length for a protein pair after tokenization. It should account for the combined length of paired protein plus three special tokens. To avoid truncation, it's best to set this based on the longest pair in your dataset.
