@@ -12,7 +12,7 @@
 #SBATCH --error=err/%x.%j.err
 
 source ~/.bashrc
-conda activate sentence_pair
+conda activate sentence_pair 
 
 echo "NODELIST="${SLURM_NODELIST}
 export OMP_NUM_THREADS=${SLURM_CPUS_PER_TASK}

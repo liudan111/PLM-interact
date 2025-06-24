@@ -6,10 +6,10 @@ Computational prediction of protein structure from amino acid sequences alone ha
 
 ![PLM-interact](https://github.com/liudan111/PLM-interact/blob/main/assets/PLM-interact.png)
 
-
-
 ## Conda env install
 ```
+conda create -n sentence_pair python=3.10
+
 pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
 
 git clone  https://github.com/huggingface/transformers.git
@@ -19,9 +19,27 @@ pip install -e .
 git clone https://github.com/UKPLab/sentence-transformers.git
 cd sentence-transformers
 pip install -e .
+
+pip install datasets
+
+pip install huggingface-hub
 ```
 
 ## An example to predict interaction probability between proteins
+```
+The paramter description for this script.
+
+(1) folder_huggingface_download : The path to a trained PLM-interact model downloaded from Hugging Face (e.g., "PLM-interact-650M-humanV11" or "PLM-interact-650M-humanV12"). Ensure the folder contains the 'pytorch_model.bin' file (2.61 GB).
+
+(2) model_name: The Hugging Face ID for the base ESM-2 model that the PLM-interact model was built upon. Supported options are 'facebook/esm2_t33_650M_UR50D' and 'facebook/esm2_t12_35M_UR50D'.  It is critical that this base model matches the one specified in 'folder_huggingface_download'.
+  - Use 'esm2_t33_650M_UR50D' for 650M-parameter models (e.g., PLM-interact-650M-humanV11, PLM-interact-650M-humanV12).
+  - Use 'esm2_t12_35M_UR50D' for the 35M-parameter model (e.g., PLM-interact-35M-humanV11).
+
+(3) embedding_size: The corresponding embedding dimension of the specified ESM-2 model. Use 1280 for 'facebook/esm2_t33_650M_UR50D' or 480 for 'facebook/esm2_t12_35M_UR50D'.
+
+(4) max_length: The maximum sequence length for the model. This value should be the combined length of the input paired protein plus three (special tokens).
+```
+
 ```python
 import torch
 import torch.nn as nn
@@ -45,10 +63,6 @@ class PLMinteract(nn.Module):
     logits=logits.view(-1)
     probability = torch.sigmoid(logits)
     return  probability
-
-# folder_huggingface_download : the download model from huggingface, such as "danliu1226/PLM-interact-650M-humanV11"
-# model_name:  the ESM2 model that PLM-interact trained
-# embedding_size: the embedding size of ESM2  model
 
 folder_huggingface_download='download_huggingface_folder/'
 model_name= 'facebook/esm2_t33_650M_UR50D'
@@ -75,7 +89,6 @@ with torch.no_grad():
     print(probability.item())
 ```
 
-
 ## Model checkpoints are available on 🤗 Hugging Face
 #### Trained on human PPIs from (https://d-script.readthedocs.io/en/stable/data.html)
 [danliu1226/PLM-interact-650M-humanV11](https://huggingface.co/danliu1226/PLM-interact-650M-humanV11/tree/main)
@@ -89,23 +102,32 @@ with torch.no_grad():
 [danliu1226/PLM-interact-650M-humanV12](https://huggingface.co/danliu1226/PLM-interact-650M-humanV12/tree/main)
 
 
+# Inference, train and evaluation 
+For users on a SLURM cluster, we provide a setup script. It can be found at the following path: PLM-interact/PLM-interact/script/slurm.sh. Please read the PLM-interact/PLM-interact/script/README.md for details on parameter descriptions for the following commands.
+
 
 ## PPI inference with multi-GPUs
+```
 srun -u python inference_PPI.py --seed 2 --batch_size_val 16 --test_filepath $test_filepath --model_name 'esm2_t33_650M_UR50D' --embedding_size 1280 --output_filepath $output_filepath --resume_from_checkpoint $resume_from_checkpoint --max_length 1603 --offline_model_path $offline_model_path
+```
 
 ## PLM-interact training and evaluation
 The efficient batch size is 128, which is equal to  batch_size_train * gradient_accumulation_steps * the number of gpus
 
 ### (1) PLM-interact training with mask loss and binary classification loss optimize
+```
 srun -u python train_mlm.py --epochs 20 --seed 2 --data 'human_V11' --task_name '1vs10' --batch_size_train 1 --train_filepath $train_filepath --model_name 'esm2_t33_650M_UR50D' --embedding_size 1280 --output_filepath $outputfilepath --warmup_steps 2000 --gradient_accumulation_steps 8 --max_length 2146 --weight_loss_mlm 1 --weight_loss_class 10 --offline_model_path $offline_model_path 
-
+```
 ### (2) PLM-interact training with binary classification loss optimize
-srun -u python train_binary.py --epochs 20 --seed 2 --data 'human_V11' --task_name 'binary' --batch_size_train 1 --batch_size_val 32 --train_filepath $train_filepath  --dev_filepath $dev_filepath  --test_filepath $test_filepath --output_filepath $outputfilepath --warmup_steps 2000 --gradient_accumulation_steps 32  --model_name 'esm2_t33_650M_UR50D' --embedding_size 1280 --max_length 1600 --evaluation_steps 5000 --sub_samples 5000 --offline_model_path $offline_model_path 
 
+```
+srun -u python train_binary.py --epochs 20 --seed 2 --data 'human_V11' --task_name 'binary' --batch_size_train 1 --batch_size_val 32 --train_filepath $train_filepath  --dev_filepath $dev_filepath  --test_filepath $test_filepath --output_filepath $outputfilepath --warmup_steps 2000 --gradient_accumulation_steps 32  --model_name 'esm2_t33_650M_UR50D' --embedding_size 1280 --max_length 1600 --evaluation_steps 5000 --sub_samples 5000 --offline_model_path $offline_model_path 
+```
 
 ### (3) PLM-interact validation and test
+```
 srun -u python predict_ddp.py --seed 2 --batch_size_val 32 --dev_filepath $dev_filepath --test_filepath $test_filepath --output_filepath $output_filepath --resume_from_checkpoint $resume_from_checkpoint --model_name esm2_t33_650M_UR50D --embedding_size 1280 --max_length 1603 --offline_model_path $offline_model_path 
-
+```
 
 ## Acknowledgements
 Thanks to the following open-source projects:
