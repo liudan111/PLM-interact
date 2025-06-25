@@ -47,10 +47,10 @@ from huggingface_hub import snapshot_download
 import os
 
 # The ID of the repository you want to download
-repo_id = "danliu1226/PLM-interact-650M-humanV12" # Or any other repo
+repo_id = "danliu1226/PLM-interact-650M-humanV11" # Or any other repo
 
 # The local directory where you want to save the folder
-local_dir = "../offline/PLM-interact-650M-humanV12"
+local_dir = "../offline/PLM-interact-650M-humanV11"
 
 # Create the directory if it doesn't exist
 os.makedirs(local_dir, exist_ok=True)
