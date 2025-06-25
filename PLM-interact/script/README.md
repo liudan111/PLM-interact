@@ -43,12 +43,28 @@ The SLURM script operates in three modes: training, evaluation, and inference. T
 
 ## Download trained models/checkpoints from Huggingface
 ```python
-from transformers import AutoTokenizer, EsmModel
-import torch
-tokenizer = AutoTokenizer.from_pretrained("facebook/esm2_t33_650M_UR50D")
-model = EsmModel.from_pretrained("facebook/esm2_t33_650M_UR50D")
-tokenizer.save_pretrained("offline/esm2_t33_650M_UR50D")
-model.save_pretrained("offline/esm2_t33_650M_UR50D")
+from huggingface_hub import snapshot_download
+import os
+# The ID of the repository you want to download
+repo_id = "facebook/esm2_t33_650M_UR50D" # Or any other repo
+
+# The local directory where you want to save the folder
+local_dir = "../offline/test/esm2_t33_650M_UR50D"
+
+# Create the directory if it doesn't exist
+os.makedirs(local_dir, exist_ok=True)
+
+print(f"Downloading repository '{repo_id}' to '{local_dir}'...")
+
+# Use snapshot_download with force_download=True
+snapshot_download(
+    repo_id=repo_id,
+    local_dir=local_dir,
+    local_dir_use_symlinks=False,
+    force_download=True  
+)
+print("\nDownload complete!")
+print(f"All files for {repo_id} are saved in the '{local_dir}' folder.")
 ```
 
 ## PPI inference with multi-GPUs
