@@ -68,7 +68,7 @@ print("\nDownload complete!")
 print(f"All files for {repo_id} are saved in the '{local_dir}' folder.")
 ``` 
 
-run a simple test
+Run a simple test
 
 ```python
 import torch
