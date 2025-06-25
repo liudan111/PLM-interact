@@ -40,6 +40,35 @@ The parameter description for this script.
 (4) max_length: The maximum sequence length for the model. This value should be the combined length of the input paired protein plus three (special tokens).
 ```
 
+Download mdoels from hugging face hub 
+
+```python
+from huggingface_hub import snapshot_download
+import os
+
+# The ID of the repository you want to download
+repo_id = "danliu1226/PLM-interact-650M-humanV12" # Or any other repo
+
+# The local directory where you want to save the folder
+local_dir = "../offline/PLM-interact-650M-humanV12"
+
+# Create the directory if it doesn't exist
+os.makedirs(local_dir, exist_ok=True)
+
+print(f"Downloading repository '{repo_id}' to '{local_dir}'...")
+
+# Use snapshot_download with force_download=True
+snapshot_download(
+    repo_id=repo_id,
+    local_dir=local_dir,
+    local_dir_use_symlinks=False,
+    force_download=True  # <-- ADD THIS LINE
+)
+print("\nDownload complete!")
+print(f"All files for {repo_id} are saved in the '{local_dir}' folder.")
+``` 
+
+
 ```python
 import torch
 import torch.nn as nn
