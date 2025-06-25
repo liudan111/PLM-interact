@@ -40,7 +40,7 @@ The parameter description for this script.
 (4) max_length: The maximum sequence length for the model. This value should be the combined length of the input paired protein plus three (special tokens).
 ```
 
-Download mdoels from hugging face hub 
+Download models from Huggingface 
 
 ```python
 from huggingface_hub import snapshot_download
@@ -68,6 +68,7 @@ print("\nDownload complete!")
 print(f"All files for {repo_id} are saved in the '{local_dir}' folder.")
 ``` 
 
+run a simple test
 
 ```python
 import torch
