@@ -122,11 +122,19 @@ with torch.no_grad():
 
 ## Model checkpoints are available on 🤗 Hugging Face
 #### Trained on human PPIs from (https://d-script.readthedocs.io/en/stable/data.html)
+Datasets:
+[danliu1226/cross_species_benchmarking](https://huggingface.co/datasets/danliu1226/cross_species_benchmarking/tree/main)
+
+Trained models:
 [danliu1226/PLM-interact-650M-humanV11](https://huggingface.co/danliu1226/PLM-interact-650M-humanV11/tree/main)
 
 [danliu1226/PLM-interact-35M-humanV11](https://huggingface.co/danliu1226/PLM-interact-35M-humanV11/tree/main)
 
 #### Trained on virus-human PPIs from (http://kurata35.bio.kyutech.ac.jp/LSTM-PHV/download_page)
+Datasets:
+[danliu1226/virus_human_benchmarking](https://huggingface.co/datasets/danliu1226/virus_human_benchmarking)
+
+Trained model:
 [danliu1226/PLM-interact-650M-VH](https://huggingface.co/danliu1226/PLM-interact-650M-VH/tree/main)
 
 #### Trained on Human PPIs from STRING V12
@@ -160,7 +168,6 @@ srun -u python inference_PPI.py --seed 2 --batch_size_val 16 --test_filepath '..
 ```
 srun -u python inference_PPI_singleGPU.py --seed 2 --batch_size_val 16 --test_filepath $test_filepath --model_name 'esm2_t33_650M_UR50D' --embedding_size 1280 --output_filepath $output_filepath --resume_from_checkpoint $resume_from_checkpoint --max_length 1603 --offline_model_path $offline_model_path
 ```
-
 
 ## PLM-interact training and evaluation
 The efficient batch size is 128, which is equal to  batch_size_train * gradient_accumulation_steps * the number of gpus.
