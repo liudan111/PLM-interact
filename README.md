@@ -23,7 +23,6 @@ pip install -e .
 pip install datasets
 
 pip install huggingface-hub
-
 ```
 This Python package requires a Linux operating system and Python 3.10. We have tested it on A100 80GB, A100 40GB, and A40 GPUs. For testing your PPIs, we recommend using an A40/A100 GPU. To train or fine-tune our model, we recommend using A100 80GB GPUs.
 
@@ -146,8 +145,10 @@ cd PLM-interact/PLM-interact
 ## PPI inference
 ### PPI inference with multi-GPUs
 To test a list of protein pairs, you must provide a CSV file using the --test_filepath argument. The file requires the following two columns:
-    query: The sequence of the first protein.
-    text: The sequence of the second protein.
+  ```
+      query: The sequence of the first protein.
+      text: The sequence of the second protein.
+  ```
 
 ```
 srun -u python inference_PPI.py --seed 2 --batch_size_val 16 --test_filepath $test_filepath --model_name 'esm2_t33_650M_UR50D' --embedding_size 1280 --output_filepath $output_filepath --resume_from_checkpoint $resume_from_checkpoint --max_length 1603 --offline_model_path $offline_model_path
