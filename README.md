@@ -146,8 +146,8 @@ cd PLM-interact/PLM-interact
 ### (1) PPI inference with multi-GPUs
 To test a list of protein pairs, you must provide a CSV file using the --test_filepath argument. The file requires the following two columns:
 ```
-query: The sequence of the first protein.
-text: The sequence of the second protein.
+query: The sequence of protein 1.
+text: The sequence of protein 2.
 ```
 
 ```

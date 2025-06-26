@@ -4,13 +4,13 @@ The SLURM script operates in three modes: training, evaluation, and inference. T
 
 ## Inference: 
 ### Required Input (--test_filepath): A CSV file with the following two columns:
-    query: The sequence of the first protein.
-    text: The sequence of the second protein.
+    query: The sequence of protein 1.
+    text: The sequence of protein 2.
 
 ## Training & Evaluation: 
 ### Required Input (--train_filepath,--dev_filepath, --test_filepath): A CSV file with the following three columns:
-    query: The sequence of the first protein.
-    text: The sequence of the second protein.
+    query: The sequence of protein 1.
+    text: The sequence of protein 2.
     label: The ground truth label, where 1 indicates a positive interaction and 0 indicates a negative one.
 
 ## Key Parameter description (Configuring Parameters for Your Task)
