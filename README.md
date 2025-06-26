@@ -167,9 +167,9 @@ The efficient batch size is 128, which is equal to  batch_size_train * gradient_
 
 Required Input (--train_filepath,--dev_filepath, --test_filepath): A CSV file with the following three columns:
 ```
-    query: The sequence of the first protein.
-    text: The sequence of the second protein.
-    label: The ground truth label, where 1 indicates a positive interaction and 0 indicates a negative one.
+query: The sequence of the first protein.
+text: The sequence of the second protein.
+label: The ground truth label, where 1 indicates a positive interaction and 0 indicates a negative one.
 ```
 
 ### (1) PLM-interact training with mask loss and binary classification loss optimize
