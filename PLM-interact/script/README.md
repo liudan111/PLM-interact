@@ -34,8 +34,8 @@ The SLURM script operates in three modes: training, evaluation, and inference. T
     * Use 480 for the 'esm2_t12_35M_UR50D' model.
 
 --offline_model_path: Required. Path to the local directory containing the base ESM-2 model downloaded from Hugging Face Hub([facebook/esm2_t33_650M_UR50D](https://huggingface.co/facebook/esm2_t33_650M_UR50D)). The model specified here must match the checkpoint provided in --resume_from_checkpoint.
-    *Use 'esm2_t33_650M_UR50D' for 650M-parameter models (e.g., PLM-interact-650M-humanV11, PLM-interact-650M-humanV12).
-    *Use 'esm2_t12_35M_UR50D' for the 35M-parameter model (e.g., PLM-interact-35M-humanV11).
+    * Use 'esm2_t33_650M_UR50D' for 650M-parameter models (e.g., PLM-interact-650M-humanV11, PLM-interact-650M-humanV12).
+    * Use 'esm2_t12_35M_UR50D' for the 35M-parameter model (e.g., PLM-interact-35M-humanV11).
 
 --output_filepath: Required. Path to the directory where output files will be saved.
 
@@ -66,14 +66,18 @@ snapshot_download(
 print("\nDownload complete!")
 print(f"All files for {repo_id} are saved in the '{local_dir}' folder.")
 ```
-
-## PPI inference with multi-GPUs
+## PPI inference
+### PPI inference with multi-GPUs
 
 ```
 srun -u python inference_PPI.py --seed 2 --batch_size_val 16 --test_filepath $test_filepath --model_name 'esm2_t33_650M_UR50D' --embedding_size 1280 --output_filepath $output_filepath --resume_from_checkpoint $resume_from_checkpoint --max_length 1603 --offline_model_path $offline_model_path
 ```
 
-## PPI inference with a single GPU
+* Example : 
+srun -u python inference_PPI.py --seed 2 --batch_size_val 16 --test_filepath '../ppi_seq.csv' --model_name 'esm2_t33_650M_UR50D' --embedding_size 1280 --output_filepath '../output/' --resume_from_checkpoint '../PLM-interact-650M-humanV12/pytorch_model.bin' --max_length 1603 --offline_model_path '../offline/test/esm2_t33_650M_UR50D'
+
+
+### PPI inference with a single GPU
 ```
 srun -u python inference_PPI_singleGPU.py --seed 2 --batch_size_val 16 --test_filepath $test_filepath --model_name 'esm2_t33_650M_UR50D' --embedding_size 1280 --output_filepath $output_filepath --resume_from_checkpoint $resume_from_checkpoint --max_length 1603 --offline_model_path $offline_model_path
 ```
@@ -87,7 +91,6 @@ The efficient batch size is 128, which is equal to  batch_size_train * gradient_
 srun -u python train_mlm.py --epochs 20 --seed 2 --data 'human_V11' --task_name '1vs10' --batch_size_train 1 --train_filepath $train_filepath --model_name 'esm2_t33_650M_UR50D' --embedding_size 1280 --output_filepath $outputfilepath --warmup_steps 2000 --gradient_accumulation_steps 8 --max_length 2146 --weight_loss_mlm 1 --weight_loss_class 10 --offline_model_path $offline_model_path 
 ```
 ### (2) PLM-interact training with binary classification loss optimize
-
 ```
 srun -u python train_binary.py --epochs 20 --seed 2 --data 'human_V11' --task_name 'binary' --batch_size_train 1 --batch_size_val 32 --train_filepath $train_filepath  --dev_filepath $dev_filepath  --test_filepath $test_filepath --output_filepath $outputfilepath --warmup_steps 2000 --gradient_accumulation_steps 32  --model_name 'esm2_t33_650M_UR50D' --embedding_size 1280 --max_length 1600 --evaluation_steps 5000 --sub_samples 5000 --offline_model_path $offline_model_path 
 ```

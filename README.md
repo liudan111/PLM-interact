@@ -23,7 +23,9 @@ pip install -e .
 pip install datasets
 
 pip install huggingface-hub
+
 ```
+This Python package requires a Linux operating system and Python 3.10. We have tested it on A100 80GB, A100 40GB, and A40 GPUs. For testing your PPIs, we recommend using an A40/A100 GPU. To train or fine-tune our model, we recommend using A100 80GB GPUs.
 
 ## An example to predict interaction probability between proteins
 ```
@@ -40,7 +42,7 @@ The parameter description for this script.
 (4) max_length: The maximum sequence length for the model. This value should be the combined length of the input paired protein plus three (special tokens).
 ```
 
-Download models from Huggingface 
+### Download models from Huggingface 
 
 ```python
 from huggingface_hub import snapshot_download
@@ -68,7 +70,7 @@ print("\nDownload complete!")
 print(f"All files for {repo_id} are saved in the '{local_dir}' folder.")
 ``` 
 
-Run a simple test
+### Run a simple test
 
 ```python
 import torch
@@ -135,15 +137,25 @@ with torch.no_grad():
 # Inference, train and evaluation 
 We provide a setup script to run PLM-interact for training, validation and test. It can be found at the following path: PLM-interact/PLM-interact/script/slurm.sh. We list the commands for inference, triaing and evalaution. Please read the [PLM-interact/PLM-interact/script/README.md](PLM-interact/script/README.md) for details on parameter descriptions.
 
-## PPI inference with multi-GPUs
+```
+git clone https://github.com/liudan111/PLM-interact.git
+
+cd PLM-interact/PLM-interact
+```
+
+## PPI inference
+### PPI inference with multi-GPUs
+To test a list of protein pairs, you must provide a CSV file using the --test_filepath argument. The file requires the following two columns:
+    query: The sequence of the first protein.
+    text: The sequence of the second protein.
+
 ```
 srun -u python inference_PPI.py --seed 2 --batch_size_val 16 --test_filepath $test_filepath --model_name 'esm2_t33_650M_UR50D' --embedding_size 1280 --output_filepath $output_filepath --resume_from_checkpoint $resume_from_checkpoint --max_length 1603 --offline_model_path $offline_model_path
 ```
 * Example : 
-srun -u python inference_PPI.py --seed 2 --batch_size_val 16 --test_filepath '../ppi_seq.csv' --model_name 'esm2_t33_650M_UR50D' --embedding_size 1280 --output_filepath '../output/' --resume_from_checkpoint '../PLM-interact-650M-humanV12/pytorch_model.bin' --max_length 1603 --offline_model_path '../dowload_path_ESM2/'
+srun -u python inference_PPI.py --seed 2 --batch_size_val 16 --test_filepath '../ppi_seq.csv' --model_name 'esm2_t33_650M_UR50D' --embedding_size 1280 --output_filepath '../output/' --resume_from_checkpoint '../PLM-interact-650M-humanV12/pytorch_model.bin' --max_length 1603 --offline_model_path '../offline/test/esm2_t33_650M_UR50D'
 
-
-## PPI inference with a single GPU
+### PPI inference with a single GPU
 ```
 srun -u python inference_PPI_singleGPU.py --seed 2 --batch_size_val 16 --test_filepath $test_filepath --model_name 'esm2_t33_650M_UR50D' --embedding_size 1280 --output_filepath $output_filepath --resume_from_checkpoint $resume_from_checkpoint --max_length 1603 --offline_model_path $offline_model_path
 ```
@@ -151,6 +163,12 @@ srun -u python inference_PPI_singleGPU.py --seed 2 --batch_size_val 16 --test_fi
 
 ## PLM-interact training and evaluation
 The efficient batch size is 128, which is equal to  batch_size_train * gradient_accumulation_steps * the number of gpus
+
+Required Input (--train_filepath,--dev_filepath, --test_filepath): A CSV file with the following three columns:
+    query: The sequence of the first protein.
+    text: The sequence of the second protein.
+    label: The ground truth label, where 1 indicates a positive interaction and 0 indicates a negative one.
+
 
 ### (1) PLM-interact training with mask loss and binary classification loss optimize
 ```
