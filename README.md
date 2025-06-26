@@ -145,10 +145,10 @@ cd PLM-interact/PLM-interact
 ## PPI inference
 ### PPI inference with multi-GPUs
 To test a list of protein pairs, you must provide a CSV file using the --test_filepath argument. The file requires the following two columns:
-  ```
-      query: The sequence of the first protein.
-      text: The sequence of the second protein.
-  ```
+```
+query: The sequence of the first protein.
+text: The sequence of the second protein.
+```
 
 ```
 srun -u python inference_PPI.py --seed 2 --batch_size_val 16 --test_filepath $test_filepath --model_name 'esm2_t33_650M_UR50D' --embedding_size 1280 --output_filepath $output_filepath --resume_from_checkpoint $resume_from_checkpoint --max_length 1603 --offline_model_path $offline_model_path
@@ -163,13 +163,14 @@ srun -u python inference_PPI_singleGPU.py --seed 2 --batch_size_val 16 --test_fi
 
 
 ## PLM-interact training and evaluation
-The efficient batch size is 128, which is equal to  batch_size_train * gradient_accumulation_steps * the number of gpus
+The efficient batch size is 128, which is equal to  batch_size_train * gradient_accumulation_steps * the number of gpus.
 
 Required Input (--train_filepath,--dev_filepath, --test_filepath): A CSV file with the following three columns:
+```
     query: The sequence of the first protein.
     text: The sequence of the second protein.
     label: The ground truth label, where 1 indicates a positive interaction and 0 indicates a negative one.
-
+```
 
 ### (1) PLM-interact training with mask loss and binary classification loss optimize
 ```
