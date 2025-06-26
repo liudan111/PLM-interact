@@ -143,7 +143,7 @@ cd PLM-interact/PLM-interact
 ```
 
 ## PPI inference
-### PPI inference with multi-GPUs
+### (1) PPI inference with multi-GPUs
 To test a list of protein pairs, you must provide a CSV file using the --test_filepath argument. The file requires the following two columns:
 ```
 query: The sequence of the first protein.
@@ -156,7 +156,7 @@ srun -u python inference_PPI.py --seed 2 --batch_size_val 16 --test_filepath $te
 * Example : 
 srun -u python inference_PPI.py --seed 2 --batch_size_val 16 --test_filepath '../ppi_seq.csv' --model_name 'esm2_t33_650M_UR50D' --embedding_size 1280 --output_filepath '../output/' --resume_from_checkpoint '../PLM-interact-650M-humanV12/pytorch_model.bin' --max_length 1603 --offline_model_path '../offline/test/esm2_t33_650M_UR50D'
 
-### PPI inference with a single GPU
+### (2) PPI inference with a single GPU
 ```
 srun -u python inference_PPI_singleGPU.py --seed 2 --batch_size_val 16 --test_filepath $test_filepath --model_name 'esm2_t33_650M_UR50D' --embedding_size 1280 --output_filepath $output_filepath --resume_from_checkpoint $resume_from_checkpoint --max_length 1603 --offline_model_path $offline_model_path
 ```
