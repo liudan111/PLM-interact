@@ -283,8 +283,20 @@ def main(args,argsDict):
     init_process_group(backend='nccl')
     torch.cuda.set_device(device)
 
+    # if args.seed is not None:
+    #     random.seed(args.seed)
+
     if args.seed is not None:
         random.seed(args.seed)
+        np.random.seed(args.seed)
+        torch.manual_seed(args.seed)
+        torch.cuda.manual_seed(args.seed)
+        torch.cuda.manual_seed_all(args.seed)
+        torch.use_deterministic_algorithms(True)
+        torch.backends.cudnn.deterministic = True  # Ensure deterministic behavior
+        torch.backends.cudnn.benchmark = False  # Disable optimizations that might cause non-determinism
+
+
     logging.basicConfig(format='%(asctime)s - %(message)s',
                             datefmt='%Y-%m-%d %H:%M:%S',
                             level=logging.INFO,
