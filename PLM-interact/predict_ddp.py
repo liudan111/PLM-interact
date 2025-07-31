@@ -178,7 +178,6 @@ class CrossEncoder():
         checkpoint_path = args.resume_from_checkpoint + 'epoch_' + str(self.best_epoch) +'.pt'
         load_checkpoint = torch.load(checkpoint_path, map_location='cpu')
         self.model.module.load_state_dict(load_checkpoint['model'])
-        
         self.predict(args,batch_size_val = batch_size_val,output_path= output_path,loss_fct=loss_fct)
 
     def eval(self,args,
@@ -244,15 +243,12 @@ class CrossEncoder():
         pred_scores = []
         labels_val=[]
         loss_value=[]
-
-
         for _, (features,labels) in enumerate (test_dataloader):
                 with torch.no_grad():
                     loss, logits, probability = self.model.module.forward_test(labels,features)
                     loss_value.append(loss)
                 pred_scores.extend(probability)
                 labels_val.extend(labels) 
-
 
         pred_scores = distributed_concat(torch.stack(pred_scores),  len(test_sampler.dataset))
         labels_val = distributed_concat(torch.stack(labels_val),  len(test_sampler.dataset))
@@ -302,7 +298,6 @@ def main(args,argsDict):
                             level=logging.INFO,
                             handlers=[LoggingHandler()])
 
-
     model_path = args.offline_model_path+ args.model_name
     output_path=args.output_filepath
 
@@ -316,7 +311,6 @@ if __name__ == "__main__":
     import argparse
     parser = argparse.ArgumentParser(description='simple distributed training job')
     parser.add_argument('--epochs', type=int, help='Total epochs to train the model')
-
     parser.add_argument("--resume_from_checkpoint",type=str,default=None,help="If the training should continue from a checkpoint folder.")
     parser.add_argument('--offline_model_path', type=str, help='offline model path')
     parser.add_argument('--seed', type=int, help='seed')

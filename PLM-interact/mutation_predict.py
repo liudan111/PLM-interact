@@ -212,9 +212,11 @@ class CrossEncoder():
                 pred_scores = np.asarray([score.cpu().detach().numpy() for score in pred_scores])
                 labels_val = np.asarray([label.cpu().detach().numpy() for label in labels_val])
             loss = torch.mean(loss_value)
+            
             pred_scores = torch.tensor(pred_scores, dtype=torch.float32)
             pred_scores = torch.sigmoid(pred_scores)
             pd.DataFrame(pred_scores).to_csv(output_path + 'pred_scores.csv',index=None, header=None)
+            pd.DataFrame(labels_val).to_csv(output_path + 'labels.csv',index=None, header=None)
     
 
 def ddp_setup():

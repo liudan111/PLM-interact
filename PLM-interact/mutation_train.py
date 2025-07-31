@@ -72,19 +72,6 @@ class ESM2_MLM_classification(nn.Module):
         loss = loss_fct(logits, label.view(-1))
         return  loss,logits
 
-    def forward_test(self, label, lm_features):
-        lm_features = lm_features.to(self.device) 
-        features ={'input_ids':lm_features['input_ids'],'attention_mask':lm_features['attention_mask']}
-        embedding_output = self.esm_mask.base_model(**features, return_dict=True)
-        embedding=embedding_output.last_hidden_state[:,0,:] #cls token
-        embedding = F.relu(embedding)
-        logits = self.classifier(embedding)
-        logits=logits.view(-1)
-        pos_weight = torch.tensor([10], device=self.device)
-        loss_fct = nn.BCEWithLogitsLoss(pos_weight= pos_weight) if self.num_labels == 1 else nn.CrossEntropyLoss()
-        loss = loss_fct(logits, label.view(-1))
-        return  loss,logits
-        
 
 class PLM_mutation_classification(nn.Module):
     def __init__(self, plm_model, device):  
@@ -93,27 +80,25 @@ class PLM_mutation_classification(nn.Module):
         self.device = device
 
     def forward(self, labels, wild_features, mutant_features):
-        loss_wild,  wild_logits = self.PLM.forward_test(labels, wild_features)
-        loss_mutated, mutant_logits = self.PLM.forward_test(labels, mutant_features)
+        loss_wild,  wild_logits = self.PLM.forward(labels, wild_features)
+        loss_mutated, mutant_logits = self.PLM.forward(labels, mutant_features)
         logit_ratio = mutant_logits - wild_logits
-        pos_weight = torch.tensor([1.6], device=self.device)
-        loss_fn = nn.BCEWithLogitsLoss(pos_weight=pos_weight)
-        # loss_fn = nn.BCEWithLogitsLoss()   
+        pos_weight = torch.tensor([4.5], device=self.device)
+        loss_fn = nn.BCEWithLogitsLoss(pos_weight=pos_weight) 
         mutation_binary_loss = loss_fn(logit_ratio, labels.view(-1))
         return  mutation_binary_loss, logit_ratio
 
     def forward_test(self, labels, wild_features, mutant_features):
-        loss_wild,  wild_logits = self.PLM.forward_test(labels, wild_features)
-        loss_mutated,  mutant_logits = self.PLM.forward_test(labels, mutant_features)
+        loss_wild,  wild_logits = self.PLM.forward(labels, wild_features)
+        loss_mutated,  mutant_logits = self.PLM.forward(labels, mutant_features)
         logit_ratio = mutant_logits - wild_logits
-        pos_weight = torch.tensor([5], device=self.device)
+        pos_weight = torch.tensor([4.5], device=self.device)
         loss_fn = nn.BCEWithLogitsLoss(pos_weight=pos_weight)
         mutation_binary_loss = loss_fn(logit_ratio, labels.view(-1))
-        # return  mutation_binary_loss,  logit_ratio
         return  mutation_binary_loss,  logit_ratio,wild_logits,mutant_logits
 
 class CrossEncoder():
-    def __init__(self, model_name:str, num_labels:int = None, max_length:int = None, mlm_probability:float=None,  tokenizer_args:Dict = {}, automodel_args:Dict = {}, default_activation_function = None, embedding_size:int=None,checkpoint :str=None, weight_loss_class:int=0,weight_loss_mlm:int=0):
+    def __init__(self, model_name:str, num_labels:int = None, max_length:int = None,  tokenizer_args:Dict = {}, automodel_args:Dict = {}, default_activation_function = None, embedding_size:int=None,checkpoint :str=None, weight_loss_class:int=0,weight_loss_mlm:int=0):
         self.config = AutoConfig.from_pretrained(model_name)
         if 'SLURM_PROCID' in os.environ:
             os.environ['RANK'] = os.environ['SLURM_PROCID']
@@ -147,7 +132,6 @@ class CrossEncoder():
         self.tokenizer = AutoTokenizer.from_pretrained(model_name, **tokenizer_args)
         self.embedding_size = embedding_size
         self.max_length = max_length
-        self.mlm_probability=mlm_probability
 
         self.weight_loss_class=weight_loss_class
         self.weight_loss_mlm=weight_loss_mlm
@@ -159,7 +143,7 @@ class CrossEncoder():
         self.model = DDP(self.model, device_ids=[self.local_rank],find_unused_parameters=True)
 
         self.tokenizer.pad_token = self.tokenizer.eos_token
-        self.data_collator = DataCollatorForLanguageModeling(tokenizer=self.tokenizer, mlm_probability=self.mlm_probability)
+     
      
     def smart_batching_collate(self, batch):
         texts_group1 = []
@@ -185,84 +169,12 @@ class CrossEncoder():
             'texts': input_example.texts,  # list of texts for each example
             'label': input_example.label   # label (integer or float)
         }
-    def find_best_f1_and_threshold(self,scores, labels):
-        high_score_more_similar=True
-        assert len(scores) == len(labels)
-
-        scores = np.asarray(scores)
-        labels = np.asarray(labels)
-
-        rows = list(zip(scores, labels))
-        rows = sorted(rows, key=lambda x: x[0], reverse=high_score_more_similar)
-
-        best_f1 = best_precision = best_recall = 0
-        threshold = 0
-        nextract = 0
-        ncorrect = 0
-        total_num_duplicates = sum(labels)
-
-        for i in range(len(rows)-1):
-            score, label = rows[i]
-            nextract += 1
-            if label == 1:
-                ncorrect += 1
-
-            if ncorrect > 0:
-                precision = ncorrect / nextract
-                recall = ncorrect / total_num_duplicates
-                f1 = 2 * precision * recall / (precision + recall)
-                if f1 > best_f1:
-                    best_f1 = f1
-                    best_precision = precision
-                    best_recall = recall
-                    threshold = (rows[i][0] + rows[i + 1][0]) / 2
-
-        return best_f1, best_precision, best_recall, threshold
-    def calculate_metrics(self, y_true, pred_scores ):
-        threshold=0.5
-        preds = (pred_scores >= threshold).float()
-        tn, fp, fn, tp = confusion_matrix(y_true, preds).ravel()
-
-        accuracy= (tp + tn) / (tp + tn + fp + fn)
-        sensitivity = tp / (tp + fn)
-        specificity = tn / (tn + fp)
-        precision = tp / (tp + fp)
-        f1 = 2 * (precision * sensitivity) / (precision + sensitivity)
-     
-        return accuracy, specificity, f1
     
-
-    # def train(self,args,
-    #         eval_train_samples:List[InputExample]= None,
-    #         dev_samples:List[InputExample]= None,
-    #         test_samples:List[InputExample]= None,
-    #         batch_size_train: int = 1,
-    #         batch_size_val: int = 1,  
-    #         save_every_steps:int=1000,
-    #         epochs: int = 1,
-    #         loss_fct = None,
-    #         activation_fct = nn.Identity(),
-    #         scheduler: str = 'WarmupLinear',
-    #         warmup_steps: int = 10000,
-    #         optimizer_class: Type[Optimizer] = torch.optim.AdamW, 
-    #         optimizer_params: Dict[str, object] = {'lr': 2e-5},
-    #         weight_decay: float = 0.01,
-    #         evaluation_steps: int = 0,
-    #         output_path: str = None,
-    #         save_best_model: bool = True,
-    #         max_grad_norm: float = 1,
-    #         use_amp: bool = False,
-    #         callback: Callable[[float, int, int], None] = None,
-    #         show_progress_bar: bool = True,
-    #         gradient_accumulation_steps: int=1,
-    #         ):
-
     def train(self,args,
             train_samples:List[InputExample]= None,
             eval_train_samples:List[InputExample]= None,
             batch_size_train: int = 1,
             batch_size_val: int = 1,  
-            save_every_steps:int=1000,
             epochs: int = 1,
             loss_fct = None,
             activation_fct = nn.Identity(),
@@ -271,7 +183,6 @@ class CrossEncoder():
             optimizer_class: Type[Optimizer] = torch.optim.AdamW, 
             optimizer_params: Dict[str, object] = {'lr': 2e-5},
             weight_decay: float = 0.01,
-            evaluation_steps: int = 0,
             output_path: str = None,
             save_best_model: bool = True,
             max_grad_norm: float = 1,
@@ -288,7 +199,6 @@ class CrossEncoder():
         if output_path is not None:
             os.makedirs(output_path, exist_ok=True)
 
-
         train_dicts = [self.input_example_to_dict(example) for example in train_samples]
         train_dataset = Dataset.from_dict({
             'texts': [item['texts'] for item in train_dicts],
@@ -300,10 +210,8 @@ class CrossEncoder():
         #                 'texts': [item['texts'] for item in dev_dicts],
         #                 'label': [item['label'] for item in dev_dicts]
         # })
-
         # self.max_length= 2195
         train_dataloader = DataLoader(train_dataset,batch_size=args.batch_size_train,shuffle=False,sampler =  DistributedSampler(train_dataset))
-
         train_dataloader.collate_fn = self.smart_batching_collate
 
         num_train_steps = int(len(train_dataloader) * epochs)
@@ -326,7 +234,6 @@ class CrossEncoder():
                 checkpoint_path = args.resume_from_checkpoint
                 load_checkpoint= torch.load(checkpoint_path,map_location='cpu')
                 optimizer.load_state_dict(load_checkpoint["optimizer"])
-          
                 self.model.module.PLM.load_state_dict(load_checkpoint['model'])
 
         skip_scheduler = False
@@ -335,7 +242,6 @@ class CrossEncoder():
                 self.model.train()
                 train_dataloader.sampler.set_epoch(epoch)
                 for batch_idx, (features_wild, feature_mutant, labels) in enumerate(train_dataloader):
-
                     features_wild  =  features_wild.to(self.device)
                     feature_mutant  =  feature_mutant.to(self.device)
                     labels=labels.to(self.device) 
@@ -346,7 +252,6 @@ class CrossEncoder():
                                 with torch.amp.autocast("cuda"):
                                     loss_value,  logit_ratio = self.model.forward(labels,features_wild,feature_mutant)
                                     loss_value = loss_value / gradient_accumulation_steps
-                               
                                 scaler.scale(loss_value).backward()
                         else:
                             with torch.amp.autocast("cuda"):
@@ -385,10 +290,8 @@ class CrossEncoder():
                     checkpoint = {'model':raw_model.state_dict(),'epoch':epoch,  'loss':loss_value,'best_score': self.best_score}
                     torch.save(checkpoint, os.path.join(output_path, args.task_name + '_epoch_' + str(epoch) +'.pt'))
 
-                self.max_length= 4073
-                self.val(args, dev_dataset, batch_size_val= batch_size_val, convert_to_numpy=True,  apply_softmax= True, output_path=output_path, epoch=epoch)
-
-                  
+                # self.max_length= 4073
+                # self.val(args, dev_dataset, batch_size_val= batch_size_val, convert_to_numpy=True,  apply_softmax= True, output_path=output_path, epoch=epoch)
 
     def val(self, args,dev_dataset,batch_size_val:int=32,apply_softmax = False,convert_to_numpy: bool = True,convert_to_tensor: bool = False,output_path:str=None, epoch:int=0):
                     self.model.eval()
@@ -438,74 +341,7 @@ class CrossEncoder():
                                 self.best_score = ap_score
                                 self.best_epoch=epoch
 
-    def predict(self, args,test_dataset,batch_size_predict:int=32,apply_softmax = False,convert_to_numpy: bool = True,convert_to_tensor: bool = False,output_path:str=None,epoch:int=0,):
-        input_was_string = False
-        self.model.eval()
-        self.model.to(self.device)
-        pred_scores = []
-        labels_val=[]
-        loss_value=[]
-        wild_scores_value=[]
-        mutant_scores_value=[]
-
-        test_sampler = SequentialDistributedSampler(test_dataset)
-        inp_dataloader = DataLoader(test_dataset, batch_size=batch_size_predict,sampler= test_sampler,shuffle=False, collate_fn = self.smart_batching_collate)
-
-        with torch.no_grad():
-            for batch_idx, (features_wild, feature_mutant, labels) in enumerate(inp_dataloader):
-                features_wild  =  features_wild.to(self.device)
-                feature_mutant  =  feature_mutant.to(self.device)
-                labels=labels.to(self.device) 
-                loss, logits ,wild_logits,mutant_logits= self.model.module.forward_test(labels,features_wild,feature_mutant)
-                loss_value.append(loss)
-                pred_scores.extend(logits)
-                wild_scores_value.append(wild_logits)
-                mutant_scores_value.append(mutant_logits)
-                labels_val.extend(labels) 
-
-        pred_scores = distributed_concat(torch.stack(pred_scores),  len(test_sampler.dataset))
-        wild_scores_value = distributed_concat(torch.stack(wild_scores_value),  len(test_sampler.dataset))
-        mutant_scores_value = distributed_concat(torch.stack(mutant_scores_value),  len(test_sampler.dataset))
-        labels_val = distributed_concat(torch.stack(labels_val),  len(test_sampler.dataset))
-        loss_value = distributed_concat(torch.stack(loss_value),  len(test_sampler.dataset))
-
-        if self.master_process:
-            if convert_to_tensor:
-                pred_scores = torch.stack(pred_scores)
-            elif convert_to_numpy:
-                pred_scores = np.asarray([score.cpu().detach().numpy() for score in pred_scores])
-                wild_scores_value = np.asarray([score.cpu().detach().numpy() for score in wild_scores_value])
-                mutant_scores_value = np.asarray([score.cpu().detach().numpy() for score in mutant_scores_value])
-                labels_val = np.asarray([label.cpu().detach().numpy() for label in labels_val])
-            loss = torch.mean(loss_value)
-
-            pred_scores = torch.tensor(pred_scores, dtype=torch.float32)
-            pred_scores = torch.sigmoid(pred_scores)
-
-            wild_scores_value = torch.tensor(wild_scores_value, dtype=torch.float32)
-            wild_scores_value = torch.sigmoid(wild_scores_value)
-
-            mutant_scores_value = torch.tensor(mutant_scores_value, dtype=torch.float32)
-            mutant_scores_value = torch.sigmoid(mutant_scores_value)
-
-            pd.DataFrame(pred_scores).to_csv(output_path + 'epoch_' + str(epoch) + '_pred_scores.csv', index=None, header=None)
-
-            pd.DataFrame(wild_scores_value).to_csv(output_path + 'epoch_' + str(epoch) + '_wild_pred_scores.csv', index=None, header=None)
-            pd.DataFrame(mutant_scores_value).to_csv(output_path + 'epoch_' + str(epoch) + '_mutant_pred_scores.csv', index=None, header=None)
-
-            ap_score = average_precision_score(labels_val, pred_scores)
-            auroc = roc_auc_score(labels_val, pred_scores)
-
-            logger.info(f"predict_epoch:{epoch} ap_score: {ap_score} auroc: {auroc}")
-            csv_headers = ['epoch', "loss", "precision-recall auc","auroc"]
-            csv_path = os.path.join(output_path + args.task_name + '_predict_metrics.csv')
-            output_file_exists = os.path.isfile(csv_path)
-            with open(csv_path, mode="a" if output_file_exists else 'w', encoding="utf-8") as f:
-                writer = csv.writer(f)
-                if not output_file_exists:
-                    writer.writerow(csv_headers)
-                writer.writerow([epoch, loss.item(),ap_score,auroc])
-
+    
 def ddp_setup():
     if 'SLURM_PROCID' in os.environ:
         os.environ['RANK'] = os.environ['SLURM_PROCID']
@@ -585,35 +421,19 @@ def main(args,argsDict):
     resume_from_checkpoint= args.resume_from_checkpoint
     output_path= args.output_path
 
-    trainer = CrossEncoder(model_path, num_labels=1, max_length=args.max_length, mlm_probability=args.mlm_probability,embedding_size=args.embedding_size,checkpoint = resume_from_checkpoint, weight_loss_class=args.weight_loss_class,weight_loss_mlm=args.weight_loss_mlm)
+    trainer = CrossEncoder(model_path, num_labels=1, max_length=args.max_length, embedding_size=args.embedding_size,checkpoint = resume_from_checkpoint, weight_loss_class=args.weight_loss_class,weight_loss_mlm=args.weight_loss_mlm)
 
     train_samples, eval_train_samples = load_train_objs(args.train_filepath), load_test_objs(args.train_filepath)
     
     trainer.train(args,
                 train_samples= train_samples,
                 eval_train_samples= eval_train_samples,
-                save_every_steps=args.save_every_steps,
                 epochs = args.epochs,
                 warmup_steps= args.warmup_steps,
-                evaluation_steps=args.evaluation_steps,
                 output_path= output_path,
                 use_amp=True,
                 gradient_accumulation_steps=args.gradient_accumulation_steps
                 )
-
-    # eval_train_samples, dev_samples, test_samples= load_test_objs(args.train_filepath), load_test_objs(args.dev_filepath),  load_test_objs(args.test_filepath)  
-    # trainer.train(args,
-    #             eval_train_samples= eval_train_samples,
-    #             dev_samples=dev_samples,
-    #             test_samples=test_samples,
-    #             save_every_steps=args.save_every_steps,
-    #             epochs = args.epochs,
-    #             warmup_steps= args.warmup_steps,
-    #             evaluation_steps=args.evaluation_steps,
-    #             output_path= output_path,
-    #             use_amp=True,
-    #             gradient_accumulation_steps=args.gradient_accumulation_steps
-    #             )
     destroy_process_group()
 
 if __name__ == "__main__":
@@ -621,7 +441,6 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='simple distributed training job')
     parser.add_argument('--epochs', type=int, help='Total epochs to train the model')
     parser.add_argument('--max_train_steps', default=None, type=int, help='max_train_steps')
-    parser.add_argument('--save_every_steps', type=int, default=1000,help='save every && step')
     parser.add_argument("--resume_from_checkpoint",type=str,default=None,help="If the training should continue from a checkpoint folder.")
 
     parser.add_argument("--resume_checkpoint",type=str,default=None,help="If the training should continue from a checkpoint folder.")
@@ -642,15 +461,12 @@ if __name__ == "__main__":
 
     parser.add_argument('--test_filepath', type=str, help='test_filepath')
 
-    parser.add_argument('--mlm_probability', type=float, default=0.15,help='mlm_probability')
-
     parser.add_argument('--output_path', type=str, help='output_path')
     parser.add_argument('--model_name', type=str, help='model_name')
     parser.add_argument('--embedding_size', type=int, help='embedding_size')
     parser.add_argument('--warmup_steps', default=2000,type=int, help='warmup_steps')
     parser.add_argument('--gradient_accumulation_steps', type=int, help='gradient_accumulation_steps')
     parser.add_argument('--max_length', type=int, help='max_length')
-    parser.add_argument('--evaluation_steps', type=int, help='evaluation_steps')
 
     parser.add_argument('--weight_loss_mlm', default=1, type=int, help='weight_loss_mlm')  
     parser.add_argument('--weight_loss_class', default=1, type=int, help='weight_loss_class')  
