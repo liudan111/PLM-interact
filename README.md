@@ -121,8 +121,8 @@ with torch.no_grad():
 ```
 
 ## Model checkpoints are available on 🤗 Hugging Face
-#### Trianing on human PPIs from https://d-script.readthedocs.io/en/stable/data.html
-Datasets:
+#### 1. Trianing on human PPIs from https://d-script.readthedocs.io/en/stable/data.html
+Dataset:
 [danliu1226/cross_species_benchmarking](https://huggingface.co/datasets/danliu1226/cross_species_benchmarking/tree/main)
 
 Trained models:
@@ -130,28 +130,28 @@ Trained models:
 
 [danliu1226/PLM-interact-35M-humanV11](https://huggingface.co/danliu1226/PLM-interact-35M-humanV11/tree/main)
 
-#### Trianing on virus-human PPIs from (http://kurata35.bio.kyutech.ac.jp/LSTM-PHV/download_page)
-Datasets:
+#### 2. Trianing on virus-human PPIs from http://kurata35.bio.kyutech.ac.jp/LSTM-PHV/download_page
+Dataset:
 [danliu1226/virus_human_benchmarking](https://huggingface.co/datasets/danliu1226/virus_human_benchmarking)
 
 Trained model:
 [danliu1226/PLM-interact-650M-VH](https://huggingface.co/danliu1226/PLM-interact-650M-VH/tree/main)
 
-#### Training on Human PPIs obtained from a leakage-free dataset
+#### 3. Training on Human PPIs obtained from a leakage-free dataset (https://doi.org/10.6084/m9.figshare.21591618.v3)
 Dataset:
 [danliu1226/Bernett_benchmarking](https://huggingface.co/datasets/danliu1226/Bernett_benchmarking)
 
 Trained model:
 [danliu1226/PLM-interact-650M-Leakage-Free-Dataset](https://huggingface.co/danliu1226/PLM-interact-650M-Leakage-Free-Dataset/tree/main)
 
-#### Fine-tuning PLM-inetract with a mutation dataset
+#### 4. Fine-tuning PLM-inetract with a mutation dataset (https://ftp.ebi.ac.uk/pub/databases/intact/current/various/mutations.tsv).
 Dataset:
 [danliu1226/Mutation_effect_dataset](https://huggingface.co/datasets/danliu1226/Mutation_effect_dataset)
 
 Trained model:
 [danliu1226/PLM-interact-650M-Mutation](https://huggingface.co/danliu1226/PLM-interact-650M-Mutation/tree/main)
 
-#### Trianing on Human PPIs from STRING V12
+#### 5. Trianing on Human PPIs from STRING V12 (https://stringdb-downloads.org/download/protein.physical.links.v12.0.txt.gz)
 [danliu1226/PLM-interact-650M-humanV12](https://huggingface.co/danliu1226/PLM-interact-650M-humanV12/tree/main)
 
 
