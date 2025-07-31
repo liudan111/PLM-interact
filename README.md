@@ -121,7 +121,7 @@ with torch.no_grad():
 ```
 
 ## Model checkpoints are available on 🤗 Hugging Face
-#### Trained on human PPIs from (https://d-script.readthedocs.io/en/stable/data.html)
+#### Trianing on human PPIs from https://d-script.readthedocs.io/en/stable/data.html
 Datasets:
 [danliu1226/cross_species_benchmarking](https://huggingface.co/datasets/danliu1226/cross_species_benchmarking/tree/main)
 
@@ -130,14 +130,28 @@ Trained models:
 
 [danliu1226/PLM-interact-35M-humanV11](https://huggingface.co/danliu1226/PLM-interact-35M-humanV11/tree/main)
 
-#### Trained on virus-human PPIs from (http://kurata35.bio.kyutech.ac.jp/LSTM-PHV/download_page)
+#### Trianing on virus-human PPIs from (http://kurata35.bio.kyutech.ac.jp/LSTM-PHV/download_page)
 Datasets:
 [danliu1226/virus_human_benchmarking](https://huggingface.co/datasets/danliu1226/virus_human_benchmarking)
 
 Trained model:
 [danliu1226/PLM-interact-650M-VH](https://huggingface.co/danliu1226/PLM-interact-650M-VH/tree/main)
 
-#### Trained on Human PPIs from STRING V12
+#### Training on Human PPIs obtained from a leakage-free dataset
+Dataset:
+[danliu1226/Bernett_benchmarking](https://huggingface.co/datasets/danliu1226/Bernett_benchmarking)
+
+Trained model:
+[danliu1226/PLM-interact-650M-Leakage-Free-Dataset](https://huggingface.co/danliu1226/PLM-interact-650M-Leakage-Free-Dataset/tree/main)
+
+#### Fine-tuning PLM-inetract with a mutation dataset
+Dataset:
+[danliu1226/Mutation_effect_dataset](https://huggingface.co/datasets/danliu1226/Mutation_effect_dataset)
+
+Trained model:
+[danliu1226/PLM-interact-650M-Mutation](https://huggingface.co/danliu1226/PLM-interact-650M-Mutation/tree/main)
+
+#### Trianing on Human PPIs from STRING V12
 [danliu1226/PLM-interact-650M-humanV12](https://huggingface.co/danliu1226/PLM-interact-650M-humanV12/tree/main)
 
 
