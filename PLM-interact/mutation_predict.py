@@ -28,7 +28,7 @@ from transformers import AutoModel,AutoModelForMaskedLM
 import torch.nn.functional as F
 import pandas as pd
 from datasets import Dataset
-# from utils import distributed_concat,SequentialDistributedSampler
+
 from torch.utils.data import TensorDataset
 from transformers import DataCollatorForLanguageModeling
 logger = logging.getLogger(__name__)
@@ -82,6 +82,11 @@ class PLM_mutation_classification(nn.Module):
         loss_fn = nn.BCEWithLogitsLoss(pos_weight=pos_weight)
         mutation_binary_loss = loss_fn(logit_ratio, labels.view(-1))
         return  mutation_binary_loss,  logit_ratio,wild_logits,mutant_logits
+
+''' The CrossEncoder function is modified based on the CrossEncoder function from the Sentence-Transformers library: 
+https://github.com/UKPLab/sentence-transformers/blob/master/sentence_transformers/cross_encoder/CrossEncoder.py
+and the Sentence-Transformers library is under Apache License 2.0
+'''
 
 class CrossEncoder():
     def __init__(self, model_name:str, num_labels:int = None, max_length:int = None,  tokenizer_args:Dict = {}, automodel_args:Dict = {}, default_activation_function = None, embedding_size:int=None,checkpoint :str=None, weight_loss_class:int=0,weight_loss_mlm:int=0):

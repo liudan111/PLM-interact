@@ -43,9 +43,21 @@ from utils.ddp import ddp_setup, distributed_concat,SequentialDistributedSampler
 
 logger = logging.getLogger(__name__)
 
-''' This code is modified based on the CrossEncoder function from the Sentence-Transformers library: 
-https://github.com/UKPLab/sentence-transformers/blob/master/sentence_transformers/cross_encoder/CrossEncoder.py'''
+''' The trianing code is modified based on the CrossEncoder function from the Sentence-Transformers library: 
+https://github.com/UKPLab/sentence-transformers/blob/master/sentence_transformers/cross_encoder/CrossEncoder.py 
+Original license: Apache License 2.0
+'''
 
+'''
+The gradient_accumulation_steps in this code is inspired by https://github.com/huggingface/transformers/blob/main/examples/pytorch/language-modeling/run_mlm_no_trainer.py 
+Original license: Apache License 2.0
+# Copyright 2021 The HuggingFace Inc. team. All rights reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# http://www.apache.org/licenses/LICENSE-2.0
+'''
 class CrossEncoder():
     def __init__(self, model_name:str, num_labels:int = None, max_length:int = None, tokenizer_args:Dict = {}, automodel_args:Dict = {}, default_activation_function = None,checkpoint :str=None):
         self.config = AutoConfig.from_pretrained(model_name)

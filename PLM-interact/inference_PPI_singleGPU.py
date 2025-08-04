@@ -63,8 +63,10 @@ class PLMinteract(nn.Module):
     probability = torch.sigmoid(logits)
     return  probability
   
-''' The follwing code is modified based on the CrossEncoder function from the Sentence-Transformers library: 
-https://github.com/UKPLab/sentence-transformers/blob/master/sentence_transformers/cross_encoder/CrossEncoder.py'''
+''' The CrossEncoder function is modified based on the CrossEncoder function from the Sentence-Transformers library: 
+https://github.com/UKPLab/sentence-transformers/blob/master/sentence_transformers/cross_encoder/CrossEncoder.py
+and the Sentence-Transformers library is under Apache License 2.0
+'''
 class CrossEncoder():
     def __init__(self, model_name:str, num_labels:int = None, max_length:int = None, tokenizer_args:Dict = {}, automodel_args:Dict = {}, default_activation_function = None, embedding_size:int=None,weight_loss_class:int=0,weight_loss_mlm:int=0,checkpoint :str=None):
         self.config = AutoConfig.from_pretrained(model_name)

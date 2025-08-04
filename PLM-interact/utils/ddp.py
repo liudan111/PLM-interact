@@ -31,6 +31,7 @@ def ddp_setup():
 class SequentialDistributedSampler(Sampler):
     """
     from https://github.com/cpystan/Wsi-Caption/blob/master/modules/dataloaders.py
+    # License: MIT License 
 
     Distributed Sampler that subsamples indicies sequentially,
     making it easier to collate all results at the end.

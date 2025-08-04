@@ -76,8 +76,11 @@ class PLMinteract(nn.Module):
  
     return  loss, logits,probability
   
-''' The follwing code is modified based on the CrossEncoder function from the Sentence-Transformers library: 
-https://github.com/UKPLab/sentence-transformers/blob/master/sentence_transformers/cross_encoder/CrossEncoder.py'''
+''' The CrossEncoder function is modified based on the CrossEncoder function from the Sentence-Transformers library: 
+https://github.com/UKPLab/sentence-transformers/blob/master/sentence_transformers/cross_encoder/CrossEncoder.py
+and the Sentence-Transformers library is under Apache License 2.0
+'''
+
 class CrossEncoder():
     def __init__(self, model_name:str, num_labels:int = None, max_length:int = None, tokenizer_args:Dict = {}, automodel_args:Dict = {}, default_activation_function = None, embedding_size:int=None,checkpoint :str=None):
         self.config = AutoConfig.from_pretrained(model_name)
@@ -118,21 +121,9 @@ class CrossEncoder():
 
         self.model = self.model.to(self.device)
         self.model = DDP(self.model, device_ids=[self.local_rank],find_unused_parameters=True)
-        # mask language model training setting
         self.tokenizer.pad_token = self.tokenizer.eos_token
         self.data_collator = DataCollatorForLanguageModeling(tokenizer=self.tokenizer, mlm_probability=0.15)
   
-        if default_activation_function is not None:
-            self.default_activation_function = default_activation_function
-            try:
-                self.config.sbert_ce_default_activation_function = util.fullname(self.default_activation_function)
-            except Exception as e:
-                logger.warning("Was not able to update config about the default_activation_function: {}".format(str(e)) )
-        elif hasattr(self.config, 'sbert_ce_default_activation_function') and self.config.sbert_ce_default_activation_function is not None:
-            self.default_activation_function = util.import_from_string(self.config.sbert_ce_default_activation_function)()
-        else:
-            self.default_activation_function = nn.Sigmoid() if self.config.num_labels == 1 else nn.Identity()
-
     def smart_batching_collate(self,batch):
             texts = [[] for _ in range(len(batch[0].texts))]
             labels = []
@@ -142,7 +133,6 @@ class CrossEncoder():
                     texts[idx].append(text.strip())
                 labels.append(example.label)
             
-
             tokenized = self.tokenizer(*texts, padding=True, truncation='longest_first', return_tensors="pt", max_length=self.max_length)
             labels = torch.tensor(labels, dtype=torch.float if self.config.num_labels == 1 else torch.long).to(self.device)
         

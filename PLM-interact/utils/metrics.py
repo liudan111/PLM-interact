@@ -1,7 +1,8 @@
 import numpy as np
 
 ''' This code is modified based on the evaluation function from the Sentence-Transformers library: 
-https://github.com/UKPLab/sentence-transformers/blob/master/sentence_transformers/evaluation/BinaryClassificationEvaluator.py'''
+https://github.com/UKPLab/sentence-transformers/blob/master/sentence_transformers/evaluation/BinaryClassificationEvaluator.py,  and the Sentence-Transformers library is under Apache License 2.0'''
+
 
 
 def find_best_acc_and_threshold(scores, labels,):
