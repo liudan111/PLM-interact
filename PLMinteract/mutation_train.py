@@ -1,5 +1,5 @@
 """
-Predict mutant effects in human PPIs.
+Fine-tuning in the binary mutation effect task
 """
 import os
 from torch.utils.data import WeightedRandomSampler,DataLoader,SubsetRandomSampler

@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Usage &mdash; PLM-interact v0.1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Installation" href="installation.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            PLM-interact
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Usage</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#quick-start">Quick start</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#predict-a-list-ppis">Predict a list PPIs</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#there-are-6-commands-in-plm-interact-package">There are 6 commands in PLM-interact package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#ppi-prediction">PPI prediction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#training-ppi-models-using-mask-and-binary-classification-losses">Training PPI models using mask and binary classification losses.</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#training-ppi-models-using-only-binary-classification-loss">Training PPI models using only binary classification loss.</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#evaluation-and-test-with-multi-nodes-and-multi-gpus">Evaluation and test with multi nodes and multi GPUs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#fine-tuning-in-the-binary-mutation-effect-task">Fine-tuning in the binary mutation effect task.</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#inference-in-the-binary-mutation-effect-task">Inference in the binary mutation effect task.</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">PLM-interact</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Usage</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/usage.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="usage">
+<h1>Usage<a class="headerlink" href="#usage" title="Permalink to this heading"></a></h1>
+<section id="quick-start">
+<span id="id1"></span><h2>Quick start<a class="headerlink" href="#quick-start" title="Permalink to this heading"></a></h2>
+<section id="predict-a-list-ppis">
+<h3>Predict a list PPIs<a class="headerlink" href="#predict-a-list-ppis" title="Permalink to this heading"></a></h3>
+<p>To predict a list of PPIs, you can download pre-trained models from <a class="reference external" href="https://huggingface.co/danliu1226">Hugging Face</a>.
+Protein sequnce pair should be listed as follwing format:
+Required Input:</p>
+<blockquote>
+<div><dl class="simple">
+<dt>(–test_filepath): A CSV file with the following two columns:</dt><dd><p>‘query’: The sequence of protein 1.
+‘text’: The sequence of protein 2.</p>
+</dd>
+</dl>
+<p>(–resume_from_checkpoint): the traiend model that can be downldoed from <cite>Hugging Face &lt;https://huggingface.co/danliu1226&gt;</cite>.</p>
+<p>(–offline_model_path): The</p>
+<p>(–output_filepath): a path to save the results.</p>
+</div></blockquote>
+</section>
+</section>
+<section id="there-are-6-commands-in-plm-interact-package">
+<h2>There are 6 commands in PLM-interact package<a class="headerlink" href="#there-are-6-commands-in-plm-interact-package" title="Permalink to this heading"></a></h2>
+<ul class="simple">
+<li><p><cite>inference_PPI</cite>: PPI prediction.</p></li>
+<li><p><cite>train_mlm</cite>: Training PPI models using mask and binary classification losses.</p></li>
+<li><p><cite>train_binary</cite>: Training PPI models using only binary classification loss.</p></li>
+<li><p><cite>predict_ddp</cite>: Choose the best trained checkpoints by testing on the validation datasets and evaluate the model’s performance on the test datasets.</p></li>
+<li><p><cite>mutation_train</cite>:Fine-tuning in the binary mutation effect task.</p></li>
+<li><p><cite>mutation_predict</cite>: Inference in the binary mutation effect task.</p></li>
+</ul>
+<section id="ppi-prediction">
+<h3>PPI prediction<a class="headerlink" href="#ppi-prediction" title="Permalink to this heading"></a></h3>
+</section>
+<section id="training-ppi-models-using-mask-and-binary-classification-losses">
+<h3>Training PPI models using mask and binary classification losses.<a class="headerlink" href="#training-ppi-models-using-mask-and-binary-classification-losses" title="Permalink to this heading"></a></h3>
+</section>
+<section id="training-ppi-models-using-only-binary-classification-loss">
+<h3>Training PPI models using only binary classification loss.<a class="headerlink" href="#training-ppi-models-using-only-binary-classification-loss" title="Permalink to this heading"></a></h3>
+</section>
+<section id="evaluation-and-test-with-multi-nodes-and-multi-gpus">
+<h3>Evaluation and test with multi nodes and multi GPUs<a class="headerlink" href="#evaluation-and-test-with-multi-nodes-and-multi-gpus" title="Permalink to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>usage: PLMinteract predict_ddp [-h] [--epochs EPOCHS] [--resume_from_checkpoint RESUME_FROM_CHECKPOINT]
+                              [--offline_model_path OFFLINE_MODEL_PATH] [--seed SEED]
+                              [--batch_size_val BATCH_SIZE_VAL] [--dev_filepath DEV_FILEPATH]
+                              [--test_filepath TEST_FILEPATH] [--output_filepath OUTPUT_FILEPATH]
+                              [--model_name MODEL_NAME] [--embedding_size EMBEDDING_SIZE] [--max_length MAX_LENGTH]
+
+Choose the best trained checkpoints by testing on the validation datasets and evaluate the model&#39;s performance on the
+test datasets.
+
+options:
+-h, --help            show this help message and exit
+--epochs EPOCHS       Total epochs of trained model
+--resume_from_checkpoint RESUME_FROM_CHECKPOINT
+                        If the training should continue from a checkpoint folder.
+--offline_model_path OFFLINE_MODEL_PATH
+                        offline model path
+--seed SEED           seed
+--batch_size_val BATCH_SIZE_VAL
+                        Input train batch size on each device (default: 32)
+--dev_filepath DEV_FILEPATH
+                        dev_filepath
+--test_filepath TEST_FILEPATH
+                        test_filepath
+--output_filepath OUTPUT_FILEPATH
+                        output_filepath
+--model_name MODEL_NAME
+                        model_name
+--embedding_size EMBEDDING_SIZE
+                        embedding_size
+--max_length MAX_LENGTH
+                        max_length
+</pre></div>
+</div>
+</section>
+<section id="fine-tuning-in-the-binary-mutation-effect-task">
+<h3>Fine-tuning in the binary mutation effect task.<a class="headerlink" href="#fine-tuning-in-the-binary-mutation-effect-task" title="Permalink to this heading"></a></h3>
+</section>
+<section id="inference-in-the-binary-mutation-effect-task">
+<h3>Inference in the binary mutation effect task.<a class="headerlink" href="#inference-in-the-binary-mutation-effect-task" title="Permalink to this heading"></a></h3>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="installation.html" class="btn btn-neutral float-left" title="Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Dan Liu.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

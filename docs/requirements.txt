@@ -1,0 +1,12 @@
+transformers==4.40.1
+sentence_transformers
+numpy
+datasets
+scipy
+pandas
+torch>=2.0.1
+matplotlib
+biopython
+seaborn
+scikit-learn
+huggingface_hub
