@@ -273,7 +273,9 @@ Fine-tuning in the binary mutation effect task.
 
 Inference in the binary mutation effect task.
 ------------
+
 .. code-block:: bash
+
    usage: PLMinteract mutation_predict [-h] [--seed SEED] [--task_name TASK_NAME] --test_filepath TEST_FILEPATH --output_path
                                     OUTPUT_PATH --resume_from_checkpoint RESUME_FROM_CHECKPOINT
                                     [--weight_loss_mlm WEIGHT_LOSS_MLM] [--weight_loss_class WEIGHT_LOSS_CLASS]
