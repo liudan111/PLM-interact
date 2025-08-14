@@ -1,3 +1,6 @@
+"""
+Training PPI models using only binary classification loss.
+"""
 import os
 import datasets
 from datasets import Dataset
@@ -10,7 +13,7 @@ import csv
 import argparse
 import numpy as np
 import logging
-from typing import Dict, Type, Callable, List
+from typing import Dict, Type, Callable, List,NamedTuple
 import torch
 import random
 import math
@@ -31,13 +34,7 @@ import torch.nn.functional as F
 from transformers.utils import check_min_version, send_example_telemetry
 from transformers.utils.versions import require_version
 from datetime import timedelta
-from sklearn.metrics import (
-    average_precision_score,
-    precision_recall_curve,
-    roc_auc_score,
-    roc_curve,
-)
-
+from sklearn.metrics import average_precision_score
 from utils.data_load import load_train_objs, load_val_objs
 from utils.ddp import ddp_setup, distributed_concat,SequentialDistributedSampler
 
@@ -135,7 +132,6 @@ class CrossEncoder():
             dev_samples:List[InputExample]= None,
             batch_size_train: int = 1,
             batch_size_val: int = 1,         
-            save_every_steps:int=1000,
             epochs: int = 1,
             loss_fct = None,
             activation_fct = None,
@@ -145,7 +141,6 @@ class CrossEncoder():
             optimizer_params: Dict[str, object] = {'lr': 2e-5},
             weight_decay: float = 0.01,
             evaluation_steps: int = 0,
-            eval_iters:int=1,
             output_path: str = None,
             save_best_model: bool = True,
             max_grad_norm: float = 1,
@@ -200,7 +195,7 @@ class CrossEncoder():
         logger.info(f"  Num Epochs = {args.epochs}")
         logger.info(f"  Instantaneous batch size per device = {batch_size_train}")
         logger.info(f"  Gradient Accumulation steps = {gradient_accumulation_steps}")
-        # Potentially load in the weights and states from a previous save
+  
         if args.resume_from_checkpoint:
             if args.resume_from_checkpoint is not None or args.resume_from_checkpoint != "":
                 checkpoint_path = args.resume_from_checkpoint
@@ -265,8 +260,10 @@ class CrossEncoder():
                                 writer.writerow([epoch,training_steps,completed_steps,loss.item()])
                             completed_steps += 1  
   
-                if (training_steps % args.evaluation_steps == 0): 
+                if self.master_process and (training_steps % args.evaluation_steps == 0): 
                     self.train_eval(args,train_samples=train_samples,batch_size_val = batch_size_val,training_steps=training_steps, sub_samples=args.sub_samples, output_path= output_path,loss_fct=loss_fct)
+
+                    self.eval(args,dev_samples=dev_samples, batch_size_val = batch_size_val,training_steps=training_steps, sub_samples = args.sub_samples, output_path= output_path,loss_fct=loss_fct)
 
                     self.predict(args,batch_size_val = batch_size_val,training_steps=training_steps, sub_samples = args.sub_samples, output_path= output_path,loss_fct=loss_fct)
                     
@@ -326,9 +323,6 @@ class CrossEncoder():
                 pred_scores = np.asarray([score.cpu().detach().numpy() for score in pred_scores])
                 labels_val = np.asarray([label.cpu().detach().numpy() for label in labels_val])
 
-                # pd.DataFrame(labels_val).to_csv(output_path + 'labels_train.csv', index=None, header=None)
-                # pd.DataFrame(pred_scores).to_csv(output_path + 'pred_scores_train.csv', index=None, header=None)
-                        
                 loss = torch.mean(loss_value)
                 ap_score = average_precision_score(labels_val, pred_scores)
                 csv_headers = ['training_steps', "train_loss", "precision-recall auc"]
@@ -349,7 +343,6 @@ class CrossEncoder():
             activation_fct = None,
             loss_fct=None
             ):
-
             if activation_fct is None:
                 activation_fct = self.default_activation_function
 
@@ -387,9 +380,7 @@ class CrossEncoder():
                 labels_val = np.asarray([label.cpu().detach().numpy() for label in labels_val])
                 loss = torch.mean(loss_value)
 
-                # print(pred_scores)
                 ap_score = average_precision_score(labels_val, pred_scores)
-
                 csv_headers = ['training_steps', "val_loss", "precision-recall auc"]
                 csv_path = os.path.join(output_path + 'predict_metrics_val.csv')
                 output_file_exists = os.path.isfile(csv_path)
@@ -400,7 +391,6 @@ class CrossEncoder():
                     writer.writerow([training_steps,loss.item(),ap_score])  
     
     def predict(self, args,
-               hostname:str=None,
                batch_size_val:int=32,
                training_steps=1,
                sub_samples=100,
@@ -411,10 +401,7 @@ class CrossEncoder():
 
         if activation_fct is None:
                 activation_fct = self.default_activation_function
-
-
         test_samples = load_val_objs(args.test_filepath)
-    
         indices= random.sample(range(0, len(test_samples)), sub_samples)
         sub_sampler = SubsetRandomSampler(indices)
         test_sampler = SequentialDistributedSampler(sub_sampler)
@@ -449,7 +436,6 @@ class CrossEncoder():
             loss = torch.mean(loss_value)
 
             ap_score = average_precision_score(labels_val, pred_scores)
-
             csv_headers = ['training_steps',"test_loss", "precision-recall auc"]
             csv_path = os.path.join(output_path + 'predict_metrics_test.csv')
             output_file_exists = os.path.isfile(csv_path)
@@ -459,8 +445,51 @@ class CrossEncoder():
                     writer.writerow(csv_headers)
                 writer.writerow([training_steps, loss.item(), ap_score])  
 
+class Train_binary_Arguments(NamedTuple):
+    epochs:int
+    offline_model_path:str
+    resume_from_checkpoint:str
+    seed:int
+    data:str
+    task_name:str
+    batch_size_train:int
+    batch_size_val:int
+    train_filepath:str
+    dev_filepath:str
+    test_filepath:str
+    output_filepath:str
+    model_name:str
+    embedding_size:int
+    warmup_steps:int
+    gradient_accumulation_steps:int
+    max_length:int
+    evaluation_steps:int
+    sub_samples:int
+    func: Callable[["Train_binary_Arguments"], None]
 
-def main(args,argsDict):
+def add_args_func(parser):
+    parser.add_argument('--epochs', type=int, help='Total epochs to train the model')
+    parser.add_argument('--offline_model_path', type=str, help='offline model path')
+    parser.add_argument("--resume_from_checkpoint",type=str,default=None,help="If the training should continue from a checkpoint folder.")
+    parser.add_argument('--seed', type=int, help='seed')
+    parser.add_argument('--data', type=str, help='data')
+    parser.add_argument('--task_name', type=str, help='task_name')
+    parser.add_argument('--batch_size_train', default=16, type=int, help='Input train batch size on each device (default: 16)')
+    parser.add_argument('--batch_size_val', default=32, type=int, help='Input train batch size on each device (default: 32)')
+    parser.add_argument('--train_filepath', type=str, help='train_filepath')
+    parser.add_argument('--dev_filepath', type=str, help='dev_filepath')
+    parser.add_argument('--test_filepath', type=str, help='test_filepath')
+    parser.add_argument('--output_filepath', type=str, help='output_filepath')
+    parser.add_argument('--model_name', type=str, help='model_name')
+    parser.add_argument('--embedding_size', type=int, help='embedding_size')
+    parser.add_argument('--warmup_steps', default=2000,type=int, help='warmup_steps')
+    parser.add_argument('--gradient_accumulation_steps', type=int, help='gradient_accumulation_steps')
+    parser.add_argument('--max_length', type=int, help='max_length')
+    parser.add_argument('--evaluation_steps', type=int, help='evaluation_steps')
+    parser.add_argument('--sub_samples', default=128, type=int, help='sub_samples') 
+    return parser
+
+def main(args):
     #### Just some code to print debug information to stdout
     seed_offset,ddp_rank,ddp_local_rank,device= ddp_setup()
     init_process_group(backend='nccl')
@@ -489,46 +518,17 @@ def main(args,argsDict):
             dev_samples=dev_samples,
             batch_size_train=args.batch_size_train,
             batch_size_val=args.batch_size_val,
-            save_every_steps=args.save_every_steps,
             epochs = args.epochs,
             warmup_steps= args.warmup_steps,
             evaluation_steps=args.evaluation_steps,
-            eval_iters=args.eval_iters,
             output_path= model_save_path,
             use_amp=True,
             gradient_accumulation_steps=args.gradient_accumulation_steps
             )
-
+    destroy_process_group()
 
 if __name__ == "__main__":
-    import argparse
-    parser = argparse.ArgumentParser(description='simple distributed training job')
-    parser.add_argument('--epochs', type=int, help='Total epochs to train the model')
-    parser.add_argument('--offline_model_path', type=str, help='offline model path')
-
-    parser.add_argument('--save_every_steps', type=int, default=1000,help='save every && step')
-    parser.add_argument("--resume_from_checkpoint",type=str,default=None,help="If the training should continue from a checkpoint folder.")
-
-    parser.add_argument('--seed', type=int, help='seed')
-    parser.add_argument('--data', type=str, help='data')
-    parser.add_argument('--task_name', type=str, help='task_name')
-
-    parser.add_argument('--batch_size_train', default=16, type=int, help='Input train batch size on each device (default: 16)')
-    parser.add_argument('--batch_size_val', default=32, type=int, help='Input train batch size on each device (default: 32)')
-    parser.add_argument('--train_filepath', type=str, help='train_filepath')
-    parser.add_argument('--dev_filepath', type=str, help='dev_filepath')
-    parser.add_argument('--test_filepath', type=str, help='test_filepath')
-    parser.add_argument('--output_filepath', type=str, help='output_filepath')
-
-    parser.add_argument('--model_name', type=str, help='model_name')
-    parser.add_argument('--embedding_size', type=int, help='embedding_size')
-    parser.add_argument('--warmup_steps', default=2000,type=int, help='warmup_steps')
-    parser.add_argument('--gradient_accumulation_steps', type=int, help='gradient_accumulation_steps')
-    parser.add_argument('--max_length', type=int, help='max_length')
-    parser.add_argument('--evaluation_steps', type=int, help='evaluation_steps')
-    parser.add_argument('--eval_iters', default=100, type=int, help='eval_iters')
-    parser.add_argument('--sub_samples', default=128, type=int, help='sub_samples')  
-
+    parser = argparse.ArgumentParser(description=__doc__)
+    add_args_func(parser)
     args = parser.parse_args()
-    argsDict= args.__dict__
-    main(args,argsDict)
+    main(args)

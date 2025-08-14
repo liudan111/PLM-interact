@@ -1,3 +1,6 @@
+"""
+Choose the best trained checkpoints by testing on the validation datasets and evaluate the model's performance on the test datasets.
+"""
 import os
 from datasets import Dataset
 import torch
@@ -22,13 +25,12 @@ from transformers import AutoModelForSequenceClassification, AutoTokenizer, Auto
 
 import logging
 import os
-from typing import Dict, Type, Callable, List
+from typing import Dict, Type, Callable, List,NamedTuple
 import transformers
 import torch
 from torch import nn
 from torch.optim import Optimizer
 from torch.utils.data import DataLoader
-from tqdm.autonotebook import tqdm, trange
 from sentence_transformers import SentenceTransformer, util
 from sentence_transformers.evaluation import SentenceEvaluator
 import csv
@@ -45,7 +47,6 @@ from datetime import timedelta
 
 from utils.data_load import load_train_objs, load_val_objs
 from utils.ddp import ddp_setup, distributed_concat,SequentialDistributedSampler
-
 from utils.metrics import find_best_acc_and_threshold,find_best_f1_and_threshold
 
 # Will error if the minimal version of Transformers is not installed. Remove at your own risks.
@@ -59,8 +60,6 @@ class PLMinteract(nn.Module):
     self.classifier = nn.Linear(embedding_size,1) # embedding_size 
     self.num_labels=num_labels
     self.device=device
-    # self.weight_loss_class=weight_loss_class
-    # self.weight_loss_mlm=weight_loss_mlm
 
   def forward_test(self, label,features):
     embedding_output = self.esm_mask.base_model(**features, return_dict=True)
@@ -157,7 +156,7 @@ class CrossEncoder():
         if loss_fct is None:
             pos_weight = torch.tensor([10]).to(self.device)
             loss_fct = nn.BCEWithLogitsLoss(pos_weight= pos_weight) if self.config.num_labels == 1 else nn.CrossEntropyLoss()
-        
+
         dev_samples = load_val_objs(args.dev_filepath)
         for epoch in range(args.epochs):
                 checkpoint_path = args.resume_from_checkpoint + 'epoch_' + str(epoch) +'.pt'
@@ -217,18 +216,15 @@ class CrossEncoder():
                     writer.writerow([epoch,loss.item(),ap_score])  
     
     def predict(self, args,
-               hostname:str=None,
                batch_size_val:int=32,
                output_path:str=None,
                loss_fct=None,
                ):
-
         self.model.eval()
         self.model.to(self.device)
-
         test_samples = load_val_objs(args.test_filepath)
         test_sampler = SequentialDistributedSampler(test_samples)
-        test_dataloader = DataLoader(test_samples, batch_size=batch_size_val,sampler= test_sampler,collate_fn = self.smart_batching_collate,shuffle=False)
+        test_dataloader = DataLoader(test_samples, batch_size=args.batch_size_val,sampler= test_sampler,collate_fn = self.smart_batching_collate,shuffle=False)
 
         pred_scores = []
         labels_val=[]
@@ -263,14 +259,38 @@ class CrossEncoder():
                     writer.writerow(csv_headers)
                 writer.writerow([self.best_epoch, loss.item(), ap_score,f1, precision, recall, f1_threshold, max_acc, best_threshold])  
 
+class PredictionArguments(NamedTuple):
+    epochs:int
+    resume_from_checkpoint:str
+    offline_model_path:str
+    seed:int
+    batch_size_val:int
+    test_filepath:str
+    dev_filepath:str
+    output_filepath:str
+    model_name:str
+    embedding_size:int
+    max_length:int
+    func: Callable[["PredictionArguments"], None]
 
-def main(args,argsDict):
+def add_args_func(parser):
+    parser.add_argument('--epochs', type=int, help='Total epochs of trained model')
+    parser.add_argument("--resume_from_checkpoint",type=str,default=None,help="If the training should continue from a checkpoint folder.")
+    parser.add_argument('--offline_model_path', type=str, help='offline model path')
+    parser.add_argument('--seed', type=int, help='seed')
+    parser.add_argument('--batch_size_val', default=32, type=int, help='Input train batch size on each device (default: 32)')
+    parser.add_argument('--dev_filepath', type=str, help='dev_filepath')
+    parser.add_argument('--test_filepath', type=str, help='test_filepath')
+    parser.add_argument('--output_filepath', type=str, help='output_filepath')
+    parser.add_argument('--model_name', type=str, help='model_name')
+    parser.add_argument('--embedding_size', type=int, help='embedding_size')
+    parser.add_argument('--max_length', type=int, help='max_length')
+    return parser
+
+def main(args):
     seed_offset,ddp_rank,ddp_local_rank,device= ddp_setup()
     init_process_group(backend='nccl')
     torch.cuda.set_device(device)
-
-    # if args.seed is not None:
-    #     random.seed(args.seed)
 
     if args.seed is not None:
         random.seed(args.seed)
@@ -281,7 +301,6 @@ def main(args,argsDict):
         torch.use_deterministic_algorithms(True)
         torch.backends.cudnn.deterministic = True  # Ensure deterministic behavior
         torch.backends.cudnn.benchmark = False  # Disable optimizations that might cause non-determinism
-
 
     logging.basicConfig(format='%(asctime)s - %(message)s',
                             datefmt='%Y-%m-%d %H:%M:%S',
@@ -297,21 +316,10 @@ def main(args,argsDict):
             batch_size_val=args.batch_size_val,
             output_path= output_path,
             )
+    destroy_process_group()
+
 if __name__ == "__main__":
-    import argparse
-    parser = argparse.ArgumentParser(description='simple distributed training job')
-    parser.add_argument('--epochs', type=int, help='Total epochs to train the model')
-    parser.add_argument("--resume_from_checkpoint",type=str,default=None,help="If the training should continue from a checkpoint folder.")
-    parser.add_argument('--offline_model_path', type=str, help='offline model path')
-    parser.add_argument('--seed', type=int, help='seed')
-    parser.add_argument('--batch_size_val', default=32, type=int, help='Input train batch size on each device (default: 32)')
-    parser.add_argument('--dev_filepath', type=str, help='dev_filepath')
-    parser.add_argument('--test_filepath', type=str, help='test_filepath')
-    parser.add_argument('--output_filepath', type=str, help='output_filepath')
-    parser.add_argument('--model_name', type=str, help='model_name')
-    parser.add_argument('--embedding_size', type=int, help='embedding_size')
-    parser.add_argument('--max_length', type=int, help='max_length')
- 
+    parser = argparse.ArgumentParser(description=__doc__)
+    add_args_func(parser)
     args = parser.parse_args()
-    argsDict= args.__dict__
-    main(args,argsDict)
+    main(args)

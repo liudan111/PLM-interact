@@ -1,3 +1,6 @@
+"""
+Training PPI models using mask and binary classification losses.
+"""
 import os
 from datasets import Dataset
 from torch.utils.data import WeightedRandomSampler,DataLoader,SubsetRandomSampler
@@ -21,22 +24,15 @@ from transformers import AutoModel,AutoModelForMaskedLM
 from transformers import DataCollatorForLanguageModeling
 from sentence_transformers import SentenceTransformer, util
 
-from typing import Dict, Type, Callable, List
+from typing import Dict, Type, Callable, List, NamedTuple
 import torch
 from torch import nn
 from torch.optim import Optimizer
 from torch.utils.data import DataLoader
-from sklearn.metrics import (
-    average_precision_score,
-    precision_recall_curve,
-    roc_auc_score,
-    roc_curve,
-)
 import csv
 import torch.nn.functional as F
-
 from utils.ddp import ddp_setup
-from utils.data_load import load_train_objs, load_val_objs,smart_batching_collate
+from utils.data_load import load_train_objs, load_val_objs
 
 logger = logging.getLogger(__name__)
 
@@ -111,7 +107,7 @@ class CrossEncoder():
             self.local_rank =  int(os.environ['LOCAL_RANK'])
             self.rank = int(os.environ["RANK"])
             self.device = torch.device("cuda", self.local_rank)
-            self.master_process = self.rank == 0  # Main process does logging & checkpoints.
+            self.master_process = self.rank == 0  
             self.num_processes = torch.distributed.get_world_size()
             self.checkpoint=checkpoint
 
@@ -132,7 +128,7 @@ class CrossEncoder():
         self.weight_loss_class=weight_loss_class
         self.weight_loss_mlm=weight_loss_mlm
 
-        self.model = PLMinteract(model_name,self.config.num_labels, config=self.config,device=self.device,embedding_size=self.embedding_size,weight_loss_class=args.weight_loss_class,weight_loss_mlm=args.weight_loss_mlm)
+        self.model = PLMinteract(model_name,self.config.num_labels, config=self.config,device=self.device,embedding_size=self.embedding_size,weight_loss_class=self.weight_loss_class,weight_loss_mlm=self.weight_loss_mlm)
      
         if(checkpoint!=None): 
             load_checkpoint= torch.load(self.checkpoint,map_location='cpu')
@@ -185,7 +181,6 @@ class CrossEncoder():
             optimizer_class: Type[Optimizer] = torch.optim.AdamW, 
             optimizer_params: Dict[str, object] = {'lr': 2e-5},
             weight_decay: float = 0.01,
-            evaluation_steps: int = 0,
             output_path: str = None,
             max_grad_norm: float = 1,
             use_amp: bool = False,
@@ -242,7 +237,6 @@ class CrossEncoder():
                 scheduler.load_state_dict(load_checkpoint["scheduler"])
                 starting_epoch=load_checkpoint["epoch"] + 1 
                 print('starting_epoch',starting_epoch)
-
 
         skip_scheduler = False
         for epoch in range(starting_epoch, args.epochs):
@@ -318,8 +312,45 @@ class CrossEncoder():
         if self.master_process:
             self.tokenizer.save_pretrained(output_path)
 
+class Train_mlm_Arguments(NamedTuple):
+        epochs:int
+        offline_model_path:str
+        resume_from_checkpoint:str
+        seed:int
+        data:str
+        task_name:str
+        batch_size_train:int
+        train_filepath:str
+        output_filepath:str
+        model_name:str
+        warmup_steps:int
+        embedding_size:int
+        gradient_accumulation_steps:int
+        max_length:int
+        weight_loss_mlm:int
+        weight_loss_class:int
+        func: Callable[["Train_mlm_Arguments"], None]
 
-def main(args,argsDict):
+def add_args_func(parser):
+    parser.add_argument('--epochs', type=int, help='Total epochs to train the model')
+    parser.add_argument('--offline_model_path', default=None,type=str, help='offline ESM2 model path')
+    parser.add_argument("--resume_from_checkpoint",type=str,default=None,help="If the training should continue from a checkpoint folder.")
+    parser.add_argument('--seed', type=int, help='seed')
+    parser.add_argument('--data', type=str, help='data name')
+    parser.add_argument('--task_name', type=str, help='task_name')
+    parser.add_argument('--batch_size_train', default=16, type=int, help='Input train batch size on each device (default: 16)')
+    parser.add_argument('--train_filepath', type=str, help='train filepath')
+    parser.add_argument('--output_filepath', type=str, help='output filepath')
+    parser.add_argument('--model_name', type=str, help='ESM2 model name')
+    parser.add_argument('--warmup_steps', default=2000,type=int, help='warmup steps')
+    parser.add_argument('--embedding_size', type=int, help='embedding size')
+    parser.add_argument('--gradient_accumulation_steps', type=int, help='gradient_accumulation_steps')
+    parser.add_argument('--max_length', type=int, help='the max length of PPIs')
+    parser.add_argument('--weight_loss_mlm', default=1, type=int, help='weight of mask loss')  
+    parser.add_argument('--weight_loss_class', default=1, type=int, help='weight of classification loss')  
+    return parser
+
+def main(args):
     #### Just some code to print debug information to stdout
     seed_offset,ddp_rank,ddp_local_rank,device= ddp_setup()
     init_process_group(backend='nccl')
@@ -346,7 +377,6 @@ def main(args,argsDict):
     trainer.train(args,train_dataloader=train_dataloader,
             epochs = args.epochs,
             warmup_steps= args.warmup_steps,
-            evaluation_steps=args.evaluation_steps,
             output_path= model_save_path,
             use_amp=True,
             gradient_accumulation_steps=args.gradient_accumulation_steps,
@@ -354,35 +384,7 @@ def main(args,argsDict):
     destroy_process_group()
 
 if __name__ == "__main__":
-    import argparse
-    parser = argparse.ArgumentParser(description='simple distributed training job')
-    parser.add_argument('--epochs', type=int, help='Total epochs to train the model')
-
-    parser.add_argument('--offline_model_path', type=str, help='offline model path')
-    parser.add_argument("--resume_from_checkpoint",type=str,default=None,help="If the training should continue from a checkpoint folder.")
-    parser.add_argument("--checkpointing_steps", type=str,default=None,help="Whether the various states should be saved at the end of every n steps, or 'epoch' for each epoch.",)
-
-    parser.add_argument('--seed', type=int, help='seed')
-    parser.add_argument('--data', type=str, help='data')
-    parser.add_argument('--task_name', type=str, help='task_name')
-    parser.add_argument('--batch_size_train', default=16, type=int, help='Input train batch size on each device (default: 16)')
-
-    parser.add_argument('--train_filepath', type=str, help='train_filepath')
-    parser.add_argument('--output_filepath', type=str, help='output_filepath')
-
-    parser.add_argument('--model_name', type=str, help='model_name')
-    parser.add_argument('--warmup_steps', default=2000,type=int, help='warmup_steps')
-    parser.add_argument('--embedding_size', type=int, help='embedding_size')
-    parser.add_argument('--gradient_accumulation_steps', type=int, help='gradient_accumulation_steps')
-    parser.add_argument('--max_length', type=int, help='max_length')
-    parser.add_argument('--evaluation_steps', type=int, help='evaluation_steps')
-  
-    parser.add_argument('--weight_loss_mlm', default=1, type=int, help='weight_loss_mlm')  
-    parser.add_argument('--weight_loss_class', default=1, type=int, help='weight_loss_class')  
- 
-
+    parser = argparse.ArgumentParser(description=__doc__)
+    add_args_func(parser)
     args = parser.parse_args()
-
-    argsDict= args.__dict__
-
-    main(args,argsDict)
+    main(args)

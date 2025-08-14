@@ -1,3 +1,6 @@
+"""
+Predict mutant effects in human PPIs.
+"""
 import os
 from torch.utils.data import WeightedRandomSampler,DataLoader,SubsetRandomSampler
 from sentence_transformers import LoggingHandler, util
@@ -5,7 +8,6 @@ from sentence_transformers import InputExample
 from datetime import datetime
 import argparse
 import tarfile
-import tqdm
 import torch.distributed as dist
 from torch.distributed import init_process_group, destroy_process_group
 from torch.utils.data.distributed import DistributedSampler
@@ -17,10 +19,9 @@ import sys
 from transformers import AutoModelForSequenceClassification, DataCollatorWithPadding,default_data_collator,AutoTokenizer, AutoConfig
 import numpy as np
 import logging
-from typing import Dict, Type, Callable, List
+from typing import Dict, Type, Callable, List,NamedTuple
 from torch import nn
 from torch.utils.data import DataLoader
-from tqdm.autonotebook import tqdm, trange
 from sentence_transformers import SentenceTransformer, util
 import csv
 from torch.utils.data import RandomSampler
@@ -223,7 +224,6 @@ class CrossEncoder():
             pd.DataFrame(pred_scores).to_csv(output_path + 'pred_scores.csv',index=None, header=None)
             pd.DataFrame(labels_val).to_csv(output_path + 'labels.csv',index=None, header=None)
     
-
 def ddp_setup():
     if 'SLURM_PROCID' in os.environ:
         os.environ['RANK'] = os.environ['SLURM_PROCID']
@@ -254,7 +254,37 @@ def load_test_objs(filepath):
             ))
     return test_samples
 
-def main(args,argsDict):
+class MutationTestArguments(NamedTuple):
+    offline_model_path:str
+    resume_from_checkpoint:str
+    seed:int
+    task_name:str
+    batch_size_val:int
+    test_filepath:str
+    output_path:str
+    model_name:str
+    embedding_size:int
+    max_length:int
+    weight_loss_mlm:int
+    weight_loss_class:int
+    func: Callable[["MutationTestArguments"], None]
+
+def add_args_func(parser):
+    parser.add_argument('--offline_model_path', type=str, help='offline model path')
+    parser.add_argument("--resume_from_checkpoint",type=str,default=None,help="If the training should continue from a checkpoint folder.")
+    parser.add_argument('--seed', type=int, help='seed')
+    parser.add_argument('--task_name', type=str, help='task_name')
+    parser.add_argument('--batch_size_val', default=32, type=int, help='Input train batch size on each device (default: 32)')
+    parser.add_argument('--test_filepath', type=str, help='test_filepath')
+    parser.add_argument('--output_path', type=str, help='output_path')
+    parser.add_argument('--model_name', type=str, help='model_name')
+    parser.add_argument('--embedding_size', type=int, help='embedding_size')
+    parser.add_argument('--max_length', type=int, help='max_length')
+    parser.add_argument('--weight_loss_mlm', default=1, type=int, help='weight_loss_mlm')  
+    parser.add_argument('--weight_loss_class', default=1, type=int, help='weight_loss_class') 
+    return parser
+
+def main(args):
     seed_offset,ddp_rank,ddp_local_rank,device= ddp_setup()
     init_process_group(backend='nccl')
     torch.cuda.set_device(device)
@@ -273,12 +303,11 @@ def main(args,argsDict):
                             datefmt='%Y-%m-%d %H:%M:%S',
                             level=logging.INFO,
                             handlers=[LoggingHandler()])  
-    offline ='/mnt/data/project0019/danliu/PPI/offline/'
+    offline =args.offline_model_path
     model_path = offline+ args.model_name
 
     resume_from_checkpoint= args.resume_from_checkpoint
     output_path= args.output_path
-
     trainer = CrossEncoder(model_path, num_labels=1, max_length=args.max_length, embedding_size=args.embedding_size,checkpoint = resume_from_checkpoint, weight_loss_class=args.weight_loss_class,weight_loss_mlm=args.weight_loss_mlm)
 
     test_samples= load_test_objs(args.test_filepath)  
@@ -290,28 +319,7 @@ def main(args,argsDict):
     destroy_process_group()
 
 if __name__ == "__main__":
-    import argparse
-    parser = argparse.ArgumentParser(description='simple distributed training job')
-    
-    parser.add_argument("--resume_from_checkpoint",type=str,default=None,help="If the training should continue from a checkpoint folder.")
-    parser.add_argument('--seed', type=int, help='seed')
-    parser.add_argument('--data', type=str, help='data')
-    parser.add_argument('--task_name', type=str, help='task_name')
-
-    parser.add_argument('--batch_size_val', default=32, type=int, help='Input train batch size on each device (default: 32)')
-    parser.add_argument('--filepath', type=str, help='filepath')
-    parser.add_argument('--train_filepath', type=str, help='train_filepath')
-    parser.add_argument('--dev_filepath', type=str, help='dev_filepath')
-
-    parser.add_argument('--test_filepath', type=str, help='test_filepath')
-
-    parser.add_argument('--output_path', type=str, help='output_path')
-    parser.add_argument('--model_name', type=str, help='model_name')
-    parser.add_argument('--embedding_size', type=int, help='embedding_size')
-
-    parser.add_argument('--max_length', type=int, help='max_length')
-    parser.add_argument('--weight_loss_mlm', default=1, type=int, help='weight_loss_mlm')  
-    parser.add_argument('--weight_loss_class', default=1, type=int, help='weight_loss_class')  
+    parser = argparse.ArgumentParser(description=__doc__)
+    add_args_func(parser)
     args = parser.parse_args()
-    argsDict= args.__dict__
-    main(args,argsDict)
+    main(args)

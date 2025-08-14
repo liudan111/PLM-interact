@@ -1,3 +1,6 @@
+"""
+PPI prediction.
+"""
 import os
 from datasets import Dataset
 import torch
@@ -20,12 +23,11 @@ import math
 import sys
 from transformers import AutoModelForSequenceClassification, AutoTokenizer, AutoConfig
 
-from typing import Dict, Type, Callable, List
+from typing import Dict, Type, Callable, List,NamedTuple
 import transformers
 from torch import nn
 from torch.optim import Optimizer
 from torch.utils.data import DataLoader
-from tqdm.autonotebook import tqdm, trange
 from sentence_transformers import SentenceTransformer, util
 from sentence_transformers.evaluation import SentenceEvaluator
 import csv
@@ -42,9 +44,6 @@ from datetime import timedelta
 
 from utils.data_load import load_test_objs
 from utils.ddp import ddp_setup, distributed_concat,SequentialDistributedSampler
-
-# from safetensors.torch import load_model, save_model,load_file
-# from safetensors import safe_open
 
 # Will error if the minimal version of Transformers is not installed. Remove at your own risks.
 logger = logging.getLogger(__name__)
@@ -123,7 +122,7 @@ class CrossEncoder():
             os.makedirs(output_path, exist_ok=True)
 
         load_model = torch.load(f"{self.checkpoint}",map_location='cpu')
-        self.model.module.load_state_dict(load_model)
+        self.model.module.load_state_dict(load_model,strict=False)
 
         self.predict(args,batch_size_val = batch_size_val,output_path= output_path)
 
@@ -134,9 +133,7 @@ class CrossEncoder():
         self.model.eval()
         self.model.to(self.device)
         test_samples = load_test_objs(args.test_filepath)
-
         test_sampler = SequentialDistributedSampler(test_samples)
-
         test_dataloader = DataLoader(test_samples, batch_size=batch_size_val,sampler= test_sampler,collate_fn = self.smart_batching_collate,shuffle=False)
 
         pred_scores = []
@@ -150,13 +147,34 @@ class CrossEncoder():
             pred_scores = np.asarray([score.cpu().detach().numpy() for score in pred_scores])
             pd.DataFrame(pred_scores).to_csv(output_path + 'pred_scores.csv', index=None,header=None)
 
-def main(args,argsDict):
+class InferenceArguments(NamedTuple):
+    resume_from_checkpoint:str
+    offline_model_path:str
+    seed:int
+    batch_size_val:int
+    test_filepath:str
+    output_filepath:str
+    model_name:str
+    embedding_size:int
+    max_length:int
+    func: Callable[["InferenceArguments"], None]
+
+def add_args_func(parser):
+    parser.add_argument("--resume_from_checkpoint",type=str,default=None,help="If the training should continue from a checkpoint folder.")
+    parser.add_argument('--offline_model_path', type=str, help='offline model path')
+    parser.add_argument('--seed', type=int, help='seed')
+    parser.add_argument('--batch_size_val', default=32, type=int, help='Input train batch size on each device (default: 32)')
+    parser.add_argument('--test_filepath', type=str, help='test_filepath')
+    parser.add_argument('--output_filepath', type=str, help='output_filepath')
+    parser.add_argument('--model_name', type=str, help='model_name')
+    parser.add_argument('--embedding_size', type=int, help='embedding_size')
+    parser.add_argument('--max_length', type=int, help='max_length')
+    return parser
+
+def main(args):
     seed_offset,ddp_rank,ddp_local_rank,device= ddp_setup()
     init_process_group(backend='nccl')
     torch.cuda.set_device(device)
-
-    # if args.seed is not None:
-    #     random.seed(args.seed)
 
     if args.seed is not None:
         random.seed(args.seed)
@@ -172,26 +190,14 @@ def main(args,argsDict):
     output_path=args.output_filepath
     
     trainer = CrossEncoder(model_path, num_labels=1, max_length=args.max_length, embedding_size=args.embedding_size, checkpoint = args.resume_from_checkpoint)
-
     trainer.inference(args,
             batch_size_val=args.batch_size_val,
             output_path= output_path,
             )
+    destroy_process_group()
 
 if __name__ == "__main__":
-    import argparse
-    parser = argparse.ArgumentParser(description='simple distributed training job')
-    parser.add_argument("--resume_from_checkpoint",type=str,default=None,help="If the training should continue from a checkpoint folder.")
-    parser.add_argument('--offline_model_path', type=str, help='offline model path')
-    parser.add_argument('--seed', type=int, help='seed')
-    parser.add_argument('--data', type=str, help='data')
-    parser.add_argument('--batch_size_val', default=32, type=int, help='Input train batch size on each device (default: 32)')
-    parser.add_argument('--test_filepath', type=str, help='test_filepath')
-    parser.add_argument('--output_filepath', type=str, help='output_filepath')
-    parser.add_argument('--model_name', type=str, help='model_name')
-    parser.add_argument('--embedding_size', type=int, help='embedding_size')
-    parser.add_argument('--max_length', type=int, help='max_length')
- 
+    parser = argparse.ArgumentParser(description=__doc__)
+    add_args_func(parser)
     args = parser.parse_args()
-    argsDict= args.__dict__
-    main(args,argsDict)
+    main(args)
