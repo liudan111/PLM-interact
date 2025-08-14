@@ -1,0 +1,45 @@
+[build-system]
+requires = ["setuptools>=45", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "PLMinteract"
+dynamic = ["version"]
+authors = [
+    {name = "Dan Liu", email = "liudan12260@gmail.com"}
+]
+description = "PLM-interact: extending protein language models to predict protein-protein interactions"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "transformers==4.40.1",
+    "sentence_transformers",
+    "datasets",
+    "scipy",
+    "numpy",
+    "pandas",
+    "torch>=2.0.1",
+    "matplotlib",
+    "biopython",
+    "seaborn",
+    "scikit-learn",
+    "huggingface_hub",
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+]
+license = "MIT"
+license-files = ["LICEN[CS]E*"]
+
+
+[project.urls]
+Homepage = "https://github.com/liudan111/PLM-interact"
+Issues = "https://github.com/liudan111/PLM-interact/issues"
+
+[project.scripts]
+PLMinteract = "PLMinteract.__main__:main"
+[tool.setuptools.dynamic]
+version = {attr = "PLMinteract.__version__"}
+
+[tool.setuptools.packages.find]
+include = ["PLMinteract*"]

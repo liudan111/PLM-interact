@@ -6,25 +6,40 @@ Computational prediction of protein structure from amino acid sequences alone ha
 
 ![PLM-interact](https://github.com/liudan111/PLM-interact/blob/main/assets/PLM-interact.png)
 
-## Conda env install
+## Install conda environment
 ```
-conda create -n sentence_pair python=3.10
-
+conda create -n PLMinteract python=3.10
+conda activate PLMinteract
 pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
-
 git clone  https://github.com/huggingface/transformers.git
 cd transformers
 pip install -e .
-
+cd ..
 git clone https://github.com/UKPLab/sentence-transformers.git
 cd sentence-transformers
 pip install -e .
-
-pip install datasets
-
-pip install huggingface-hub
+cd ..
+pip install datasets huggingface-hub scikit-learn
 ```
-This Python package requires a Linux operating system and Python 3.10. We have tested it on A100 80GB, A100 40GB, and A40 GPUs. For testing your PPIs, we recommend using an A40/A100 GPU. To train or fine-tune our model, we recommend using A100 80GB GPUs.
+
+After creating the Conda environment, download the code from our GitHub repository and run the SLURM script on your HPC system. Please check [slurm.sh](PLMinteract/slurm.sh) for the multi-Nodes and multi-GPUs slurm script.
+
+## Install from sources
+Alternatively, you can clone the latest version from the repository and install it directly from the source code:
+```
+git clone https://github.com/liudan111/PLM-interact.git
+cd PLM-interact
+pip install -e .[dev]
+```
+
+## Install with pip
+Alternatively, you can also install PLM-interact using pip.
+```
+pip install PLMinteract
+```
+This Python package requires a Linux operating system and Python 3.10. We have tested it on A100 80GB, A100 40GB, and A40 GPUs. For testing your PPIs, we recommend using an A40/A100 GPU. To train or fine-tune our model, we recommend using A100 80GB GPUs. 
+
+
 
 ## An example to predict interaction probability between proteins
 ```
@@ -156,7 +171,7 @@ Trained model:
 
 
 # Inference, train and evaluation 
-We provide a setup script to run PLM-interact for training, validation and test. It can be found at the following path: PLM-interact/PLM-interact/script/slurm.sh. We list the commands for inference, triaing and evalaution. Please read the [PLM-interact/PLM-interact/script/README.md](PLM-interact/script/README.md) for details on parameter descriptions.
+We provide a setup script to run PLM-interact for training, validation and test. It can be found at the following path: PLMinteract/script/slurm.sh. We list the commands for inference, triaing and evalaution. Please read the [PLMinteract/README.md](PLMinteract/README.md) for details on parameter descriptions.
 
 ```
 git clone https://github.com/liudan111/PLM-interact.git
