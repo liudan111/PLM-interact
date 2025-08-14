@@ -40,8 +40,8 @@ from transformers.utils import check_min_version, send_example_telemetry
 from transformers.utils.versions import require_version
 from datetime import timedelta
 
-from .utils.data_load import load_test_objs
-from .utils.ddp import ddp_setup, distributed_concat,SequentialDistributedSampler
+from PLMinteract.utils.data_load import load_test_objs
+from PLMinteract.utils.ddp import ddp_setup, distributed_concat,SequentialDistributedSampler
 
 logger = logging.getLogger(__name__)
 
