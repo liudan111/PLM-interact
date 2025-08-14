@@ -7,11 +7,11 @@ Computational prediction of protein structure from amino acid sequences alone ha
 ![PLM-interact](https://github.com/liudan111/PLM-interact/blob/main/assets/PLM-interact.png)
 
 
-
 ## Install with pip
 ```
 pip install PLMinteract
 ```
+See the [Read the Docs](https://plm-interact.readthedocs.io/en/latest/index.html) documentation for details on command usage.
 
 ## Install conda environment
 ```
