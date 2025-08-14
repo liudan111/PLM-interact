@@ -37,7 +37,7 @@ There are 6 commands in PLM-interact package
 
 
 PPI prediction
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+------------
 .. code-block:: bash
    usage: PLMinteract inference_PPI [-h] [--seed SEED] --test_filepath TEST_FILEPATH --output_filepath OUTPUT_FILEPATH
                                  --resume_from_checkpoint RESUME_FROM_CHECKPOINT [--batch_size_val BATCH_SIZE_VAL]
@@ -67,8 +67,8 @@ PPI prediction
                            Set embedding vector size based on the selected ESM-2 model (480 / 1280).
 
 
-Training PPI models using mask and binary classification losses.
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Training PPI models using mask and binary classification losses
+------------
 .. code-block:: bash
    usage: PLMinteract train_mlm [-h] [--seed SEED] [--data DATA] [--task_name TASK_NAME] --train_filepath TRAIN_FILEPATH
                               --output_filepath OUTPUT_FILEPATH [--epochs EPOCHS] [--resume_from_checkpoint RESUME_FROM_CHECKPOINT]
@@ -119,7 +119,7 @@ Training PPI models using mask and binary classification losses.
 
 
 Training PPI models using only binary classification loss.
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+------------
 .. code-block:: bash
    usage: PLMinteract train_binary [-h] [--seed SEED] [--data DATA] [--task_name TASK_NAME] --train_filepath TRAIN_FILEPATH
                                  --dev_filepath DEV_FILEPATH --test_filepath TEST_FILEPATH --output_filepath OUTPUT_FILEPATH
@@ -176,7 +176,7 @@ Training PPI models using only binary classification loss.
                            Set embedding vector size based on the selected ESM-2 model (480 / 1280).
 
 Evaluation and test with multi nodes and multi GPUs
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+------------
 .. code-block:: bash
    usage: PLMinteract predict_ddp [-h] [--seed SEED] --dev_filepath DEV_FILEPATH --test_filepath TEST_FILEPATH --output_filepath
                                  OUTPUT_FILEPATH [--epochs EPOCHS] [--resume_from_checkpoint RESUME_FROM_CHECKPOINT]
@@ -217,7 +217,7 @@ Evaluation and test with multi nodes and multi GPUs
 
 
 Fine-tuning in the binary mutation effect task.
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+------------
 .. code-block:: bash
    usage: PLMinteract mutation_train [-h] [--seed SEED] [--task_name TASK_NAME] --train_filepath TRAIN_FILEPATH --dev_filepath
                                   DEV_FILEPATH --output_path OUTPUT_PATH [--epochs EPOCHS]
@@ -272,7 +272,7 @@ Fine-tuning in the binary mutation effect task.
 
 
 Inference in the binary mutation effect task.
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+------------
 .. code-block:: bash
    usage: PLMinteract mutation_predict [-h] [--seed SEED] [--task_name TASK_NAME] --test_filepath TEST_FILEPATH --output_path
                                     OUTPUT_PATH --resume_from_checkpoint RESUME_FROM_CHECKPOINT
