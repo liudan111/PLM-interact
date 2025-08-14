@@ -6,6 +6,13 @@ Computational prediction of protein structure from amino acid sequences alone ha
 
 ![PLM-interact](https://github.com/liudan111/PLM-interact/blob/main/assets/PLM-interact.png)
 
+
+
+## Install with pip
+```
+pip install PLMinteract
+```
+
 ## Install conda environment
 ```
 conda create -n PLMinteract python=3.10
@@ -21,7 +28,6 @@ pip install -e .
 cd ..
 pip install datasets huggingface-hub scikit-learn
 ```
-
 After creating the Conda environment, download the code from our GitHub repository and run the SLURM script on your HPC system. Please check [slurm.sh](PLMinteract/slurm.sh) for the multi-Nodes and multi-GPUs slurm script.
 
 ## Install from sources
@@ -32,13 +38,7 @@ cd PLM-interact
 pip install -e .[dev]
 ```
 
-## Install with pip
-Alternatively, you can also install PLM-interact using pip.
-```
-pip install PLMinteract
-```
 This Python package requires a Linux operating system and Python 3.10. We have tested it on A100 80GB, A100 40GB, and A40 GPUs. For testing your PPIs, we recommend using an A40/A100 GPU. To train or fine-tune our model, we recommend using A100 80GB GPUs. 
-
 
 
 ## An example to predict interaction probability between proteins
@@ -176,7 +176,7 @@ We provide a setup script to run PLM-interact for training, validation and test.
 ```
 git clone https://github.com/liudan111/PLM-interact.git
 
-cd PLM-interact/PLM-interact
+cd PLM-interact/PLMinteract
 ```
 
 ## PPI inference
@@ -195,7 +195,7 @@ srun -u python inference_PPI.py --seed 2 --batch_size_val 16 --test_filepath '..
 
 ### (2) PPI inference with a single GPU
 ```
-srun -u python inference_PPI_singleGPU.py --seed 2 --batch_size_val 16 --test_filepath $test_filepath --model_name 'esm2_t33_650M_UR50D' --embedding_size 1280 --output_filepath $output_filepath --resume_from_checkpoint $resume_from_checkpoint --max_length 1603 --offline_model_path $offline_model_path
+srun -u python inference/inference_PPI_singleGPU.py --seed 2 --batch_size_val 16 --test_filepath $test_filepath --model_name 'esm2_t33_650M_UR50D' --embedding_size 1280 --output_filepath $output_filepath --resume_from_checkpoint $resume_from_checkpoint --max_length 1603 --offline_model_path $offline_model_path
 ```
 
 ## PLM-interact training and evaluation
@@ -210,12 +210,12 @@ label: The ground truth label, where 1 indicates a positive interaction and 0 in
 
 ### (1) PLM-interact training with mask loss and binary classification loss optimize
 ```
-srun -u python train_mlm.py --epochs 20 --seed 2 --data 'human_V11' --task_name '1vs10' --batch_size_train 1 --train_filepath $train_filepath --model_name 'esm2_t33_650M_UR50D' --embedding_size 1280 --output_filepath $outputfilepath --warmup_steps 2000 --gradient_accumulation_steps 8 --max_length 2146 --weight_loss_mlm 1 --weight_loss_class 10 --offline_model_path $offline_model_path 
+srun -u python train_mlm.py --epochs 10 --seed 2 --data 'human_V11' --task_name '1vs10' --batch_size_train 1 --train_filepath $train_filepath --model_name 'esm2_t33_650M_UR50D' --embedding_size 1280 --output_filepath $outputfilepath --warmup_steps 2000 --gradient_accumulation_steps 8 --max_length 2146 --weight_loss_mlm 1 --weight_loss_class 10 --offline_model_path $offline_model_path 
 ```
 ### (2) PLM-interact training with binary classification loss optimize
 
 ```
-srun -u python train_binary.py --epochs 20 --seed 2 --data 'human_V11' --task_name 'binary' --batch_size_train 1 --batch_size_val 32 --train_filepath $train_filepath  --dev_filepath $dev_filepath  --test_filepath $test_filepath --output_filepath $outputfilepath --warmup_steps 2000 --gradient_accumulation_steps 32  --model_name 'esm2_t33_650M_UR50D' --embedding_size 1280 --max_length 1600 --evaluation_steps 5000 --sub_samples 5000 --offline_model_path $offline_model_path 
+srun -u python train_binary.py --epochs 20 --seed 2 --data 'human_V11' --task_name 'binary' --batch_size_train 1 --batch_size_val 32 --train_filepath $train_filepath  --dev_filepath $dev_filepath  --test_filepath $test_filepath --output_filepath $output_filepath --warmup_steps 2000 --gradient_accumulation_steps 32  --model_name 'esm2_t33_650M_UR50D' --embedding_size 1280 --max_length 1600 --evaluation_steps 5000 --sub_samples 5000 --offline_model_path $offline_model_path 
 ```
 
 ### (3) PLM-interact validation and test

@@ -274,17 +274,24 @@ class PredictionArguments(NamedTuple):
     func: Callable[["PredictionArguments"], None]
 
 def add_args_func(parser):
-    parser.add_argument('--epochs', type=int, help='Total epochs of trained model')
-    parser.add_argument("--resume_from_checkpoint",type=str,default=None,help="If the training should continue from a checkpoint folder.")
-    parser.add_argument('--offline_model_path', type=str, help='offline model path')
-    parser.add_argument('--seed', type=int, help='seed')
-    parser.add_argument('--batch_size_val', default=32, type=int, help='Input train batch size on each device (default: 32)')
-    parser.add_argument('--dev_filepath', type=str, help='dev_filepath')
-    parser.add_argument('--test_filepath', type=str, help='test_filepath')
-    parser.add_argument('--output_filepath', type=str, help='output_filepath')
-    parser.add_argument('--model_name', type=str, help='model_name')
-    parser.add_argument('--embedding_size', type=int, help='embedding_size')
-    parser.add_argument('--max_length', type=int, help='max_length')
+    parser.add_argument('--seed', type=int, default=2, help='Random seed for reproducibility (default: 2).')
+    data_parser = parser.add_argument_group("Input data and output results")
+    plminteract_parser = parser.add_argument_group("PLM-interact setting")
+    ESM2_parser = parser.add_argument_group("ESM2 model loading")
+
+    data_parser.add_argument('--dev_filepath', required=True,  type=str, help='Path to the validation dataset (CSV format).')
+    data_parser.add_argument('--test_filepath', required=True,  type=str, help='Path to the test dataset (CSV format).')
+    data_parser.add_argument('--output_filepath', required=True, type=str, help='Path to save validation and test results.')
+
+    plminteract_parser.add_argument('--epochs', type=int, default=10, help='Total epochs of trained models (default: 10).' )
+    plminteract_parser.add_argument("--resume_from_checkpoint",type=str,default=None,help= "Path to trained models(default: None).")
+    plminteract_parser.add_argument('--batch_size_val', default=16, type=int, help='The validation batch size on each device (default: 16)')
+    plminteract_parser.add_argument('--max_length', type=int, default=1603, help='Maximum sequence length for tokenizing paired proteins (default: 1603).')
+
+    ESM2_parser.add_argument('--offline_model_path', type=str, required=True, help='Path to a locally stored ESM-2 model.')
+    ESM2_parser.add_argument('--model_name', type=str, required=True, help='Choose the ESM-2 model to load (esm2_t12_35M_UR50D / esm2_t33_650M_UR50D).')
+    ESM2_parser.add_argument('--embedding_size', type=int, required=True, help='Set embedding vector size based on the selected ESM-2 model (480 / 1280).') 
+
     return parser
 
 def main(args):

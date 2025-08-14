@@ -270,18 +270,26 @@ class MutationTestArguments(NamedTuple):
     func: Callable[["MutationTestArguments"], None]
 
 def add_args_func(parser):
-    parser.add_argument('--offline_model_path', type=str, help='offline model path')
-    parser.add_argument("--resume_from_checkpoint",type=str,default=None,help="If the training should continue from a checkpoint folder.")
-    parser.add_argument('--seed', type=int, help='seed')
-    parser.add_argument('--task_name', type=str, help='task_name')
-    parser.add_argument('--batch_size_val', default=32, type=int, help='Input train batch size on each device (default: 32)')
-    parser.add_argument('--test_filepath', type=str, help='test_filepath')
-    parser.add_argument('--output_path', type=str, help='output_path')
-    parser.add_argument('--model_name', type=str, help='model_name')
-    parser.add_argument('--embedding_size', type=int, help='embedding_size')
-    parser.add_argument('--max_length', type=int, help='max_length')
-    parser.add_argument('--weight_loss_mlm', default=1, type=int, help='weight_loss_mlm')  
-    parser.add_argument('--weight_loss_class', default=1, type=int, help='weight_loss_class') 
+    parser.add_argument('--seed', type=int, default=2, help='Random seed for reproducibility (default: 2).')
+    parser.add_argument('--task_name', type=str, default= "", help='Set the task name (e.g., mutation_effects_pre)(default: "").')
+
+    data_parser = parser.add_argument_group(title= "Input data and path of output results")
+    plminteract_parser = parser.add_argument_group(title= "PLM-interact parameters")
+    ESM2_parser = parser.add_argument_group(title= "ESM2 model loading")
+
+    data_parser.add_argument('--test_filepath', required=True, type=str, help='Path to the input CSV file for testing.')
+    data_parser.add_argument('--output_path',  required=True,  type=str, help='Path to save prediction results.')
+
+    plminteract_parser.add_argument("--resume_from_checkpoint", required=True,  type=str,default=None,help="Path to a trained model.")
+    plminteract_parser.add_argument('--weight_loss_mlm', default=1, type=int, help='Weight applied to the masked language modeling (MLM) loss (default: 1).')  
+    plminteract_parser.add_argument('--weight_loss_class', default=10, type=int, help='Weight applied to the classification loss (default: 10).') 
+    plminteract_parser.add_argument('--max_length', type=int, default=1603, help='Maximum sequence length for tokenizing paired proteins (default: 1603).')
+    plminteract_parser.add_argument('--batch_size_val', default=16, type=int, help='The validation batch size on each device (default: 16).')
+
+    ESM2_parser.add_argument('--offline_model_path', type=str, required=True, help='Path to a locally stored ESM-2 model.')
+    ESM2_parser.add_argument('--model_name', type=str, required=True, help='Choose the ESM-2 model to load (esm2_t12_35M_UR50D / esm2_t33_650M_UR50D).')
+    ESM2_parser.add_argument('--embedding_size', type=int, required=True, help='Set embedding vector size based on the selected ESM-2 model (480 / 1280).') 
+
     return parser
 
 def main(args):
