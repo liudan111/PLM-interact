@@ -1,10 +1,10 @@
 Usage
-==========================================
+======
 
 .. _usage:
 
 Quick start
-------------------------------------------
+~~~~~~~~~~~
 There are 6 commands in PLM-interact package
 - `inference_PPI`: PPI prediction.
 - `train_mlm`: Training PPI models using mask and binary classification losses.
