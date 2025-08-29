@@ -183,7 +183,7 @@ class CrossEncoder():
 
         checkpoint_path = args.resume_from_checkpoint 
         load_checkpoint= torch.load(checkpoint_path,map_location='cpu')
-        self.model.module.load_state_dict(load_checkpoint,strict=False)
+        self.model.module.load_state_dict(load_checkpoint,strict=True)
 
         self.predict(args, test_dataset, batch_size_predict= batch_size_val, convert_to_numpy=True,  apply_softmax= True, output_path=output_path)
 

@@ -103,7 +103,7 @@ class CrossEncoder():
             os.makedirs(output_path, exist_ok=True)
 
         load_model = torch.load(f"{self.checkpoint}",map_location='cpu')
-        self.model.load_state_dict(load_model, strict=False)
+        self.model.load_state_dict(load_model, strict=True)
         self.predict(args,batch_size_val = batch_size_val,output_path= output_path)
 
     def predict(self, args,
