@@ -4,6 +4,7 @@ Data
 Trained Models
 --------------
 Human PPI models trained on the cross-species dataset 
+
 - 650M model
     `danliu1226/PLM-interact-650M-humanV11 <https://huggingface.co/danliu1226/PLM-interact-650M-humanV11>`_
 
