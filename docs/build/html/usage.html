@@ -48,6 +48,7 @@
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Usage</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#quick-start">Quick start</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#there-are-6-commands-in-plm-interact-package">There are 6 commands in PLM-interact package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#predict-a-list-ppis">Predict a list PPIs</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#training-ppi-models-using-mask-and-binary-classification-losses">Training PPI models using mask and binary classification losses.</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#training-ppi-models-using-only-binary-classification-loss">Training PPI models using only binary classification loss.</a></li>
@@ -95,13 +96,17 @@
 <h1>Usage<a class="headerlink" href="#usage" title="Permalink to this heading"></a></h1>
 <section id="quick-start">
 <span id="id1"></span><h2>Quick start<a class="headerlink" href="#quick-start" title="Permalink to this heading"></a></h2>
-<p>There are 6 commands in PLM-interact package
-- <cite>inference_PPI</cite>: PPI prediction.
-- <cite>train_mlm</cite>: Training PPI models using mask and binary classification losses.
-- <cite>train_binary</cite>: Training PPI models using only binary classification loss.
-- <cite>predict_ddp</cite>: Choose the best trained checkpoints by testing on the validation datasets and evaluate the model’s performance on the test datasets.
-- <cite>mutation_train</cite>:Fine-tuning in the binary mutation effect task.
-- <cite>mutation_predict</cite>: Inference in the binary mutation effect task.</p>
+<section id="there-are-6-commands-in-plm-interact-package">
+<h3>There are 6 commands in PLM-interact package<a class="headerlink" href="#there-are-6-commands-in-plm-interact-package" title="Permalink to this heading"></a></h3>
+<ul class="simple">
+<li><p><cite>inference_PPI</cite>: PPI prediction.</p></li>
+<li><p><cite>train_mlm</cite>: Training PPI models using mask and binary classification losses.</p></li>
+<li><p><cite>train_binary</cite>: Training PPI models using only binary classification loss.</p></li>
+<li><p><cite>predict_ddp</cite>: Choose the best trained checkpoints by testing on the validation datasets and evaluate the model’s performance on the test datasets.</p></li>
+<li><p><cite>mutation_train</cite>:Fine-tuning in the binary mutation effect task.</p></li>
+<li><p><cite>mutation_predict</cite>: Inference in the binary mutation effect task.</p></li>
+</ul>
+</section>
 <section id="predict-a-list-ppis">
 <h3>Predict a list PPIs<a class="headerlink" href="#predict-a-list-ppis" title="Permalink to this heading"></a></h3>
 <p>To predict a list of PPIs, you can download pre-trained models from <a class="reference external" href="https://huggingface.co/danliu1226">Hugging Face</a>.

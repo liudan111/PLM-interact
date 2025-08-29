@@ -55,11 +55,11 @@ Datasets for PLM-interact
 
 Original Datasets
 ------------------
-- `Cross-species dataset: https://github.com/samsledje/D-SCRIPT/blob/main/data/`_[1]
-- `Bernett dataset: https://doi.org/10.6084/m9.figshare.21591618.v3`_[2]
-- `Mutation effect dataset:https://ftp.ebi.ac.uk/pub/databases/intact/current/various/mutations.tsv`_[3]
-- `Virus-human PPI dataset: http://kurata35.bio.kyutech.ac.jp/LSTM-PHV/download_page`_[4]
-- `STRING V12 training dataset: https://stringdb-downloads.org/download/protein.physical.links.v12.0.txt.gz`_[5]
+- `Cross-species dataset[1]: https://github.com/samsledje/D-SCRIPT/blob/main/data/`_
+- `Bernett dataset[2]: https://doi.org/10.6084/m9.figshare.21591618.v3`_
+- `Mutation effect dataset[3]:https://ftp.ebi.ac.uk/pub/databases/intact/current/various/mutations.tsv`_
+- `Virus-human PPI dataset[4]: http://kurata35.bio.kyutech.ac.jp/LSTM-PHV/download_page`_
+- `STRING V12 training dataset[5]: https://stringdb-downloads.org/download/protein.physical.links.v12.0.txt.gz`_
 
 References
 -----------
