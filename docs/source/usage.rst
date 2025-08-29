@@ -5,6 +5,13 @@ Usage
 
 Quick start
 ------------------------------------------
+There are 6 commands in PLM-interact package
+- `inference_PPI`: PPI prediction.
+- `train_mlm`: Training PPI models using mask and binary classification losses.
+- `train_binary`: Training PPI models using only binary classification loss.
+- `predict_ddp`: Choose the best trained checkpoints by testing on the validation datasets and evaluate the model's performance on the test datasets.
+- `mutation_train`:Fine-tuning in the binary mutation effect task.
+- `mutation_predict`: Inference in the binary mutation effect task.
 
 Predict a list PPIs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -45,16 +52,6 @@ Inference in the binary mutation effect task.
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. code-block:: bash
    torchrun --nproc_per_node=1 -m PLMinteract mutation_predict --seed 2 --batch_size_val 1 --test_filepath $[paired protein sequences for test] --resume_from_checkpoint [traiend model] --model_name esm2_t33_650M_UR50D --embedding_size 1280 --max_length [length threshold of the paired protein] --offline_model_path [Path to a locally stored ESM-2 model] --output_path $output 
-
-
-There are 6 commands in PLM-interact package
-----------------------------------------------
-- `inference_PPI`: PPI prediction.
-- `train_mlm`: Training PPI models using mask and binary classification losses.
-- `train_binary`: Training PPI models using only binary classification loss.
-- `predict_ddp`: Choose the best trained checkpoints by testing on the validation datasets and evaluate the model's performance on the test datasets.
-- `mutation_train`:Fine-tuning in the binary mutation effect task.
-- `mutation_predict`: Inference in the binary mutation effect task.
 
 
 PPI prediction

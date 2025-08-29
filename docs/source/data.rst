@@ -46,27 +46,29 @@ Pre-trained models can be downloaded from `Hugging Face <https://huggingface.co/
 
 Datasets for PLM-interact
 --------------------------
-.. _`Cross-species dataset`: https://huggingface.co/datasets/danliu1226/cross_species_benchmarking
-.. _`Bernett dataset`: https://huggingface.co/datasets/danliu1226/Bernett_benchmarking
-.. _`Mutation effect dataset`: https://huggingface.co/datasets/danliu1226/Mutation_effect_dataset
-.. _`Virus-human PPI dataset`: https://huggingface.co/datasets/danliu1226/virus_human_benchmarking
-.. _`STRING V12 training dataset`: https://huggingface.co/datasets/danliu1226/STRING_V12_TrainingSet
-
-.. code-block:: bash
+- `Cross-species dataset: https://huggingface.co/datasets/danliu1226/cross_species_benchmarking`_
+- `Bernett dataset: https://huggingface.co/datasets/danliu1226/Bernett_benchmarking`_
+- `Mutation effect dataset: https://huggingface.co/datasets/danliu1226/Mutation_effect_dataset`_
+- `Virus-human PPI dataset: https://huggingface.co/datasets/danliu1226/virus_human_benchmarking`_
+- `STRING V12 training dataset: https://huggingface.co/datasets/danliu1226/STRING_V12_TrainingSet`_
 
 
 Original Datasets
 -----------
-.. _`Cross-species dataset`: https://github.com/samsledje/D-SCRIPT/blob/main/data/[1]
-.. _`Bernett dataset`: https://doi.org/10.6084/m9.figshare.21591618.v3[2]
-.. _`Mutation effect dataset`:https://ftp.ebi.ac.uk/pub/databases/intact/current/various/mutations.tsv[3]
-.. _`Virus-human PPI dataset`: http://kurata35.bio.kyutech.ac.jp/LSTM-PHV/download_page[4]
-.. _`STRING V12 training dataset`: https://stringdb-downloads.org/download/protein.physical.links.v12.0.txt.gz[5]
+- `Cross-species dataset: https://github.com/samsledje/D-SCRIPT/blob/main/data/`_[1]
+- `Bernett dataset: https://doi.org/10.6084/m9.figshare.21591618.v3`_[2]
+- `Mutation effect dataset:https://ftp.ebi.ac.uk/pub/databases/intact/current/various/mutations.tsv`_[3]
+- `Virus-human PPI dataset: http://kurata35.bio.kyutech.ac.jp/LSTM-PHV/download_page`_[4]
+- `STRING V12 training dataset: https://stringdb-downloads.org/download/protein.physical.links.v12.0.txt.gz`_[5]
 
 References
 -----------
 [1] Sledzieski, S., Singh, R., Cowen, L. & Berger, B. D-SCRIPT translates genome to phenome with sequence-based, structure-aware, genome-scale predictions of protein-protein interactions. Cell Systems 12, 969-982.e6 (2021).
+
 [2] BBernett, J., Blumenthal, D. B. & List, M. Cracking the black box of deep sequence-based protein–protein interaction prediction. Briefings in Bioinformatics 25, bbae076 (2024).
+
 [3] Kerrien, S. et al. The IntAct molecular interaction database in 2012. Nucleic Acids Research 40, D841–D846 (2012).
+
 [4]Tsukiyama, S., Hasan, M. M., Fujii, S. & Kurata, H. LSTM-PHV: prediction of human-virus protein–protein interactions by LSTM with word2vec. Briefings in Bioinformatics 22, bbab228 (2021).
+
 [5] Szklarczyk, D. et al. The STRING database in 2023: protein–protein association networks and functional enrichment analyses for any sequenced genome of interest. Nucleic Acids Research 51, D638–D646 (2023).

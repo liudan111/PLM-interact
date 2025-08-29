@@ -18,4 +18,3 @@ Contents
    installation
    usage
    data
-   api

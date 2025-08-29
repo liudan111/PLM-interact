@@ -7,7 +7,7 @@ copyright = '2025, Dan Liu'
 author = 'Dan Liu'
 
 
-release = "v0.1.0"
+release = "v0.1.1"
 master_doc = "index"
 
 # -- General configuration
