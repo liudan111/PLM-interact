@@ -3,20 +3,27 @@ Data
 
 Trained Models
 --------------
-Human PPI models trained on the cross-species dataset \
-- `danliu1226/PLM-interact-650M-humanV11 <https://huggingface.co/danliu1226/PLM-interact-650M-humanV11>`_  \
-- `danliu1226/PLM-interact-35M-humanV11 <https://huggingface.co/danliu1226/PLM-interact-35M-humanV11>`_
+Human PPI models trained on the cross-species dataset 
+- 650M model
+    `danliu1226/PLM-interact-650M-humanV11 <https://huggingface.co/danliu1226/PLM-interact-650M-humanV11>`_
 
-Human PPI model trained on the Bernett dataset \
+- 35M model
+    `danliu1226/PLM-interact-35M-humanV11 <https://huggingface.co/danliu1226/PLM-interact-35M-humanV11>`_
+
+Human PPI model trained on the Bernett dataset 
+
 - `danliu1226/PLM-interact-650M-Leakage-Free-Dataset <https://huggingface.co/danliu1226/PLM-interact-650M-Leakage-Free-Dataset>`_ 
 
-Human PPI model trained on the STRING V12 training dataset \
+Human PPI model trained on the STRING V12 training dataset 
+
 - `danliu1226/PLM-interact-650M-humanV12 <https://huggingface.co/danliu1226/PLM-interact-650M-humanV12>`_ 
 
-Virus-human PPI model \
+Virus-human PPI model 
+
 - `danliu1226/PLM-interact-650M-VH <https://huggingface.co/danliu1226/PLM-interact-650M-VH>`_ 
 
-Mutation effect model \
+Mutation effect model 
+
 - `danliu1226/PLM-interact-650M-Mutation <https://huggingface.co/danliu1226/PLM-interact-650M-Mutation>`_ 
 
 Pre-trained models can be downloaded from `Hugging Face <https://huggingface.co/danliu1226>`_.
@@ -40,8 +47,12 @@ Original Datasets
 
 References
 -----------
-[1] Sledzieski, S., Singh, R., Cowen, L. & Berger, B. D-SCRIPT translates genome to phenome with sequence-based, structure-aware, genome-scale predictions of protein-protein interactions. Cell Systems 12, 969-982.e6 (2021). \
-[2] BBernett, J., Blumenthal, D. B. & List, M. Cracking the black box of deep sequence-based protein–protein interaction prediction. Briefings in Bioinformatics 25, bbae076 (2024). \
-[3] Kerrien, S. et al. The IntAct molecular interaction database in 2012. Nucleic Acids Research 40, D841–D846 (2012).\
-[4]Tsukiyama, S., Hasan, M. M., Fujii, S. & Kurata, H. LSTM-PHV: prediction of human-virus protein–protein interactions by LSTM with word2vec. Briefings in Bioinformatics 22, bbab228 (2021). \
+[1] Sledzieski, S., Singh, R., Cowen, L. & Berger, B. D-SCRIPT translates genome to phenome with sequence-based, structure-aware, genome-scale predictions of protein-protein interactions. Cell Systems 12, 969-982.e6 (2021). 
+
+[2] BBernett, J., Blumenthal, D. B. & List, M. Cracking the black box of deep sequence-based protein–protein interaction prediction. Briefings in Bioinformatics 25, bbae076 (2024). 
+
+[3] Kerrien, S. et al. The IntAct molecular interaction database in 2012. Nucleic Acids Research 40, D841–D846 (2012).
+
+[4]Tsukiyama, S., Hasan, M. M., Fujii, S. & Kurata, H. LSTM-PHV: prediction of human-virus protein–protein interactions by LSTM with word2vec. Briefings in Bioinformatics 22, bbab228 (2021). 
+
 [5] Szklarczyk, D. et al. The STRING database in 2023: protein–protein association networks and functional enrichment analyses for any sequenced genome of interest. Nucleic Acids Research 51, D638–D646 (2023).

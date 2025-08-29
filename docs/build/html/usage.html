@@ -116,22 +116,68 @@ Required Input:</p>
 <p>(–resume_from_checkpoint): the traiend model that can be downldoed from <a class="reference external" href="https://huggingface.co/danliu1226">Hugging Face</a>.</p>
 <p>(–output_filepath): a path to save the results.</p>
 </div></blockquote>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>torchrun<span class="w"> </span>--nproc_per_node<span class="o">=</span><span class="m">1</span><span class="w"> </span>-m<span class="w"> </span>PLMinteract<span class="w"> </span>inference_PPI<span class="w"> </span>--seed<span class="w"> </span><span class="m">2</span><span class="w"> </span>--batch_size_val<span class="w"> </span><span class="m">1</span><span class="w"> </span>--test_filepath<span class="w"> </span><span class="o">[</span>a<span class="w"> </span>list<span class="w"> </span>of<span class="w"> </span>paired<span class="w"> </span>protein<span class="w"> </span>sequences<span class="o">]</span><span class="w"> </span>--resume_from_checkpoint<span class="w"> </span><span class="o">[</span>traiend<span class="w"> </span>model<span class="o">]</span><span class="w"> </span>--output_filepath<span class="w"> </span><span class="nv">$output_filepath</span><span class="w"> </span>--offline_model_path<span class="w"> </span><span class="nv">$offline_model_path</span><span class="w"> </span>--model_name<span class="w"> </span>esm2_t12_35M_UR50D<span class="w"> </span>--embedding_size<span class="w"> </span><span class="m">480</span><span class="w"> </span>--max_length<span class="w"> </span><span class="o">[</span>length<span class="w"> </span>threshold<span class="w"> </span>of<span class="w"> </span>the<span class="w"> </span>paired<span class="w"> </span>protein<span class="o">]</span>
+</pre></div>
+</div>
 </section>
 <section id="training-ppi-models">
 <h3>Training PPI models<a class="headerlink" href="#training-ppi-models" title="Permalink to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>torchrun<span class="w"> </span>--nproc_per_node<span class="o">=</span><span class="m">1</span><span class="w"> </span>-m<span class="w"> </span>PLMinteract<span class="w"> </span>train_mlm<span class="w"> </span>--epochs<span class="w"> </span><span class="o">[</span>total<span class="w"> </span>of<span class="w"> </span>training<span class="w"> </span>epochs<span class="o">]</span><span class="w"> </span>--seed<span class="w"> </span><span class="m">2</span><span class="w"> </span>--data<span class="w"> </span><span class="s1">&#39;human_V11&#39;</span><span class="w"> </span>--task_name<span class="w"> </span><span class="s1">&#39;1vs10&#39;</span><span class="w"> </span>--batch_size_train<span class="w"> </span><span class="m">1</span><span class="w"> </span>--train_filepath<span class="w"> </span><span class="o">[</span>paired<span class="w"> </span>protein<span class="w"> </span>sequences<span class="w"> </span><span class="k">for</span><span class="w"> </span>train<span class="o">]</span><span class="w"> </span>--model_name<span class="w"> </span>esm2_t12_35M_UR50D<span class="w"> </span>--embedding_size<span class="w"> </span><span class="m">480</span><span class="w"> </span>--warmup_steps<span class="w"> </span><span class="m">10</span><span class="w"> </span>--gradient_accumulation_steps<span class="w"> </span><span class="m">32</span><span class="w"> </span>--max_length<span class="w"> </span><span class="o">[</span>length<span class="w"> </span>threshold<span class="w"> </span>of<span class="w"> </span>the<span class="w"> </span>paired<span class="w"> </span>protein<span class="o">]</span><span class="w"> </span>--weight_loss_mlm<span class="w"> </span><span class="m">1</span><span class="w"> </span>--weight_loss_class<span class="w"> </span><span class="m">10</span><span class="w"> </span>--offline_model_path<span class="w"> </span><span class="o">[</span>Path<span class="w"> </span>to<span class="w"> </span>a<span class="w"> </span>locally<span class="w"> </span>stored<span class="w"> </span>ESM-2<span class="w"> </span>model<span class="o">]</span><span class="w"> </span>--output_filepath<span class="w"> </span><span class="nv">$output_filepath</span>
+</pre></div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>torchrun<span class="w"> </span>--nproc_per_node<span class="o">=</span><span class="m">1</span><span class="w"> </span>-m<span class="w"> </span>PLMinteract<span class="w"> </span>train_binary<span class="w"> </span>--epochs<span class="w"> </span><span class="o">[</span>total<span class="w"> </span>of<span class="w"> </span>training<span class="w"> </span>epochs<span class="o">]</span><span class="w"> </span>--seed<span class="w"> </span><span class="m">2</span><span class="w"> </span>--data<span class="w"> </span><span class="s1">&#39;human_V11&#39;</span><span class="w"> </span>--task_name<span class="w"> </span><span class="s1">&#39;binary&#39;</span><span class="w"> </span>--batch_size_train<span class="w"> </span><span class="m">2</span><span class="w"> </span>--batch_size_val<span class="w"> </span><span class="m">32</span><span class="w"> </span>--train_filepath<span class="w"> </span><span class="o">[</span>paired<span class="w"> </span>protein<span class="w"> </span>sequences<span class="w"> </span><span class="k">for</span><span class="w"> </span>train<span class="o">]</span><span class="w"> </span>--dev_filepath<span class="w"> </span><span class="o">[</span>paired<span class="w"> </span>protein<span class="w"> </span>sequences<span class="w"> </span><span class="k">for</span><span class="w"> </span>validation<span class="o">]</span><span class="w"> </span>--test_filepath<span class="w"> </span><span class="o">[</span>paired<span class="w"> </span>protein<span class="w"> </span>sequences<span class="w"> </span><span class="k">for</span><span class="w"> </span>test<span class="o">]</span><span class="w"> </span>--model_name<span class="w"> </span><span class="s1">&#39;esm2_t12_35M_UR50D&#39;</span><span class="w"> </span>--embedding_size<span class="w"> </span><span class="m">480</span><span class="w"> </span>--warmup_steps<span class="w"> </span><span class="m">2000</span><span class="w"> </span>--gradient_accumulation_steps<span class="w"> </span><span class="m">1</span><span class="w"> </span>--max_length<span class="w"> </span><span class="o">[</span>length<span class="w"> </span>threshold<span class="w"> </span>of<span class="w"> </span>the<span class="w"> </span>paired<span class="w"> </span>protein<span class="o">]</span><span class="w"> </span>--offline_model_path<span class="w"> </span><span class="o">[</span>Path<span class="w"> </span>to<span class="w"> </span>a<span class="w"> </span>locally<span class="w"> </span>stored<span class="w"> </span>ESM-2<span class="w"> </span>model<span class="o">]</span><span class="w"> </span>--evaluation_steps<span class="w"> </span><span class="o">[</span>evaluation<span class="w"> </span>steps<span class="o">]</span><span class="w"> </span>--sub_samples<span class="w"> </span><span class="o">[</span>subsamples<span class="w"> </span>of<span class="w"> </span>evaluation<span class="o">]</span><span class="w"> </span>--output_filepath<span class="w"> </span><span class="nv">$output_filepath</span>
+</pre></div>
+</div>
 </section>
 <section id="validation-and-test-of-trained-models">
 <h3>Validation and test of trained models<a class="headerlink" href="#validation-and-test-of-trained-models" title="Permalink to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>torchrun<span class="w"> </span>--nproc_per_node<span class="o">=</span><span class="m">1</span><span class="w"> </span>-m<span class="w"> </span>PLMinteract<span class="w"> </span>predict_ddp<span class="w"> </span>--epochs<span class="w"> </span><span class="o">[</span>total<span class="w"> </span>of<span class="w"> </span>training<span class="w"> </span>epochs<span class="o">]</span><span class="w"> </span>--seed<span class="w"> </span><span class="m">2</span><span class="w"> </span>--batch_size_val<span class="w"> </span><span class="m">1</span><span class="w"> </span>--dev_filepath<span class="w"> </span><span class="o">[</span>paired<span class="w"> </span>protein<span class="w"> </span>sequences<span class="w"> </span><span class="k">for</span><span class="w"> </span>validation<span class="o">]</span><span class="w"> </span>--test_filepath<span class="w"> </span><span class="o">[</span>paired<span class="w"> </span>protein<span class="w"> </span>sequences<span class="w"> </span><span class="k">for</span><span class="w"> </span>test<span class="o">]</span><span class="w"> </span>--resume_from_checkpoint<span class="w"> </span><span class="o">[</span>the<span class="w"> </span>path<span class="w"> </span>of<span class="w"> </span>checkpints<span class="o">]</span><span class="w"> </span>--model_name<span class="w"> </span>esm2_t12_35M_UR50D<span class="w"> </span>--embedding_size<span class="w"> </span><span class="m">480</span><span class="w"> </span>--max_length<span class="w"> </span><span class="o">[</span>length<span class="w"> </span>threshold<span class="w"> </span>of<span class="w"> </span>the<span class="w"> </span>paired<span class="w"> </span>protein<span class="o">]</span><span class="w"> </span>--offline_model_path<span class="w"> </span><span class="o">[</span>Path<span class="w"> </span>to<span class="w"> </span>a<span class="w"> </span>locally<span class="w"> </span>stored<span class="w"> </span>ESM-2<span class="w"> </span>model<span class="o">]</span><span class="w"> </span>--output_filepath<span class="w"> </span><span class="nv">$output_filepath</span>
+</pre></div>
+</div>
 </section>
 <section id="fine-tuning-in-the-binary-mutation-effect-task">
 <h3>Fine-tuning in the binary mutation effect task.<a class="headerlink" href="#fine-tuning-in-the-binary-mutation-effect-task" title="Permalink to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>torchrun<span class="w"> </span>--nproc_per_node<span class="o">=</span><span class="m">1</span><span class="w"> </span>-m<span class="w"> </span>PLMinteract<span class="w"> </span>mutation_train<span class="w"> </span>--epochs<span class="w"> </span><span class="o">[</span>total<span class="w"> </span>of<span class="w"> </span>training<span class="w"> </span>epochs<span class="o">]</span><span class="w"> </span>--seed<span class="w"> </span><span class="m">2</span><span class="w"> </span>--task_name<span class="w"> </span><span class="nv">$task_name</span><span class="w"> </span>--batch_size_train<span class="w"> </span><span class="m">1</span><span class="w"> </span>--batch_size_val<span class="w"> </span><span class="m">1</span><span class="w"> </span>--train_filepath<span class="w"> </span><span class="o">[</span>paired<span class="w"> </span>protein<span class="w"> </span>sequences<span class="w"> </span><span class="k">for</span><span class="w"> </span>train<span class="o">]</span><span class="w"> </span>--dev_filepath<span class="w"> </span><span class="o">[</span>paired<span class="w"> </span>protein<span class="w"> </span>sequences<span class="w"> </span><span class="k">for</span><span class="w"> </span>validation<span class="o">]</span><span class="w">  </span>--warmup_steps<span class="w"> </span><span class="m">2000</span><span class="w"> </span>--resume_from_checkpoint<span class="w"> </span><span class="o">[</span>the<span class="w"> </span>path<span class="w"> </span>of<span class="w"> </span>checkpints<span class="o">]</span><span class="w"> </span>--model_name<span class="w"> </span>esm2_t33_650M_UR50D<span class="w"> </span>--embedding_size<span class="w"> </span><span class="m">1280</span><span class="w"> </span>--max_length<span class="w"> </span><span class="o">[</span>length<span class="w"> </span>threshold<span class="w"> </span>of<span class="w"> </span>the<span class="w"> </span>paired<span class="w"> </span>protein<span class="o">]</span><span class="w"> </span>--gradient_accumulation_steps<span class="w"> </span><span class="m">1</span><span class="w"> </span>--offline_model_path<span class="w"> </span><span class="o">[</span>Path<span class="w"> </span>to<span class="w"> </span>a<span class="w"> </span>locally<span class="w"> </span>stored<span class="w"> </span>ESM-2<span class="w"> </span>model<span class="o">]</span><span class="w"> </span>--output_path<span class="w"> </span><span class="nv">$output</span>
+</pre></div>
+</div>
 </section>
 <section id="inference-in-the-binary-mutation-effect-task">
 <h3>Inference in the binary mutation effect task.<a class="headerlink" href="#inference-in-the-binary-mutation-effect-task" title="Permalink to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>torchrun<span class="w"> </span>--nproc_per_node<span class="o">=</span><span class="m">1</span><span class="w"> </span>-m<span class="w"> </span>PLMinteract<span class="w"> </span>mutation_predict<span class="w"> </span>--seed<span class="w"> </span><span class="m">2</span><span class="w"> </span>--batch_size_val<span class="w"> </span><span class="m">1</span><span class="w"> </span>--test_filepath<span class="w"> </span>$<span class="o">[</span>paired<span class="w"> </span>protein<span class="w"> </span>sequences<span class="w"> </span><span class="k">for</span><span class="w"> </span>test<span class="o">]</span><span class="w"> </span>--resume_from_checkpoint<span class="w"> </span><span class="o">[</span>traiend<span class="w"> </span>model<span class="o">]</span><span class="w"> </span>--model_name<span class="w"> </span>esm2_t33_650M_UR50D<span class="w"> </span>--embedding_size<span class="w"> </span><span class="m">1280</span><span class="w"> </span>--max_length<span class="w"> </span><span class="o">[</span>length<span class="w"> </span>threshold<span class="w"> </span>of<span class="w"> </span>the<span class="w"> </span>paired<span class="w"> </span>protein<span class="o">]</span><span class="w"> </span>--offline_model_path<span class="w"> </span><span class="o">[</span>Path<span class="w"> </span>to<span class="w"> </span>a<span class="w"> </span>locally<span class="w"> </span>stored<span class="w"> </span>ESM-2<span class="w"> </span>model<span class="o">]</span><span class="w"> </span>--output_path<span class="w"> </span><span class="nv">$output</span>
+</pre></div>
+</div>
 </section>
 </section>
 <section id="ppi-prediction">
 <h2>PPI prediction<a class="headerlink" href="#ppi-prediction" title="Permalink to this heading"></a></h2>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>usage:<span class="w"> </span>PLMinteract<span class="w"> </span>inference_PPI<span class="w"> </span><span class="o">[</span>-h<span class="o">]</span><span class="w"> </span><span class="o">[</span>--seed<span class="w"> </span>SEED<span class="o">]</span><span class="w"> </span>--test_filepath<span class="w"> </span>TEST_FILEPATH<span class="w"> </span>--output_filepath<span class="w"> </span>OUTPUT_FILEPATH
+<span class="w">                              </span>--resume_from_checkpoint<span class="w"> </span>RESUME_FROM_CHECKPOINT<span class="w"> </span><span class="o">[</span>--batch_size_val<span class="w"> </span>BATCH_SIZE_VAL<span class="o">]</span>
+<span class="w">                              </span><span class="o">[</span>--max_length<span class="w"> </span>MAX_LENGTH<span class="o">]</span><span class="w"> </span>--offline_model_path<span class="w"> </span>OFFLINE_MODEL_PATH<span class="w"> </span>--model_name<span class="w"> </span>MODEL_NAME
+<span class="w">                              </span>--embedding_size<span class="w"> </span>EMBEDDING_SIZE
+
+PPI<span class="w"> </span>prediction.
+
+options:
+-h,<span class="w"> </span>--help<span class="w">            </span>show<span class="w"> </span>this<span class="w"> </span><span class="nb">help</span><span class="w"> </span>message<span class="w"> </span>and<span class="w"> </span><span class="nb">exit</span>
+--seed<span class="w"> </span>SEED<span class="w">           </span>Random<span class="w"> </span>seed<span class="w"> </span><span class="k">for</span><span class="w"> </span>reproducibility<span class="w"> </span><span class="o">(</span>default:<span class="w"> </span><span class="m">2</span><span class="o">)</span>.
+--test_filepath<span class="w"> </span>TEST_FILEPATH
+<span class="w">                        </span>Path<span class="w"> </span>to<span class="w"> </span>the<span class="w"> </span><span class="nb">test</span><span class="w"> </span>dataset<span class="w"> </span><span class="o">(</span>CSV<span class="w"> </span>format<span class="o">)</span>.
+--output_filepath<span class="w"> </span>OUTPUT_FILEPATH
+<span class="w">                        </span>Path<span class="w"> </span>to<span class="w"> </span>save<span class="w"> </span>the<span class="w"> </span>prediction<span class="w"> </span>results.
+--resume_from_checkpoint<span class="w"> </span>RESUME_FROM_CHECKPOINT
+<span class="w">                        </span>Path<span class="w"> </span>to<span class="w"> </span>a<span class="w"> </span>trained<span class="w"> </span>model<span class="w"> </span><span class="o">(</span>default:<span class="w"> </span>None<span class="o">)</span>.
+--batch_size_val<span class="w"> </span>BATCH_SIZE_VAL
+<span class="w">                        </span>The<span class="w"> </span>validation<span class="w"> </span>batch<span class="w"> </span>size<span class="w"> </span>on<span class="w"> </span>each<span class="w"> </span>device<span class="w"> </span><span class="o">(</span>default:<span class="w"> </span><span class="m">16</span><span class="o">)</span>.
+--max_length<span class="w"> </span>MAX_LENGTH
+<span class="w">                        </span>Maximum<span class="w"> </span>sequence<span class="w"> </span>length<span class="w"> </span><span class="k">for</span><span class="w"> </span>tokenizing<span class="w"> </span>paired<span class="w"> </span>proteins<span class="w"> </span><span class="o">(</span>default:<span class="w"> </span><span class="m">1603</span><span class="o">)</span>.
+--offline_model_path<span class="w"> </span>OFFLINE_MODEL_PATH
+<span class="w">                        </span>Path<span class="w"> </span>to<span class="w"> </span>a<span class="w"> </span>locally<span class="w"> </span>stored<span class="w"> </span>ESM-2<span class="w"> </span>model.
+--model_name<span class="w"> </span>MODEL_NAME
+<span class="w">                        </span>Choose<span class="w"> </span>the<span class="w"> </span>ESM-2<span class="w"> </span>model<span class="w"> </span>to<span class="w"> </span>load<span class="w"> </span><span class="o">(</span>esm2_t12_35M_UR50D<span class="w"> </span>/<span class="w"> </span>esm2_t33_650M_UR50D<span class="o">)</span>.
+--embedding_size<span class="w"> </span>EMBEDDING_SIZE
+<span class="w">                        </span>Set<span class="w"> </span>embedding<span class="w"> </span>vector<span class="w"> </span>size<span class="w"> </span>based<span class="w"> </span>on<span class="w"> </span>the<span class="w"> </span>selected<span class="w"> </span>ESM-2<span class="w"> </span>model<span class="w"> </span><span class="o">(</span><span class="m">480</span><span class="w"> </span>/<span class="w"> </span><span class="m">1280</span><span class="o">)</span>.
+</pre></div>
+</div>
 </section>
 <section id="training-ppi-models-using-mask-and-binary-classification-losses">
 <h2>Training PPI models using mask and binary classification losses<a class="headerlink" href="#training-ppi-models-using-mask-and-binary-classification-losses" title="Permalink to this heading"></a></h2>
@@ -186,12 +232,157 @@ ESM2<span class="w"> </span>model<span class="w"> </span>loading:
 </section>
 <section id="training-ppi-models-using-only-binary-classification-loss">
 <h2>Training PPI models using only binary classification loss.<a class="headerlink" href="#training-ppi-models-using-only-binary-classification-loss" title="Permalink to this heading"></a></h2>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>usage:<span class="w"> </span>PLMinteract<span class="w"> </span>train_binary<span class="w"> </span><span class="o">[</span>-h<span class="o">]</span><span class="w"> </span><span class="o">[</span>--seed<span class="w"> </span>SEED<span class="o">]</span><span class="w"> </span><span class="o">[</span>--data<span class="w"> </span>DATA<span class="o">]</span><span class="w"> </span><span class="o">[</span>--task_name<span class="w"> </span>TASK_NAME<span class="o">]</span><span class="w"> </span>--train_filepath<span class="w"> </span>TRAIN_FILEPATH
+<span class="w">                              </span>--dev_filepath<span class="w"> </span>DEV_FILEPATH<span class="w"> </span>--test_filepath<span class="w"> </span>TEST_FILEPATH<span class="w"> </span>--output_filepath<span class="w"> </span>OUTPUT_FILEPATH
+<span class="w">                              </span><span class="o">[</span>--epochs<span class="w"> </span>EPOCHS<span class="o">]</span><span class="w"> </span><span class="o">[</span>--resume_from_checkpoint<span class="w"> </span>RESUME_FROM_CHECKPOINT<span class="o">]</span><span class="w"> </span><span class="o">[</span>--warmup_steps<span class="w"> </span>WARMUP_STEPS<span class="o">]</span>
+<span class="w">                              </span><span class="o">[</span>--gradient_accumulation_steps<span class="w"> </span>GRADIENT_ACCUMULATION_STEPS<span class="o">]</span><span class="w"> </span><span class="o">[</span>--evaluation_steps<span class="w"> </span>EVALUATION_STEPS<span class="o">]</span>
+<span class="w">                              </span><span class="o">[</span>--sub_samples<span class="w"> </span>SUB_SAMPLES<span class="o">]</span><span class="w"> </span><span class="o">[</span>--max_length<span class="w"> </span>MAX_LENGTH<span class="o">]</span><span class="w"> </span><span class="o">[</span>--batch_size_train<span class="w"> </span>BATCH_SIZE_TRAIN<span class="o">]</span>
+<span class="w">                              </span><span class="o">[</span>--batch_size_val<span class="w"> </span>BATCH_SIZE_VAL<span class="o">]</span><span class="w"> </span>--offline_model_path<span class="w"> </span>OFFLINE_MODEL_PATH<span class="w"> </span>--model_name<span class="w"> </span>MODEL_NAME
+<span class="w">                              </span>--embedding_size<span class="w"> </span>EMBEDDING_SIZE
+
+Fine-tuning<span class="w"> </span><span class="k">in</span><span class="w"> </span>the<span class="w"> </span>binary<span class="w"> </span>mutation<span class="w"> </span>effect<span class="w"> </span>task
+
+options:
+-h,<span class="w"> </span>--help<span class="w">            </span>show<span class="w"> </span>this<span class="w"> </span><span class="nb">help</span><span class="w"> </span>message<span class="w"> </span>and<span class="w"> </span><span class="nb">exit</span>
+--seed<span class="w"> </span>SEED<span class="w">           </span>Random<span class="w"> </span>seed<span class="w"> </span><span class="k">for</span><span class="w"> </span>reproducibility<span class="w"> </span><span class="o">(</span>default:<span class="w"> </span><span class="m">2</span><span class="o">)</span>.
+--data<span class="w"> </span>DATA<span class="w">           </span>Set<span class="w"> </span>the<span class="w"> </span>dataset<span class="w"> </span>name<span class="w"> </span><span class="o">(</span>e.g.,<span class="w"> </span>cross_species<span class="o">)(</span>default:<span class="w"> </span><span class="s2">&quot;&quot;</span><span class="o">)</span>.
+--task_name<span class="w"> </span>TASK_NAME
+<span class="w">                        </span>Set<span class="w"> </span>the<span class="w"> </span>task<span class="w"> </span>name<span class="w"> </span><span class="o">(</span>e.g.,<span class="w"> </span>binary<span class="o">)(</span>default:<span class="w"> </span><span class="s2">&quot;&quot;</span><span class="o">)</span>.
+
+Input<span class="w"> </span>data<span class="w"> </span>and<span class="w"> </span>path<span class="w"> </span>of<span class="w"> </span>output<span class="w"> </span>results:
+--train_filepath<span class="w"> </span>TRAIN_FILEPATH
+<span class="w">                        </span>Path<span class="w"> </span>to<span class="w"> </span>the<span class="w"> </span>training<span class="w"> </span>dataset<span class="w"> </span><span class="o">(</span>CSV<span class="w"> </span>format<span class="o">)</span>.
+--dev_filepath<span class="w"> </span>DEV_FILEPATH
+<span class="w">                        </span>Path<span class="w"> </span>to<span class="w"> </span>the<span class="w"> </span>validation<span class="w"> </span>dataset<span class="w"> </span><span class="o">(</span>CSV<span class="w"> </span>format<span class="o">)</span>.
+--test_filepath<span class="w"> </span>TEST_FILEPATH
+<span class="w">                        </span>Path<span class="w"> </span>to<span class="w"> </span>the<span class="w"> </span><span class="nb">test</span><span class="w"> </span>dataset<span class="w"> </span><span class="o">(</span>CSV<span class="w"> </span>format<span class="o">)</span>.
+--output_filepath<span class="w"> </span>OUTPUT_FILEPATH
+<span class="w">                        </span>Path<span class="w"> </span>to<span class="w"> </span>save<span class="w"> </span>trained<span class="w"> </span>model<span class="w"> </span>checkpoints<span class="w"> </span>and<span class="w"> </span>training<span class="w"> </span>results.
+
+PLM-interact<span class="w"> </span>setting:
+--epochs<span class="w"> </span>EPOCHS<span class="w">       </span>Total<span class="w"> </span>number<span class="w"> </span>of<span class="w"> </span>training<span class="w"> </span>epochs<span class="w"> </span><span class="o">(</span>default:<span class="w"> </span><span class="m">10</span><span class="o">)</span>.
+--resume_from_checkpoint<span class="w"> </span>RESUME_FROM_CHECKPOINT
+<span class="w">                        </span>Path<span class="w"> </span>to<span class="w"> </span>a<span class="w"> </span>checkpoint<span class="w"> </span>to<span class="w"> </span>resume<span class="w"> </span>training<span class="w"> </span>from,<span class="w"> </span><span class="k">if</span><span class="w"> </span>continuing<span class="w"> </span>a<span class="w"> </span>previous<span class="w"> </span>run.
+--warmup_steps<span class="w"> </span>WARMUP_STEPS
+<span class="w">                        </span>Number<span class="w"> </span>of<span class="w"> </span>warmup<span class="w"> </span>steps<span class="w"> </span><span class="k">for</span><span class="w"> </span>the<span class="w"> </span>learning<span class="w"> </span>rate<span class="w"> </span>scheduler<span class="w"> </span><span class="o">(</span>default:<span class="w"> </span><span class="m">2000</span><span class="o">)</span>.
+--gradient_accumulation_steps<span class="w"> </span>GRADIENT_ACCUMULATION_STEPS
+<span class="w">                        </span>Number<span class="w"> </span>of<span class="w"> </span>steps<span class="w"> </span>to<span class="w"> </span>accumulate<span class="w"> </span>gradients<span class="w"> </span>before<span class="w"> </span>performing<span class="w"> </span>an<span class="w"> </span>optimizer<span class="w"> </span>step<span class="w"> </span><span class="o">(</span>default:<span class="w"> </span><span class="m">8</span><span class="o">)</span>.
+--evaluation_steps<span class="w"> </span>EVALUATION_STEPS
+<span class="w">                        </span>Perform<span class="w"> </span>evaluation<span class="w"> </span>every<span class="w"> </span>N<span class="w"> </span>steps<span class="w"> </span>during<span class="w"> </span>training<span class="w"> </span><span class="o">(</span>default:<span class="w"> </span><span class="m">5000</span><span class="o">)</span>.
+--sub_samples<span class="w"> </span>SUB_SAMPLES
+<span class="w">                        </span>Number<span class="w"> </span>of<span class="w"> </span>subsamples<span class="w"> </span>to<span class="w"> </span>use<span class="w"> </span><span class="k">for</span><span class="w"> </span>evaluation<span class="w"> </span><span class="o">(</span>default:<span class="w"> </span><span class="m">128</span><span class="o">)</span>.
+--max_length<span class="w"> </span>MAX_LENGTH
+<span class="w">                        </span>Maximum<span class="w"> </span>sequence<span class="w"> </span>length<span class="w"> </span><span class="k">for</span><span class="w"> </span>tokenizing<span class="w"> </span>paired<span class="w"> </span>proteins<span class="w"> </span><span class="o">(</span>default:<span class="w"> </span><span class="m">1603</span><span class="o">)</span>.
+--batch_size_train<span class="w"> </span>BATCH_SIZE_TRAIN
+<span class="w">                        </span>The<span class="w"> </span>training<span class="w"> </span>batch<span class="w"> </span>size<span class="w"> </span>on<span class="w"> </span>each<span class="w"> </span>device<span class="w"> </span><span class="o">(</span>default:<span class="w"> </span><span class="m">16</span><span class="o">)</span>.
+--batch_size_val<span class="w"> </span>BATCH_SIZE_VAL
+<span class="w">                        </span>The<span class="w"> </span>validation<span class="w"> </span>batch<span class="w"> </span>size<span class="w"> </span>on<span class="w"> </span>each<span class="w"> </span>device<span class="w"> </span><span class="o">(</span>default:<span class="w"> </span><span class="m">16</span><span class="o">)</span>.
+
+ESM2<span class="w"> </span>model<span class="w"> </span>loading:
+--offline_model_path<span class="w"> </span>OFFLINE_MODEL_PATH
+<span class="w">                        </span>Path<span class="w"> </span>to<span class="w"> </span>a<span class="w"> </span>locally<span class="w"> </span>stored<span class="w"> </span>ESM-2<span class="w"> </span>model.
+--model_name<span class="w"> </span>MODEL_NAME
+<span class="w">                        </span>Choose<span class="w"> </span>the<span class="w"> </span>ESM-2<span class="w"> </span>model<span class="w"> </span>to<span class="w"> </span>load<span class="w"> </span><span class="o">(</span>esm2_t12_35M_UR50D<span class="w"> </span>/<span class="w"> </span>esm2_t33_650M_UR50D<span class="o">)</span>.
+--embedding_size<span class="w"> </span>EMBEDDING_SIZE
+<span class="w">                        </span>Set<span class="w"> </span>embedding<span class="w"> </span>vector<span class="w"> </span>size<span class="w"> </span>based<span class="w"> </span>on<span class="w"> </span>the<span class="w"> </span>selected<span class="w"> </span>ESM-2<span class="w"> </span>model<span class="w"> </span><span class="o">(</span><span class="m">480</span><span class="w"> </span>/<span class="w"> </span><span class="m">1280</span><span class="o">)</span>.
+</pre></div>
+</div>
 </section>
 <section id="evaluation-and-test-with-multi-nodes-and-multi-gpus">
 <h2>Evaluation and test with multi nodes and multi GPUs<a class="headerlink" href="#evaluation-and-test-with-multi-nodes-and-multi-gpus" title="Permalink to this heading"></a></h2>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>usage: PLMinteract predict_ddp [-h] [--seed SEED] --dev_filepath DEV_FILEPATH --test_filepath TEST_FILEPATH --output_filepath
+                              OUTPUT_FILEPATH [--epochs EPOCHS] [--resume_from_checkpoint RESUME_FROM_CHECKPOINT]
+                              [--batch_size_val BATCH_SIZE_VAL] [--max_length MAX_LENGTH] --offline_model_path OFFLINE_MODEL_PATH
+                              --model_name MODEL_NAME --embedding_size EMBEDDING_SIZE
+
+Choose the best trained checkpoints by testing on the validation datasets and evaluate the model&#39;s performance on the test
+datasets.
+
+options:
+-h, --help            show this help message and exit
+--seed SEED           Random seed for reproducibility (default: 2).
+
+Input data and output results:
+--dev_filepath DEV_FILEPATH
+                        Path to the validation dataset (CSV format).
+--test_filepath TEST_FILEPATH
+                        Path to the test dataset (CSV format).
+--output_filepath OUTPUT_FILEPATH
+                        Path to save validation and test results.
+
+PLM-interact setting:
+--epochs EPOCHS       Total epochs of trained models (default: 10).
+--resume_from_checkpoint RESUME_FROM_CHECKPOINT
+                        Path to trained models(default: None).
+--batch_size_val BATCH_SIZE_VAL
+                        The validation batch size on each device (default: 16)
+--max_length MAX_LENGTH
+                        Maximum sequence length for tokenizing paired proteins (default: 1603).
+
+ESM2 model loading:
+--offline_model_path OFFLINE_MODEL_PATH
+                        Path to a locally stored ESM-2 model.
+--model_name MODEL_NAME
+                        Choose the ESM-2 model to load (esm2_t12_35M_UR50D / esm2_t33_650M_UR50D).
+--embedding_size EMBEDDING_SIZE
+                        Set embedding vector size based on the selected ESM-2 model (480 / 1280).
+</pre></div>
+</div>
 </section>
 <section id="id3">
 <h2>Fine-tuning in the binary mutation effect task.<a class="headerlink" href="#id3" title="Permalink to this heading"></a></h2>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>usage:<span class="w"> </span>PLMinteract<span class="w"> </span>mutation_train<span class="w"> </span><span class="o">[</span>-h<span class="o">]</span><span class="w"> </span><span class="o">[</span>--seed<span class="w"> </span>SEED<span class="o">]</span><span class="w"> </span><span class="o">[</span>--task_name<span class="w"> </span>TASK_NAME<span class="o">]</span><span class="w"> </span>--train_filepath<span class="w"> </span>TRAIN_FILEPATH<span class="w"> </span>--dev_filepath
+<span class="w">                               </span>DEV_FILEPATH<span class="w"> </span>--output_path<span class="w"> </span>OUTPUT_PATH<span class="w"> </span><span class="o">[</span>--epochs<span class="w"> </span>EPOCHS<span class="o">]</span>
+<span class="w">                               </span><span class="o">[</span>--resume_from_checkpoint<span class="w"> </span>RESUME_FROM_CHECKPOINT<span class="o">]</span><span class="w"> </span><span class="o">[</span>--warmup_steps<span class="w"> </span>WARMUP_STEPS<span class="o">]</span>
+<span class="w">                               </span><span class="o">[</span>--gradient_accumulation_steps<span class="w"> </span>GRADIENT_ACCUMULATION_STEPS<span class="o">]</span><span class="w"> </span><span class="o">[</span>--weight_loss_mlm<span class="w"> </span>WEIGHT_LOSS_MLM<span class="o">]</span>
+<span class="w">                               </span><span class="o">[</span>--weight_loss_class<span class="w"> </span>WEIGHT_LOSS_CLASS<span class="o">]</span><span class="w"> </span><span class="o">[</span>--max_length<span class="w"> </span>MAX_LENGTH<span class="o">]</span>
+<span class="w">                               </span><span class="o">[</span>--batch_size_train<span class="w"> </span>BATCH_SIZE_TRAIN<span class="o">]</span><span class="w"> </span><span class="o">[</span>--batch_size_val<span class="w"> </span>BATCH_SIZE_VAL<span class="o">]</span><span class="w"> </span>--offline_model_path
+<span class="w">                               </span>OFFLINE_MODEL_PATH<span class="w"> </span>--model_name<span class="w"> </span>MODEL_NAME<span class="w"> </span>--embedding_size<span class="w"> </span>EMBEDDING_SIZE
+
+Predict<span class="w"> </span>mutant<span class="w"> </span>effects<span class="w"> </span><span class="k">in</span><span class="w"> </span>human<span class="w"> </span>PPIs.
+
+options:
+-h,<span class="w"> </span>--help<span class="w">            </span>show<span class="w"> </span>this<span class="w"> </span><span class="nb">help</span><span class="w"> </span>message<span class="w"> </span>and<span class="w"> </span><span class="nb">exit</span>
+--seed<span class="w"> </span>SEED<span class="w">           </span>Random<span class="w"> </span>seed<span class="w"> </span><span class="k">for</span><span class="w"> </span>reproducibility.<span class="w"> </span><span class="o">(</span>default:<span class="w"> </span><span class="m">2</span><span class="o">)</span>
+--task_name<span class="w"> </span>TASK_NAME
+<span class="w">                        </span>Set<span class="w"> </span>the<span class="w"> </span>task<span class="w"> </span>name<span class="w"> </span><span class="o">(</span>e.g.,<span class="w"> </span>mutation_effects_training<span class="o">)(</span>default:<span class="w"> </span><span class="s2">&quot;&quot;</span><span class="o">)</span>
+
+Input<span class="w"> </span>data<span class="w"> </span>and<span class="w"> </span>path<span class="w"> </span>of<span class="w"> </span>output<span class="w"> </span>results:
+--train_filepath<span class="w"> </span>TRAIN_FILEPATH
+<span class="w">                        </span>Path<span class="w"> </span>to<span class="w"> </span>the<span class="w"> </span>training<span class="w"> </span>dataset<span class="w"> </span><span class="o">(</span>CSV<span class="w"> </span>format<span class="o">)</span>
+--dev_filepath<span class="w"> </span>DEV_FILEPATH
+<span class="w">                        </span>Path<span class="w"> </span>to<span class="w"> </span>the<span class="w"> </span>validation<span class="w"> </span>dataset<span class="w"> </span><span class="o">(</span>CSV<span class="w"> </span>format<span class="o">)</span>
+--output_path<span class="w"> </span>OUTPUT_PATH
+<span class="w">                        </span>Path<span class="w"> </span>to<span class="w"> </span>save<span class="w"> </span>trained<span class="w"> </span>model<span class="w"> </span>checkpoints<span class="w"> </span>and<span class="w"> </span>training<span class="w"> </span>results
+
+PLM-interact<span class="w"> </span>setting:
+--epochs<span class="w"> </span>EPOCHS<span class="w">       </span>Total<span class="w"> </span>number<span class="w"> </span>of<span class="w"> </span>training<span class="w"> </span>epochs<span class="w"> </span><span class="o">(</span>default:<span class="w"> </span><span class="m">50</span><span class="o">)</span>.
+--resume_from_checkpoint<span class="w"> </span>RESUME_FROM_CHECKPOINT
+<span class="w">                        </span>Path<span class="w"> </span>to<span class="w"> </span>a<span class="w"> </span>checkpoint<span class="w"> </span>to<span class="w"> </span>resume<span class="w"> </span>training<span class="w"> </span>from,<span class="w"> </span><span class="k">if</span><span class="w"> </span>continuing<span class="w"> </span>a<span class="w"> </span>previous<span class="w"> </span>run
+--warmup_steps<span class="w"> </span>WARMUP_STEPS
+<span class="w">                        </span>Number<span class="w"> </span>of<span class="w"> </span>warmup<span class="w"> </span>steps<span class="w"> </span><span class="k">for</span><span class="w"> </span>the<span class="w"> </span>learning<span class="w"> </span>rate<span class="w"> </span>scheduler<span class="w"> </span><span class="o">(</span>default:<span class="w"> </span><span class="m">2000</span><span class="o">)</span>
+--gradient_accumulation_steps<span class="w"> </span>GRADIENT_ACCUMULATION_STEPS
+<span class="w">                        </span>Number<span class="w"> </span>of<span class="w"> </span>steps<span class="w"> </span>to<span class="w"> </span>accumulate<span class="w"> </span>gradients<span class="w"> </span>before<span class="w"> </span>performing<span class="w"> </span>an<span class="w"> </span>optimizer<span class="w"> </span>step<span class="w"> </span><span class="o">(</span>default:<span class="w"> </span><span class="m">8</span><span class="o">)</span>
+--weight_loss_mlm<span class="w"> </span>WEIGHT_LOSS_MLM
+<span class="w">                        </span>Weight<span class="w"> </span>applied<span class="w"> </span>to<span class="w"> </span>the<span class="w"> </span>masked<span class="w"> </span>language<span class="w"> </span>modeling<span class="w"> </span><span class="o">(</span>MLM<span class="o">)</span><span class="w"> </span>loss<span class="w"> </span><span class="o">(</span>default:<span class="w"> </span><span class="m">1</span><span class="o">)</span>
+--weight_loss_class<span class="w"> </span>WEIGHT_LOSS_CLASS
+<span class="w">                        </span>Weight<span class="w"> </span>applied<span class="w"> </span>to<span class="w"> </span>the<span class="w"> </span>classification<span class="w"> </span>loss<span class="w"> </span><span class="o">(</span>default:<span class="w"> </span><span class="m">10</span><span class="o">)</span>
+--max_length<span class="w"> </span>MAX_LENGTH
+<span class="w">                        </span>Maximum<span class="w"> </span>sequence<span class="w"> </span>length<span class="w"> </span><span class="k">for</span><span class="w"> </span>tokenizing<span class="w"> </span>paired<span class="w"> </span>proteins<span class="w"> </span><span class="o">(</span>default:<span class="w"> </span><span class="m">1603</span><span class="o">)</span>
+--batch_size_train<span class="w"> </span>BATCH_SIZE_TRAIN
+<span class="w">                        </span>The<span class="w"> </span>training<span class="w"> </span>batch<span class="w"> </span>size<span class="w"> </span>on<span class="w"> </span>each<span class="w"> </span>device<span class="w"> </span><span class="o">(</span>default:<span class="w"> </span><span class="m">16</span><span class="o">)</span>
+--batch_size_val<span class="w"> </span>BATCH_SIZE_VAL
+<span class="w">                        </span>The<span class="w"> </span>validation<span class="w"> </span>batch<span class="w"> </span>size<span class="w"> </span>on<span class="w"> </span>each<span class="w"> </span>device<span class="w"> </span><span class="o">(</span>default:<span class="w"> </span><span class="m">16</span><span class="o">)</span>
+
+ESM-2<span class="w"> </span>model<span class="w"> </span>loading:
+--offline_model_path<span class="w"> </span>OFFLINE_MODEL_PATH
+<span class="w">                        </span>Path<span class="w"> </span>to<span class="w"> </span>a<span class="w"> </span>locally<span class="w"> </span>stored<span class="w"> </span>ESM-2<span class="w"> </span>model
+--model_name<span class="w"> </span>MODEL_NAME
+<span class="w">                        </span>Choose<span class="w"> </span>the<span class="w"> </span>ESM-2<span class="w"> </span>model<span class="w"> </span>to<span class="w"> </span>load<span class="w"> </span><span class="o">(</span>esm2_t12_35M_UR50D<span class="w"> </span>/<span class="w"> </span>esm2_t33_650M_UR50D<span class="o">)</span>
+--embedding_size<span class="w"> </span>EMBEDDING_SIZE
+<span class="w">                        </span>Set<span class="w"> </span>embedding<span class="w"> </span>vector<span class="w"> </span>size<span class="w"> </span>based<span class="w"> </span>on<span class="w"> </span>the<span class="w"> </span>selected<span class="w"> </span>ESM-2<span class="w"> </span>model<span class="w"> </span><span class="o">(</span><span class="m">480</span><span class="w"> </span>/<span class="w"> </span><span class="m">1280</span><span class="o">)</span>
+</pre></div>
+</div>
 </section>
 <section id="id4">
 <h2>Inference in the binary mutation effect task.<a class="headerlink" href="#id4" title="Permalink to this heading"></a></h2>
