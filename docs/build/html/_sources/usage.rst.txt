@@ -16,16 +16,16 @@ There are 6 commands in PLM-interact package
 - `mutation_train`:Fine-tuning in the binary mutation effect task.
 - `mutation_predict`: Inference in the binary mutation effect task.
 
-Predict a list PPIs
-^^^^^^^^^^^^^^^^^^^
+Predict a list of PPIs
+^^^^^^^^^^^^^^^^^^^^^^
 
 To predict a list of PPIs, you can download pre-trained models from `Hugging Face <https://huggingface.co/danliu1226>`_.
-Protein sequnce pair should be listed as follwing format:
+Protein sequence pair should be listed as follows:
 Required Input:
 
    (--test_filepath): A CSV file with the following two columns: 'query': The sequence of protein 1, and 'text': The sequence of protein 2.
 
-   (--resume_from_checkpoint): the traiend model that can be downldoed from `Hugging Face <https://huggingface.co/danliu1226>`_.
+   (--resume_from_checkpoint): the trained model that can be downloaded from `Hugging Face <https://huggingface.co/danliu1226>`_.
 
    (--output_filepath): a path to save the results.
 
@@ -130,13 +130,13 @@ Training PPI models using mask and binary classification losses
    PLM-interact setting:
    --epochs EPOCHS       Total number of training epochs (default: 10)
    --resume_from_checkpoint RESUME_FROM_CHECKPOINT
-                           Path to a checkpoint to resume training from, if continuing a previous run.
+                           Path to a checkpoint file for resuming training from a previous run.
    --warmup_steps WARMUP_STEPS
                            Number of warmup steps for the learning rate scheduler (default: 2000).
    --gradient_accumulation_steps GRADIENT_ACCUMULATION_STEPS
                            Number of steps to accumulate gradients before performing an optimizer step (default: 8).
    --weight_loss_mlm WEIGHT_LOSS_MLM
-                           Weight applied to the masked language modeling (MLM) loss (default: 1).
+                           Weight applied to the masked language modelling (MLM) loss (default: 1).
    --weight_loss_class WEIGHT_LOSS_CLASS
                            Weight applied to the classification loss (default: 10).
    --max_length MAX_LENGTH
@@ -188,7 +188,7 @@ Training PPI models using only binary classification loss.
       PLM-interact setting:
       --epochs EPOCHS       Total number of training epochs (default: 10).
       --resume_from_checkpoint RESUME_FROM_CHECKPOINT
-                              Path to a checkpoint to resume training from, if continuing a previous run.
+                              Path to a checkpoint file for resuming training from a previous run.
       --warmup_steps WARMUP_STEPS
                               Number of warmup steps for the learning rate scheduler (default: 2000).
       --gradient_accumulation_steps GRADIENT_ACCUMULATION_STEPS
@@ -212,7 +212,7 @@ Training PPI models using only binary classification loss.
       --embedding_size EMBEDDING_SIZE
                               Set embedding vector size based on the selected ESM-2 model (480 / 1280).
 
-Evaluation and test with multi nodes and multi GPUs
+Evaluation and test with multi-nodes and multi-GPUs
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. code-block:: bash
@@ -287,13 +287,13 @@ Fine-tuning in the binary mutation effect task.
    PLM-interact setting:
    --epochs EPOCHS       Total number of training epochs (default: 50).
    --resume_from_checkpoint RESUME_FROM_CHECKPOINT
-                           Path to a checkpoint to resume training from, if continuing a previous run
+                           Path to a checkpoint file for resuming training from a previous run.
    --warmup_steps WARMUP_STEPS
                            Number of warmup steps for the learning rate scheduler (default: 2000)
    --gradient_accumulation_steps GRADIENT_ACCUMULATION_STEPS
                            Number of steps to accumulate gradients before performing an optimizer step (default: 8)
    --weight_loss_mlm WEIGHT_LOSS_MLM
-                           Weight applied to the masked language modeling (MLM) loss (default: 1)
+                           Weight applied to the masked language modelling (MLM) loss (default: 1)
    --weight_loss_class WEIGHT_LOSS_CLASS
                            Weight applied to the classification loss (default: 10)
    --max_length MAX_LENGTH

@@ -136,7 +136,7 @@ with torch.no_grad():
 ```
 
 ## Model checkpoints are available on 🤗 Hugging Face
-#### 1. Trianing on human PPIs from https://d-script.readthedocs.io/en/stable/data.html
+#### 1. Training on human PPIs from https://d-script.readthedocs.io/en/stable/data.html
 Dataset:
 [danliu1226/cross_species_benchmarking](https://huggingface.co/datasets/danliu1226/cross_species_benchmarking/tree/main)
 
@@ -145,7 +145,7 @@ Trained models:
 
 [danliu1226/PLM-interact-35M-humanV11](https://huggingface.co/danliu1226/PLM-interact-35M-humanV11/tree/main)
 
-#### 2. Trianing on virus-human PPIs from http://kurata35.bio.kyutech.ac.jp/LSTM-PHV/download_page
+#### 2. Training on virus-human PPIs from http://kurata35.bio.kyutech.ac.jp/LSTM-PHV/download_page
 Dataset:
 [danliu1226/virus_human_benchmarking](https://huggingface.co/datasets/danliu1226/virus_human_benchmarking)
 
@@ -166,12 +166,12 @@ Dataset:
 Trained model:
 [danliu1226/PLM-interact-650M-Mutation](https://huggingface.co/danliu1226/PLM-interact-650M-Mutation/tree/main)
 
-#### 5. Trianing on Human PPIs from STRING V12 (https://stringdb-downloads.org/download/protein.physical.links.v12.0.txt.gz)
+#### 5. Training on Human PPIs from STRING V12 (https://stringdb-downloads.org/download/protein.physical.links.v12.0.txt.gz)
 [danliu1226/PLM-interact-650M-humanV12](https://huggingface.co/danliu1226/PLM-interact-650M-humanV12/tree/main)
 
 
 # Inference, train and evaluation 
-We provide a setup script to run PLM-interact for training, validation and test. It can be found at the following path: PLMinteract/script/slurm.sh. We list the commands for inference, triaing and evalaution. Please read the [PLMinteract/README.md](PLMinteract/README.md) for details on parameter descriptions.
+We provide a setup script to run PLM-interact for training, validation and testing. It can be found at the following path: PLMinteract/script/slurm.sh. We list the commands for inference, training and evaluation. Please read the [PLMinteract/README.md](PLMinteract/README.md) for details on parameter descriptions.
 
 ```
 git clone https://github.com/liudan111/PLM-interact.git
@@ -208,11 +208,11 @@ text: The sequence of the second protein.
 label: The ground truth label, where 1 indicates a positive interaction and 0 indicates a negative one.
 ```
 
-### (1) PLM-interact training with mask loss and binary classification loss optimize
+### (1) PLM-interact training with mask loss and binary classification loss 
 ```
 torchrun --nproc_per_node=1 train_mlm.py --epochs 10 --seed 2 --data 'human_V11' --task_name '1vs10' --batch_size_train 1 --train_filepath $train_filepath --model_name 'esm2_t33_650M_UR50D' --embedding_size 1280 --output_filepath $outputfilepath --warmup_steps 2000 --gradient_accumulation_steps 8 --max_length 2146 --weight_loss_mlm 1 --weight_loss_class 10 --offline_model_path $offline_model_path 
 ```
-### (2) PLM-interact training with binary classification loss optimize
+### (2) PLM-interact training with binary classification loss 
 
 ```
 torchrun --nproc_per_node=1 train_binary.py --epochs 20 --seed 2 --data 'human_V11' --task_name 'binary' --batch_size_train 1 --batch_size_val 32 --train_filepath $train_filepath  --dev_filepath $dev_filepath  --test_filepath $test_filepath --output_filepath $output_filepath --warmup_steps 2000 --gradient_accumulation_steps 32  --model_name 'esm2_t33_650M_UR50D' --embedding_size 1280 --max_length 1600 --evaluation_steps 5000 --sub_samples 5000 --offline_model_path $offline_model_path 

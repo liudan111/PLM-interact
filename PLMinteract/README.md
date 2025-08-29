@@ -69,7 +69,7 @@ print(f"All files for {repo_id} are saved in the '{local_dir}' folder.")
 ## PPI inference
 ### PPI inference with multi-GPUs
 
-To run the code directly from GitHub,make sure to export this environment variable:
+To run the code directly from GitHub, make sure to export this environment variable:
 ```
 export CUBLAS_WORKSPACE_CONFIG=:4096:8
 ```
@@ -88,13 +88,13 @@ torchrun --nproc_per_node=1 inference_PPI_singleGPU.py --seed 2 --batch_size_val
 ```
 
 ## PLM-interact training and evaluation
-The efficient batch size is 128, which is equal to  batch_size_train * gradient_accumulation_steps * the number of gpus
+The efficient batch size is 128, which is equal to  batch_size_train * gradient_accumulation_steps * the number of GPUs
 
-### (1) PLM-interact training with mask loss and binary classification loss optimize
+### (1) PLM-interact training with mask loss and binary classification loss
 ```
 torchrun --nproc_per_node=1 train_mlm.py --epochs 20 --seed 2 --data 'human_V11' --task_name '1vs10' --batch_size_train 1 --train_filepath $train_filepath --model_name 'esm2_t33_650M_UR50D' --embedding_size 1280 --output_filepath $outputfilepath --warmup_steps 2000 --gradient_accumulation_steps 8 --max_length 2146 --weight_loss_mlm 1 --weight_loss_class 10 --offline_model_path $offline_model_path 
 ```
-### (2) PLM-interact training with binary classification loss optimize
+### (2) PLM-interact training with binary classification loss
 ```
 torchrun --nproc_per_node=1 train_binary.py --epochs 20 --seed 2 --data 'human_V11' --task_name 'binary' --batch_size_train 1 --batch_size_val 32 --train_filepath $train_filepath  --dev_filepath $dev_filepath  --test_filepath $test_filepath --output_filepath $outputfilepath --warmup_steps 2000 --gradient_accumulation_steps 32  --model_name 'esm2_t33_650M_UR50D' --embedding_size 1280 --max_length 1600 --evaluation_steps 5000 --sub_samples 5000 --offline_model_path $offline_model_path 
 ```
