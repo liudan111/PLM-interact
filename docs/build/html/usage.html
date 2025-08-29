@@ -50,19 +50,18 @@
 <li class="toctree-l2"><a class="reference internal" href="#quick-start">Quick start</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#there-are-6-commands-in-plm-interact-package">There are 6 commands in PLM-interact package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#predict-a-list-ppis">Predict a list PPIs</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#training-ppi-models-using-mask-and-binary-classification-losses">Training PPI models using mask and binary classification losses.</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#training-ppi-models-using-only-binary-classification-loss">Training PPI models using only binary classification loss.</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#training-ppi-models">Training PPI models</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#validation-and-test-of-trained-models">Validation and test of trained models</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#fine-tuning-in-the-binary-mutation-effect-task">Fine-tuning in the binary mutation effect task.</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#inference-in-the-binary-mutation-effect-task">Inference in the binary mutation effect task.</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#ppi-prediction">PPI prediction</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id2">Training PPI models using mask and binary classification losses</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id3">Training PPI models using only binary classification loss.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#training-ppi-models-using-mask-and-binary-classification-losses">Training PPI models using mask and binary classification losses</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#training-ppi-models-using-only-binary-classification-loss">Training PPI models using only binary classification loss.</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#evaluation-and-test-with-multi-nodes-and-multi-gpus">Evaluation and test with multi nodes and multi GPUs</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id4">Fine-tuning in the binary mutation effect task.</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id5">Inference in the binary mutation effect task.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id3">Fine-tuning in the binary mutation effect task.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id4">Inference in the binary mutation effect task.</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="data.html">Data</a></li>
@@ -114,15 +113,12 @@ Protein sequnce pair should be listed as follwing format:
 Required Input:</p>
 <blockquote>
 <div><p>(–test_filepath): A CSV file with the following two columns: ‘query’: The sequence of protein 1, and ‘text’: The sequence of protein 2.</p>
-<p>(–resume_from_checkpoint): the traiend model that can be downldoed from <cite>Hugging Face &lt;https://huggingface.co/danliu1226&gt;</cite>.</p>
+<p>(–resume_from_checkpoint): the traiend model that can be downldoed from <a class="reference external" href="https://huggingface.co/danliu1226">Hugging Face</a>.</p>
 <p>(–output_filepath): a path to save the results.</p>
 </div></blockquote>
 </section>
-<section id="training-ppi-models-using-mask-and-binary-classification-losses">
-<h3>Training PPI models using mask and binary classification losses.<a class="headerlink" href="#training-ppi-models-using-mask-and-binary-classification-losses" title="Permalink to this heading"></a></h3>
-</section>
-<section id="training-ppi-models-using-only-binary-classification-loss">
-<h3>Training PPI models using only binary classification loss.<a class="headerlink" href="#training-ppi-models-using-only-binary-classification-loss" title="Permalink to this heading"></a></h3>
+<section id="training-ppi-models">
+<h3>Training PPI models<a class="headerlink" href="#training-ppi-models" title="Permalink to this heading"></a></h3>
 </section>
 <section id="validation-and-test-of-trained-models">
 <h3>Validation and test of trained models<a class="headerlink" href="#validation-and-test-of-trained-models" title="Permalink to this heading"></a></h3>
@@ -137,8 +133,8 @@ Required Input:</p>
 <section id="ppi-prediction">
 <h2>PPI prediction<a class="headerlink" href="#ppi-prediction" title="Permalink to this heading"></a></h2>
 </section>
-<section id="id2">
-<h2>Training PPI models using mask and binary classification losses<a class="headerlink" href="#id2" title="Permalink to this heading"></a></h2>
+<section id="training-ppi-models-using-mask-and-binary-classification-losses">
+<h2>Training PPI models using mask and binary classification losses<a class="headerlink" href="#training-ppi-models-using-mask-and-binary-classification-losses" title="Permalink to this heading"></a></h2>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>usage:<span class="w"> </span>PLMinteract<span class="w"> </span>train_mlm<span class="w"> </span><span class="o">[</span>-h<span class="o">]</span><span class="w"> </span><span class="o">[</span>--seed<span class="w"> </span>SEED<span class="o">]</span><span class="w"> </span><span class="o">[</span>--data<span class="w"> </span>DATA<span class="o">]</span><span class="w"> </span><span class="o">[</span>--task_name<span class="w"> </span>TASK_NAME<span class="o">]</span><span class="w"> </span>--train_filepath<span class="w"> </span>TRAIN_FILEPATH
 <span class="w">                           </span>--output_filepath<span class="w"> </span>OUTPUT_FILEPATH<span class="w"> </span><span class="o">[</span>--epochs<span class="w"> </span>EPOCHS<span class="o">]</span><span class="w"> </span><span class="o">[</span>--resume_from_checkpoint<span class="w"> </span>RESUME_FROM_CHECKPOINT<span class="o">]</span>
 <span class="w">                           </span><span class="o">[</span>--warmup_steps<span class="w"> </span>WARMUP_STEPS<span class="o">]</span><span class="w"> </span><span class="o">[</span>--gradient_accumulation_steps<span class="w"> </span>GRADIENT_ACCUMULATION_STEPS<span class="o">]</span>
@@ -188,17 +184,17 @@ ESM2<span class="w"> </span>model<span class="w"> </span>loading:
 </pre></div>
 </div>
 </section>
-<section id="id3">
-<h2>Training PPI models using only binary classification loss.<a class="headerlink" href="#id3" title="Permalink to this heading"></a></h2>
+<section id="training-ppi-models-using-only-binary-classification-loss">
+<h2>Training PPI models using only binary classification loss.<a class="headerlink" href="#training-ppi-models-using-only-binary-classification-loss" title="Permalink to this heading"></a></h2>
 </section>
 <section id="evaluation-and-test-with-multi-nodes-and-multi-gpus">
 <h2>Evaluation and test with multi nodes and multi GPUs<a class="headerlink" href="#evaluation-and-test-with-multi-nodes-and-multi-gpus" title="Permalink to this heading"></a></h2>
 </section>
-<section id="id4">
-<h2>Fine-tuning in the binary mutation effect task.<a class="headerlink" href="#id4" title="Permalink to this heading"></a></h2>
+<section id="id3">
+<h2>Fine-tuning in the binary mutation effect task.<a class="headerlink" href="#id3" title="Permalink to this heading"></a></h2>
 </section>
-<section id="id5">
-<h2>Inference in the binary mutation effect task.<a class="headerlink" href="#id5" title="Permalink to this heading"></a></h2>
+<section id="id4">
+<h2>Inference in the binary mutation effect task.<a class="headerlink" href="#id4" title="Permalink to this heading"></a></h2>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>usage:<span class="w"> </span>PLMinteract<span class="w"> </span>mutation_predict<span class="w"> </span><span class="o">[</span>-h<span class="o">]</span><span class="w"> </span><span class="o">[</span>--seed<span class="w"> </span>SEED<span class="o">]</span><span class="w"> </span><span class="o">[</span>--task_name<span class="w"> </span>TASK_NAME<span class="o">]</span><span class="w"> </span>--test_filepath<span class="w"> </span>TEST_FILEPATH<span class="w"> </span>--output_path
 <span class="w">                                 </span>OUTPUT_PATH<span class="w"> </span>--resume_from_checkpoint<span class="w"> </span>RESUME_FROM_CHECKPOINT
 <span class="w">                                 </span><span class="o">[</span>--weight_loss_mlm<span class="w"> </span>WEIGHT_LOSS_MLM<span class="o">]</span><span class="w"> </span><span class="o">[</span>--weight_loss_class<span class="w"> </span>WEIGHT_LOSS_CLASS<span class="o">]</span>

@@ -22,38 +22,36 @@ Protein sequnce pair should be listed as follwing format:
 Required Input:
    (--test_filepath): A CSV file with the following two columns: 'query': The sequence of protein 1, and 'text': The sequence of protein 2.
 
-   (--resume_from_checkpoint): the traiend model that can be downldoed from `Hugging Face <https://huggingface.co/danliu1226>`.
+   (--resume_from_checkpoint): the traiend model that can be downldoed from `Hugging Face <https://huggingface.co/danliu1226>`_.
 
    (--output_filepath): a path to save the results.
 
 .. code-block:: bash
-   torchrun --nproc_per_node=1 -m PLMinteract inference_PPI --seed 2 --batch_size_val 1 --test_filepath [a list of paired protein sequences] --resume_from_checkpoint [traiend model] --output_filepath $output_filepath --offline_model_path $offline_model_path --model_name esm2_t12_35M_UR50D --embedding_size 480 --max_length [length threshold of the paired protein] 
+    torchrun --nproc_per_node=1 -m PLMinteract inference_PPI --seed 2 --batch_size_val 1 --test_filepath [a list of paired protein sequences] --resume_from_checkpoint [traiend model] --output_filepath $output_filepath --offline_model_path $offline_model_path --model_name esm2_t12_35M_UR50D --embedding_size 480 --max_length [length threshold of the paired protein] 
 
 
-Training PPI models using mask and binary classification losses.
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Training PPI models 
+^^^^^^^^^^^^^^^^^^^^^
 .. code-block:: bash
-   torchrun --nproc_per_node=1 -m PLMinteract train_mlm --epochs [total of training epochs] --seed 2 --data 'human_V11' --task_name '1vs10' --batch_size_train 1 --train_filepath [paired protein sequences for train] --model_name esm2_t12_35M_UR50D --embedding_size 480 --warmup_steps 10 --gradient_accumulation_steps 32 --max_length [length threshold of the paired protein] --weight_loss_mlm 1 --weight_loss_class 10 --offline_model_path [Path to a locally stored ESM-2 model] --output_filepath $output_filepath
+    torchrun --nproc_per_node=1 -m PLMinteract train_mlm --epochs [total of training epochs] --seed 2 --data 'human_V11' --task_name '1vs10' --batch_size_train 1 --train_filepath [paired protein sequences for train] --model_name esm2_t12_35M_UR50D --embedding_size 480 --warmup_steps 10 --gradient_accumulation_steps 32 --max_length [length threshold of the paired protein] --weight_loss_mlm 1 --weight_loss_class 10 --offline_model_path [Path to a locally stored ESM-2 model] --output_filepath $output_filepath
 
-Training PPI models using only binary classification loss.
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. code-block:: bash
-   torchrun --nproc_per_node=1 -m PLMinteract train_binary --epochs [total of training epochs] --seed 2 --data 'human_V11' --task_name 'binary' --batch_size_train 2 --batch_size_val 32 --train_filepath [paired protein sequences for train] --dev_filepath [paired protein sequences for validation] --test_filepath [paired protein sequences for test] --model_name 'esm2_t12_35M_UR50D' --embedding_size 480 --warmup_steps 2000 --gradient_accumulation_steps 1 --max_length [length threshold of the paired protein] --offline_model_path [Path to a locally stored ESM-2 model] --evaluation_steps [evaluation steps] --sub_samples [subsamples of evaluation] --output_filepath $output_filepath 
+    torchrun --nproc_per_node=1 -m PLMinteract train_binary --epochs [total of training epochs] --seed 2 --data 'human_V11' --task_name 'binary' --batch_size_train 2 --batch_size_val 32 --train_filepath [paired protein sequences for train] --dev_filepath [paired protein sequences for validation] --test_filepath [paired protein sequences for test] --model_name 'esm2_t12_35M_UR50D' --embedding_size 480 --warmup_steps 2000 --gradient_accumulation_steps 1 --max_length [length threshold of the paired protein] --offline_model_path [Path to a locally stored ESM-2 model] --evaluation_steps [evaluation steps] --sub_samples [subsamples of evaluation] --output_filepath $output_filepath 
 
 Validation and test of trained models
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. code-block:: bash
-   torchrun --nproc_per_node=1 -m PLMinteract predict_ddp --epochs [total of training epochs] --seed 2 --batch_size_val 1 --dev_filepath [paired protein sequences for validation] --test_filepath [paired protein sequences for test] --resume_from_checkpoint [the path of checkpints] --model_name esm2_t12_35M_UR50D --embedding_size 480 --max_length [length threshold of the paired protein] --offline_model_path [Path to a locally stored ESM-2 model] --output_filepath $output_filepath 
+    torchrun --nproc_per_node=1 -m PLMinteract predict_ddp --epochs [total of training epochs] --seed 2 --batch_size_val 1 --dev_filepath [paired protein sequences for validation] --test_filepath [paired protein sequences for test] --resume_from_checkpoint [the path of checkpints] --model_name esm2_t12_35M_UR50D --embedding_size 480 --max_length [length threshold of the paired protein] --offline_model_path [Path to a locally stored ESM-2 model] --output_filepath $output_filepath 
 
 Fine-tuning in the binary mutation effect task.
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. code-block:: bash
-   torchrun --nproc_per_node=1 -m PLMinteract mutation_train --epochs [total of training epochs] --seed 2 --task_name $task_name --batch_size_train 1 --batch_size_val 1 --train_filepath [paired protein sequences for train] --dev_filepath [paired protein sequences for validation]  --warmup_steps 2000 --resume_from_checkpoint [the path of checkpints] --model_name esm2_t33_650M_UR50D --embedding_size 1280 --max_length [length threshold of the paired protein] --gradient_accumulation_steps 1 --offline_model_path [Path to a locally stored ESM-2 model] --output_path $output 
+    torchrun --nproc_per_node=1 -m PLMinteract mutation_train --epochs [total of training epochs] --seed 2 --task_name $task_name --batch_size_train 1 --batch_size_val 1 --train_filepath [paired protein sequences for train] --dev_filepath [paired protein sequences for validation]  --warmup_steps 2000 --resume_from_checkpoint [the path of checkpints] --model_name esm2_t33_650M_UR50D --embedding_size 1280 --max_length [length threshold of the paired protein] --gradient_accumulation_steps 1 --offline_model_path [Path to a locally stored ESM-2 model] --output_path $output 
 
 Inference in the binary mutation effect task.
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. code-block:: bash
-   torchrun --nproc_per_node=1 -m PLMinteract mutation_predict --seed 2 --batch_size_val 1 --test_filepath $[paired protein sequences for test] --resume_from_checkpoint [traiend model] --model_name esm2_t33_650M_UR50D --embedding_size 1280 --max_length [length threshold of the paired protein] --offline_model_path [Path to a locally stored ESM-2 model] --output_path $output 
+    torchrun --nproc_per_node=1 -m PLMinteract mutation_predict --seed 2 --batch_size_val 1 --test_filepath $[paired protein sequences for test] --resume_from_checkpoint [traiend model] --model_name esm2_t33_650M_UR50D --embedding_size 1280 --max_length [length threshold of the paired protein] --offline_model_path [Path to a locally stored ESM-2 model] --output_path $output 
 
 
 PPI prediction
