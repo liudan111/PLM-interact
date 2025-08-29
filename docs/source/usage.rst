@@ -7,6 +7,7 @@ Quick start
 ~~~~~~~~~~~
 
 There are 6 commands in PLM-interact package
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 - `inference_PPI`: PPI prediction.
 - `train_mlm`: Training PPI models using mask and binary classification losses.
 - `train_binary`: Training PPI models using only binary classification loss.
@@ -15,7 +16,7 @@ There are 6 commands in PLM-interact package
 - `mutation_predict`: Inference in the binary mutation effect task.
 
 Predict a list PPIs
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^
 To predict a list of PPIs, you can download pre-trained models from `Hugging Face <https://huggingface.co/danliu1226>`_.
 Protein sequnce pair should be listed as follwing format:
 Required Input:
@@ -56,7 +57,7 @@ Inference in the binary mutation effect task.
 
 
 PPI prediction
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~
 .. code-block:: bash
    usage: PLMinteract inference_PPI [-h] [--seed SEED] --test_filepath TEST_FILEPATH --output_filepath OUTPUT_FILEPATH
                                  --resume_from_checkpoint RESUME_FROM_CHECKPOINT [--batch_size_val BATCH_SIZE_VAL]
